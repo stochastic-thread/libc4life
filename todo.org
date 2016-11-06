@@ -1,4 +1,6 @@
-* forward errs to prev if !null in c4try_free
+* forward errs to prev try if any in c4try_free
+** otherwise dump errs to std err & free
+* enable nested try in test main
 ** add c4ls_splice(self, first, last)
 *** overwrite links like append
 * add c4map_splice(self, i, its)
