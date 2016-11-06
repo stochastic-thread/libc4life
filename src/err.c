@@ -23,6 +23,15 @@ void c4try_free(struct c4try *self) {
   free(self->msg);
 }
 
+struct c4err_t *c4err_t_init(struct c4err_t *self, const char *name) {
+  self->name = strdup(name);
+  return self;
+}
+
+void c4err_t_free(struct c4err_t *self) {
+  free(self->name);
+}
+
 struct c4err *c4err_init(struct c4err *self,
 			 const char *msg,
 			 const char *file, int line) {

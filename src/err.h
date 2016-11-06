@@ -32,7 +32,14 @@ struct c4try *c4try_init(struct c4try *self,
 			 const char *file, int line);
 
 void c4try_free(struct c4try *self);
-  
+
+struct c4err_t {
+  char *name;
+};
+
+struct c4err_t *c4err_t_init(struct c4err_t *self, const char *name);
+void c4err_t_free(struct c4err_t *self);
+
 struct c4err {
   char *msg;
   const char *file;

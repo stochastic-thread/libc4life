@@ -34,7 +34,7 @@ static struct c4ctx *ctx() {
 }
 
 int main() {
-  c4ctx(ctx);
+  c4init(ctx);
 
   C4TRY("run all tests") {
     map_tests();
