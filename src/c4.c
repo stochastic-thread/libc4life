@@ -16,3 +16,8 @@ void c4init(c4get_ctx_t get_ctx) {
   _get_ctx = get_ctx;
   c4err_t_init(&C4Err, "C4Err");
 }
+
+void c4free() {
+  c4err_t_free(&C4Err);
+}
+

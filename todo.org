@@ -4,7 +4,6 @@
 * add c4map_splice(self, i, its)
 * add c4map_merge
 * add ls_add(, c4cmp_t)/ls_remove(, c4cmp_t)
-* add C4CATCH macro
 * add C4ERR_ENABLED define
 ** set to 1 if not defined in err.h
 ** use to bypass all error macros

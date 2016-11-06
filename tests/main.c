@@ -1,3 +1,5 @@
+#include <assert.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include "c4.h"
 #include "ctx.h"
@@ -39,7 +41,21 @@ int main() {
   C4TRY("run all tests") {
     map_tests();
     ls_tests();
+    struct c4err *err = NULL;
+    //C4TRY("nested") {
+    err = C4THROW(&C4Err, "test throw", ctx);
+      //}
+
+    bool caught = false;
+    
+    C4CATCH(e, NULL) {
+      assert(e == err); 
+      caught = true;
+    }
+
+    assert(caught);
   }
-  
+
+  c4free();
   return 0;
 }
