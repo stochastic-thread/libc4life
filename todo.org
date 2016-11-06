@@ -1,3 +1,7 @@
+* change err frames to be ref counted
+** init to 1
+** dec in free and free when 0
+** free from err_free
 * forward errs to prev try if any in c4try_free
 ** otherwise dump errs to std err & free
 * enable nested try in test main

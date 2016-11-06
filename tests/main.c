@@ -2,14 +2,33 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "c4.h"
+#include "col.h"
 #include "ctx.h"
 #include "err.h"
-#include "map.h"
 #include "ls.h"
+#include "map.h"
+#include "rec.h"
+#include "tbl.h"
 
 static int int_cmp(void *_x, void *_y) {
   int *x = _x, *y = _y;
   return *x < *y;
+}
+
+static void col_tests() {
+  struct c4col_t ct;
+  c4col_t_init(&ct, "foo");
+
+  struct c4col c;
+  c4col_init(&c, "bar", &ct);
+  
+  c4col_free(&c);
+  c4col_t_free(&ct);
+}
+
+static void ls_tests() {
+  struct c4ls ls;
+  c4ls_init(&ls);
 }
 
 static void map_tests() {
@@ -18,9 +37,14 @@ static void map_tests() {
   c4map_free(&m);
 }
 
-static void ls_tests() {
-  struct c4ls ls;
-  c4ls_init(&ls);
+static void rec_tests() {
+  struct c4rec r;
+  c4rec_init(&r); 
+}
+
+static void tbl_tests() {
+  struct c4tbl t;
+  c4tbl_init(&t); 
 }
 
 static struct c4ctx *ctx() {
@@ -39,8 +63,12 @@ int main() {
   c4init(ctx);
 
   C4TRY("run all tests") {
-    map_tests();
+    col_tests();
     ls_tests();
+    map_tests();
+    rec_tests();
+    tbl_tests();
+    
     struct c4err *err = NULL;
     //C4TRY("nested") {
     err = C4THROW(&C4Err, "test throw", ctx);
