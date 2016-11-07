@@ -13,4 +13,3 @@
 * add C4ERR_ENABLED define
 ** set to 1 if not defined in err.h
 ** use to bypass all error macros
-
