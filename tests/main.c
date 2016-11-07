@@ -40,7 +40,7 @@ void err_tests() {
     
     C4CATCH(e, NULL) { // NULL catches everything
       assert(e == err);
-      c4err_free(e); // free to remove err from queue
+      c4err_free(e); // free to handle err
       caught = true;
     }
 
