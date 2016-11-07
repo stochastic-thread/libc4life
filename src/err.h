@@ -12,7 +12,7 @@
 #define C4THROW(type, msg, data)					\
   ({									\
     struct c4err *e = malloc(sizeof(struct c4err));			\
-    c4err_init(e, type, msg, data, __FILE__, __LINE__);			\
+    c4err_init(e, type, msg, (void *)data, __FILE__, __LINE__);		\
     c4err_throw(e);							\
   })									\
 

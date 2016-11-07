@@ -12,7 +12,7 @@ add_library(${PROJECT_NAME} SHARED ${SOURCES})
 file(GLOB TESTS tests/*.c)
 add_executable(tests ${SOURCES} ${TESTS})
 
-install(TARGETS ${PROJECT_NAME} DESTINATION lib/${PROJECT_NAME})
+install(TARGETS ${PROJECT_NAME} DESTINATION lib)
 
 file(GLOB HEADERS src/*.h)
 install (FILES ${HEADERS} DESTINATION include/${PROJECT_NAME})

@@ -70,14 +70,16 @@ int main() {
     tbl_tests();
     
     struct c4err *err = NULL;
+    const char *data = "abc";
     //C4TRY("nested") {
-    err = C4THROW(&C4Err, "test throw", ctx);
+    err = C4THROW(&c4err, "test throw", data);
       //}
 
     bool caught = false;
     
     C4CATCH(e, NULL) {
-      assert(e == err); 
+      assert(e == err);
+      assert(e->data == data);
       caught = true;
     }
 
