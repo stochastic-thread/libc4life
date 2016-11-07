@@ -32,8 +32,8 @@ void err_tests() {
     const char *data = "important"; // data describing error
 
     //C4TRY("inner") {
-      err = C4THROW(&c4err, "test throw", data);
-      assert(err->data == data);
+    err = C4THROW(&c4err, "test throw", data); // throw basic c4err type
+    assert(err->data == data);
       //}
 
     bool caught = false;
