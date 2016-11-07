@@ -3,6 +3,11 @@
 *** overwrite links like append
 ** dump errs to stderr & free on final exit
 ** enable nested try in test main
+* add optional super param / field to c4err_t
+** NULL gives c4_err
+** add c4err_isa(c4err_t *)
+*** follow super until == self
+*** use in c4err_first / c4err_next
 * free tries & errs in c4ctx_free
 * add c4map_splice(self, i, its)
 * add c4map_merge
