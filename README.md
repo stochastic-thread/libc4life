@@ -40,7 +40,7 @@ c4life's error handling facility is designed to complement prevailing strategies
 void err_tests() {
   C4TRY("outer") {
     struct c4err *err = NULL;
-    const char *data = "important"; // data describing error
+    const char *data = "guru meditation"; // data describing error
 
     C4TRY("inner") {
       err = C4THROW(&c4err, "test throw", data); // throw basic c4err type
