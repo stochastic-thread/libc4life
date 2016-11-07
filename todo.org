@@ -8,7 +8,18 @@
 ** add c4err_isa(c4err_t *)
 *** follow super until == self
 *** use in c4err_first / c4err_next
-* free tries & errs in c4ctx_free
+* add c4try_close
+** only remove from tries
+** change C4TRY to call c4try_close instead
+* print and free all & errs in c4ctx_free
+* add c4slab
+** block of memory with len
+** use for c4map.its
+*** add c4map_it
+* add c4alloc
+** use list of slabs & freelist
+* add c4vec
+** use slab for elems
 * add c4map_splice(self, i, its)
 * add c4map_merge
 * add ls_add(, c4cmp_t)/ls_remove(, c4cmp_t)
