@@ -27,6 +27,7 @@ int main() {
   c4init(ctx);
   //...
   c4free();
+  return 0;
 }
 ```
 
