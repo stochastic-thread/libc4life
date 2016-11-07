@@ -5,7 +5,7 @@
 c4life is a library of C utilities that has been polished over 30 years of coding in C for fun. Given a solid foundation that plays on C's strengths, coding in C is therapy compared to pretending the mountain of hidden complexity in your stack is someone else's problem. Pretending isn't healthy; it splits your personality and destroys your self confidence.
 
 ### contexts
-c4life uses contexts to keep track of global state; for error handling etc. A context lookup function can be supplied on init to control which context is used when and where. For single-threaded use, the following example is a good start:
+c4life uses contexts to keep track of global state; for error handling etc. A context lookup function may be specified on init to control which context is used when and where. For single-threaded use, the following example is a good start:
 
 ```C
 #include <c4life/c4.h>
@@ -31,7 +31,7 @@ int main() {
 ```
 
 ### errors
-c4life's error handling facility is designed to complement prevailing strategies rather than replacing them. What's often missing in C is a way to pass information describing the error out of band. No one really wants automagic stack unwinding, the fact that it's doable in C has been proven enough times. Throwing an error in c4life doesn't stop the world to make sure someone is there to catch it. Errors are accumulated in the current try scope and propagated down the stack on exit; unhandled errors are printed to STDERR when exiting the final scope.
+c4life's error handling facility is designed to complement prevailing strategies rather than replacing them. What's missing in C is a way to pass information describing the error out of band to the code that needs it. No one really likes automagic stack unwinding, even forcing it down peoples throats like Java didn't work; and the fact that it's doable in C has been proven enough times. Throwing an error in c4life doesn't stop the world to make sure someone is there to catch it. Errors are accumulated in the current try scope and propagated down the stack on exit; unhandled errors are printed to STDERR when exiting the final scope.
 
 ```C
 #include <c4life/c4.h>
