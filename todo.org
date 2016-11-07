@@ -3,10 +3,10 @@
 *** overwrite links like append
 ** dump errs to stderr & free on final exit
 ** enable nested try in test main
+* free tries & errs in c4ctx_free
 * add c4map_splice(self, i, its)
 * add c4map_merge
 * add ls_add(, c4cmp_t)/ls_remove(, c4cmp_t)
 * add C4ERR_ENABLED define
 ** set to 1 if not defined in err.h
 ** use to bypass all error macros
-x

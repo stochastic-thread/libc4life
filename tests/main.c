@@ -93,6 +93,7 @@ int main() {
     tbl_tests();
   }
 
+  c4ctx_free(ctx());
   c4free();
   return 0;
 }

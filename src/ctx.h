@@ -8,5 +8,6 @@ struct c4ctx {
 };
 
 struct c4ctx *c4ctx_init(struct c4ctx *self);
+void c4ctx_free(struct c4ctx *self);
 
 #endif

@@ -26,6 +26,7 @@ static struct c4ctx *ctx() {
 int main() {
   c4init(ctx);
   //...
+  c4ctx_free(ctx());
   c4free();
   return 0;
 }
