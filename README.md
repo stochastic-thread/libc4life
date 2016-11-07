@@ -8,6 +8,9 @@ c4life is a library of C utilities that has been polished over 30 years of codin
 c4life uses contexts to keep track of global state; for error handling etc. A context lookup function can be supplied on init to control which context is used when and where. For single-threaded use, the following example is a good start:
 
 ```C
+#include <c4life/c4.h>
+#include <c4life/ctx.h>
+
 static struct c4ctx *ctx() {
   static struct c4ctx ctx;
   static bool init = true;
@@ -25,6 +28,37 @@ int main() {
   //...
   c4free();
 }
+```
+
+### errors
+c4life's error handling facility is designed to complement prevailing strategies rather than replacing them. What's often missing in C is a way to pass information describing the error out of band. No one really wants automagic stack unwinding, the fact that it's doable in C has been proven enough times. Throwing an error in c4life doesn't stop the world to make sure someone is there to catch it. Errors are accumulated in the current try scope and propagated down the stack on exit; unhandled errors are printed to STDERR when exiting the final scope.
+
+```C
+#include <c4life/c4.h>
+#include <c4life/err.h>
+
+void err_tests() {
+  C4TRY("outer") {
+    struct c4err *err = NULL;
+    const char *data = "important"; // data describing error
+
+    C4TRY("inner") {
+      err = C4THROW(&c4err, "test throw", data);
+      assert(err->data == data);
+    }
+
+    bool caught = false;
+    
+    C4CATCH(e, NULL) { // NULL catches everything
+      assert(e == err);
+      c4err_free(e); // free to remove err from queue
+      caught = true;
+    }
+
+    assert(caught);
+  }
+}
+
 ```
 
 ### license

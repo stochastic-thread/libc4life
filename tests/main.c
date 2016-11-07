@@ -26,6 +26,28 @@ static void col_tests() {
   c4col_t_free(&ct);
 }
 
+void err_tests() {
+  C4TRY("outer") {
+    struct c4err *err = NULL;
+    const char *data = "important"; // data describing error
+
+    //C4TRY("inner") {
+      err = C4THROW(&c4err, "test throw", data);
+      assert(err->data == data);
+      //}
+
+    bool caught = false;
+    
+    C4CATCH(e, NULL) { // NULL catches everything
+      assert(e == err);
+      c4err_free(e); // free to remove err from queue
+      caught = true;
+    }
+
+    assert(caught);
+  }
+}
+
 static void ls_tests() {
   struct c4ls ls;
   c4ls_init(&ls);
@@ -64,26 +86,11 @@ int main() {
 
   C4TRY("run all tests") {
     col_tests();
+    err_tests();
     ls_tests();
     map_tests();
     rec_tests();
     tbl_tests();
-    
-    struct c4err *err = NULL;
-    const char *data = "abc";
-    //C4TRY("nested") {
-    err = C4THROW(&c4err, "test throw", data);
-      //}
-
-    bool caught = false;
-    
-    C4CATCH(e, NULL) {
-      assert(e == err);
-      assert(e->data == data);
-      caught = true;
-    }
-
-    assert(caught);
   }
 
   c4free();

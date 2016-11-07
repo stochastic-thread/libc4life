@@ -28,9 +28,11 @@
 struct c4try {
   char *msg;
   const char *file;
-  int line;
+  int line, refs;
   struct c4ls errs, tries_node;
 };
+
+struct c4try *c4try();
 
 struct c4try *c4try_init(struct c4try *self,
 			 const char *msg,
@@ -51,6 +53,7 @@ struct c4err {
   int line;
   struct c4err_t *type;
   struct c4ls errs_node;
+  struct c4try *try;
   void *data;
 };
 
@@ -63,6 +66,7 @@ struct c4err *c4err_init(struct c4err *self,
 			 void *data,
 			 const char *file, int line);
 
+void c4err_free(struct c4err *self);
 struct c4err *c4err_throw(struct c4err *self);
 
 #endif

@@ -7,6 +7,6 @@ struct c4ls {
 
 struct c4ls *c4ls_init(struct c4ls *self);
 struct c4ls *c4ls_append(struct c4ls *self, struct c4ls *next);
-
+void c4ls_delete(struct c4ls *self);
 
 #endif
