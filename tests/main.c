@@ -48,9 +48,32 @@ void err_tests() {
   }
 }
 
+static void ls_splice_tests() {
+  struct c4ls foo;
+  struct c4ls bar;
+  struct c4ls its[10];
+
+  c4ls_init(&foo);
+  c4ls_init(&bar);
+  
+  for (int i = 0; i < 5; i++) {
+    c4ls_prepend(&foo, its+i);
+    c4ls_prepend(&bar, its+i+5);    
+  }
+
+  c4ls_splice(&foo, bar.next, bar.prev);
+  struct c4ls *it = &foo;
+  
+  for (int i = 0; i < 10; i++) {
+    it = it->next;
+    assert(it == its+i);
+  }
+
+  assert(it->next == &foo);
+}
+
 static void ls_tests() {
-  struct c4ls ls;
-  c4ls_init(&ls);
+  ls_splice_tests();
 }
 
 static void map_tests() {

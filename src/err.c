@@ -22,7 +22,7 @@ struct c4try *c4try_init(struct c4try *self,
   self->line = line;
   self->refs = 1;
   c4ls_init(&self->errs);
-  c4ls_append(&c4ctx(NULL)->tries, &self->tries_node);
+  c4ls_prepend(&c4ctx(NULL)->tries, &self->tries_node);
   return self;
 }
 
@@ -82,6 +82,6 @@ void c4err_free(struct c4err *self) {
 }
 
 struct c4err *c4err_throw(struct c4err *self) {
-  c4ls_append(&c4try()->errs, &self->errs_node);
+  c4ls_prepend(&c4try()->errs, &self->errs_node);
   return self;
 }

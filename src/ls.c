@@ -17,3 +17,19 @@ void c4ls_delete(struct c4ls *self) {
   self->next->prev = self->prev;
   self->prev->next = self->next;
 }
+
+struct c4ls *c4ls_prepend(struct c4ls *self, struct c4ls *prev) {
+  self->prev->next = prev;
+  prev->prev = self->prev;
+  prev->next = self;
+  self->prev = prev;
+  return prev;
+}
+
+void c4ls_splice(struct c4ls *self, struct c4ls *first, struct c4ls *last) {
+  self->prev->next = first;
+  first->prev = self->prev;
+  self->prev = last;
+  last->next = self;
+}
+
