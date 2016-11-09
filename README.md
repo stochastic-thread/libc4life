@@ -73,7 +73,7 @@ void err_tests() {
 ```
 
 ### coroutines
-c4life provides coroutines in the form of a minimalistic layer of macros sprinkled with Duff's Device pixie dust. Anything that should persist across calls needs to be declared static, global or passed as parameters; the only thing the coroutine really cares about is the current line number.
+c4life provides coroutines in the form of a minimalistic layer of macros with a touch of Duff's Device pixie dust. Anything that should persist across calls needs to be declared static, global or passed as parameters; the only thing the coroutine really cares about is the current line number.
 
 ```C
 
