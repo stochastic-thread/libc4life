@@ -1,7 +1,3 @@
-* add c4slab
-** block of memory with len
-** use for c4map.its
-*** add c4map_it
 * add c4vec
 ** use slab for elems
 * add c4map_splice(self, i, its)
