@@ -12,10 +12,10 @@
        var = next,							\
 	 next = var ? c4err_next(&var->errs_node, type) : NULL)		\
 
-#define C4THROW(type, msg, data)					\
+#define C4THROW(type, msg)						\
   ({									\
     struct c4err *e = malloc(sizeof(struct c4err));			\
-    c4err_init(e, type, msg, (void *)data, __FILE__, __LINE__);		\
+    c4err_init(e, type, msg, __FILE__, __LINE__);			\
   })									\
 
 #define _C4TRY(msg, _try)						\
@@ -67,7 +67,6 @@ struct c4err *c4err_next(struct c4ls *start, struct c4err_t *type);
 struct c4err *c4err_init(struct c4err *self,
 			 struct c4err_t *type,
 			 const char *msg,
-			 void *data,
 			 const char *file, int line);
 
 void c4err_free(struct c4err *self);

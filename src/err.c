@@ -81,7 +81,6 @@ struct c4err *c4err_next(struct c4ls *start, struct c4err_t *type) {
 struct c4err *c4err_init(struct c4err *self,
 			 struct c4err_t *type,
 			 const char *msg,
-			 void *data,
 			 const char *file, int line) {
   self->try = c4try();
   assert(self->try);
@@ -89,7 +88,7 @@ struct c4err *c4err_init(struct c4err *self,
   c4ls_prepend(&self->try->errs, &self->errs_node);
   self->type = type;
   self->msg = strdup(msg);
-  self->data = data;
+  self->data = NULL;
   self->file = file;
   self->line = line;
   return self;
