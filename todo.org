@@ -1,23 +1,12 @@
-* forward errs to prev try if any in c4try_free
-** add c4ls_splice(self, first, last)
-*** overwrite links like append
-** dump errs to stderr & free on final exit
-** enable nested try in test main
 * add optional super param / field to c4err_t
 ** NULL gives c4_err
 ** add c4err_isa(c4err_t *)
 *** follow super until == self
 *** use in c4err_first / c4err_next
-* add c4try_close
-** only remove from tries
-** change C4TRY to call c4try_close instead
-* print and free all & errs in c4ctx_free
 * add c4slab
 ** block of memory with len
 ** use for c4map.its
 *** add c4map_it
-* add c4alloc
-** use list of slabs & freelist
 * add c4vec
 ** use slab for elems
 * add c4map_splice(self, i, its)

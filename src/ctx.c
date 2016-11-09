@@ -1,3 +1,4 @@
+#include <assert.h>
 #include "ctx.h"
 
 struct c4ctx *c4ctx_init(struct c4ctx *self) {
@@ -6,5 +7,5 @@ struct c4ctx *c4ctx_init(struct c4ctx *self) {
 }
 
 void c4ctx_free(struct c4ctx *self) {
-  //TODO free tries & errs
+  assert(self->tries.next == &self->tries);
 }

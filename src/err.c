@@ -9,9 +9,10 @@
 #include "macros.h"
 
 struct c4try *c4try() {
-  struct c4try *try = STRUCTOF(c4ctx()->tries.prev, struct c4try, tries_node);
-  assert(try);
-  return try;
+  struct c4ls *tries = &c4ctx()->tries;
+  if (tries->prev == tries) { return NULL; }
+  struct c4try *try = STRUCTOF(tries->prev, struct c4try, tries_node);
+  return  try; 
 }
 
 struct c4try *c4try_init(struct c4try *self,
@@ -30,9 +31,23 @@ void c4try_free(struct c4try *self) {
   self->refs--;
   if (self->refs == 0) {
     free(self->msg);
-    //TODO forward errs to next try
-    c4ls_delete(&self->tries_node);
+    free(self);
   }
+}
+
+void c4try_close(struct c4try *self) {
+  c4ls_delete(&self->tries_node);
+  if (self->errs.next != &self->errs) {
+    struct c4try *try = c4try();
+    if (try) { c4ls_splice(&try->errs, self->errs.next, self->errs.prev); }
+    else {
+      for (struct c4ls *e = self->errs.next; e != &self->errs; e = e->next) {
+	c4err_print(STRUCTOF(e, struct c4err, errs_node), stderr);
+      }
+    }
+  }
+  
+  c4try_free(self);
 }
 
 struct c4err_t *c4err_t_init(struct c4err_t *self, const char *name) {
@@ -45,11 +60,15 @@ void c4err_t_free(struct c4err_t *self) {
 }
 
 struct c4err *c4err_first(struct c4err_t *type) {
-  return c4err_next(&c4try()->errs, type);
+  struct c4try *try = c4try();
+  assert(try);
+  return c4err_next(&try->errs, type);
 }
 
 struct c4err *c4err_next(struct c4ls *start, struct c4err_t *type) {
-  for (struct c4ls *_e = start->next, *end = &c4try()->errs;
+  struct c4try *try = c4try();
+  assert(try);
+  for (struct c4ls *_e = start->next, *end = &try->errs;
        _e != end;
        _e = _e->next) {
     struct c4err *e = STRUCTOF(_e, struct c4err, errs_node);
@@ -65,13 +84,14 @@ struct c4err *c4err_init(struct c4err *self,
 			 void *data,
 			 const char *file, int line) {
   self->try = c4try();
+  assert(self->try);
   self->try->refs++;
+  c4ls_prepend(&self->try->errs, &self->errs_node);
   self->type = type;
   self->msg = strdup(msg);
   self->data = data;
   self->file = file;
   self->line = line;
-  c4ls_init(&self->errs_node);
   return self;
 }
 
@@ -79,9 +99,10 @@ void c4err_free(struct c4err *self) {
   free(self->msg);
   c4ls_delete(&self->errs_node);
   c4try_free(self->try);
+  free(self);
 }
 
-struct c4err *c4err_throw(struct c4err *self) {
-  c4ls_prepend(&c4try()->errs, &self->errs_node);
-  return self;
+void c4err_print(struct c4err *self, FILE *out) {
+  fprintf(out, "error at line %d in '%s': %s\n",
+	  self->line, self->file, self->msg);
 }

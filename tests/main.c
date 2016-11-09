@@ -31,10 +31,10 @@ void err_tests() {
     struct c4err *err = NULL;
     const char *data = "guru meditation"; // data describing error
 
-    //C4TRY("inner") {
-    err = C4THROW(&c4err, "test throw", data); // throw basic c4err type
-    assert(err->data == data);
-      //}
+    C4TRY("inner") {
+      err = C4THROW(&c4err, "test throw", data); // throw basic c4err type
+      assert(err->data == data);
+    }
 
     bool caught = false;
     
