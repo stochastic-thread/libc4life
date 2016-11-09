@@ -1,7 +1,12 @@
+* add c4map_set
 * add c4vec
-** use slab for elems
+** use slab for its
+** take it_size as param
+** keep internal len
+** use instead of slab in c4map
 * add c4map_splice()
 * add c4map_merge()
+** base on cmap_splice()
 * add ls_add(, c4cmp_t)/ls_remove(, c4cmp_t)
 * coros / duffs device
 * add C4ERR_ENABLED define
