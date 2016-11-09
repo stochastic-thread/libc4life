@@ -3,10 +3,11 @@
 ** take it_size as param
 ** keep internal len
 ** use instead of slab in c4map
+* add pthread chan based on vec & semaphore (sbcl docs)
 * add c4map_splice()
 * add c4map_merge()
 ** base on cmap_splice()
-* add ls, slab, vec & map to README
+* add map to README
 * add C4ERR_ENABLED define
 ** set to 1 if not defined in err.h
 ** use to bypass all error macros
