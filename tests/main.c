@@ -26,23 +26,26 @@ static void col_tests() {
   c4col_t_free(&ct);
 }
 
-void err_tests() {
+static struct c4err_t custom_type;
+
+static void err_tests() {
+  c4err_t_init(&custom_type, NULL, "custom"); // NULL super type
+  
   C4TRY("outer") {
     struct c4err *err = NULL;
-
-    C4TRY("inner") {
-      err = C4THROW(&c4err, "test throw"); // throw basic c4err type
-    }
-
+    C4TRY("inner") { err = C4THROW(&custom_type, "test throw"); }
     bool caught = false;
     
-    C4CATCH(e, NULL) { // NULL catches everything
+    C4CATCH(e, &custom_type) {
       assert(e == err);
-      c4err_free(e); // free to handle err
+      c4err_free(e); // handle err by freeing
       caught = true;
     }
 
     assert(caught);
+
+    // make sure queue is empty, NULL matches any type
+    C4CATCH(e, NULL) { assert(false); }    
   }
 }
 

@@ -1,5 +1,6 @@
 #include <assert.h>
 #include <stddef.h>
+#include <stdio.h>
 #include "c4.h"
 #include "col.h"
 #include "err.h"
@@ -16,12 +17,12 @@ struct c4col_t c4str_col;
 
 void c4init(c4get_ctx_t get_ctx) {
   _get_ctx = get_ctx;
-  c4err_t_init(&c4err, "err");
+  c4err_t_init(&c4err, NULL, "c4err");
   c4col_t_init(&c4str_col, "str");
 }
 
 void c4free() {
-  c4err_t_free(&c4err);
-  c4col_t_free(&c4str_col);
+  C4LS_DO(c4err_ts(), t) { c4err_t_free(STRUCTOF(t, struct c4err_t, ts_node)); }
+  C4LS_DO(c4col_ts(), t) { c4col_t_free(STRUCTOF(t, struct c4col_t, ts_node)); }
 }
 

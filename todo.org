@@ -1,8 +1,3 @@
-* add optional super param / field to c4err_t
-** add c4err_isa(c4err *, c4err_t *)
-*** follow super until == NULL
-*** use in c4err_first / c4err_next
-
 * add c4slab
 ** block of memory with len
 ** use for c4map.its

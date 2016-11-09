@@ -1,6 +1,16 @@
 #ifndef C4LIFE_LS
 #define C4LIFE_LS
 
+#include "macros.h"
+
+#define _C4LS_DO(ls, var, _root, _next)					\
+  for (struct c4ls *_root = ls, *var = _root->next, *_next = var->next; \
+       var != _root;							\
+       var = _next, _next = var->next)					\
+    
+#define C4LS_DO(ls, var)			\
+  _C4LS_DO(ls, var, UNIQUE(root), UNIQUE(next))	\
+
 struct c4ls {
   struct c4ls *next, *prev;
 };

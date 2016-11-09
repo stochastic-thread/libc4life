@@ -40,7 +40,7 @@ void c4try_close(struct c4try *self) {
   if (self->errs.next != &self->errs) {  
     if (super) { c4ls_splice(&super->errs, self->errs.next, self->errs.prev); }
     else {
-      for (struct c4ls *e = self->errs.next; e != &self->errs; e = e->next) {
+      C4LS_DO(&self->errs, e) {
 	c4err_print(STRUCTOF(e, struct c4err, errs_node), stderr);
       }
     }
@@ -54,12 +54,31 @@ void c4try_ref(struct c4try *self) {
   for (struct c4try *t = self; t; t = t->super) { t->refs++; }
 }
 
-struct c4err_t *c4err_t_init(struct c4err_t *self, const char *name) {
+struct c4ls *c4err_ts() {
+  static struct c4ls ts;
+  static bool init = true;
+
+  if (init) {
+    c4ls_init(&ts);
+    init = false;
+  }
+
+  return &ts;
+}
+
+struct c4err_t *c4err_t_init(struct c4err_t *self,
+			     struct c4err_t *super,
+			     const char *name) {
+  self->super = super;
   self->name = strdup(name);
+  c4ls_prepend(c4err_ts(), &self->ts_node);
   return self;
 }
 
-void c4err_t_free(struct c4err_t *self) { free(self->name); }
+void c4err_t_free(struct c4err_t *self) {
+  free(self->name);
+  c4ls_delete(&self->ts_node);
+}
 
 struct c4err *c4err_first(struct c4err_t *type) {
   struct c4try *try = c4ctx()->try;
@@ -75,7 +94,7 @@ struct c4err *c4err_next(struct c4ls *start, struct c4err_t *type) {
        _e != end;
        _e = _e->next) {
     struct c4err *e = STRUCTOF(_e, struct c4err, errs_node);
-    if (!type || e->type == type) { return e; }
+    if (!type || c4err_isa(e, type)) { return e; }
   }
 
   return NULL;
@@ -103,6 +122,14 @@ void c4err_free(struct c4err *self) {
   c4ls_delete(&self->errs_node);
   c4try_free(self->try);
   free(self);
+}
+
+bool c4err_isa(struct c4err *self, struct c4err_t *type) {
+  for (struct c4err_t *t = self->type; t != NULL; t = t->super) {
+    if (t == type) { return true; }
+  }
+
+  return false;
 }
 
 void c4err_print(struct c4err *self, FILE *out) {

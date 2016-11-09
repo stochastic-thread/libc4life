@@ -2,10 +2,10 @@
 #### esoteric C essentials
 
 ### intro
-c4life is a library of C utilities that has been polished over 30 years of hacking C for fun. I've found that given experience and a solid foundation that plays on C's strengths, coding in C is therapy compared to pretending the mountain of hidden complexity in your stack is someone else's problem. Pretending isn't healthy; it splits your personality and destroys your self confidence.
+c4life is a library of C utilities that has been polished over 30 years of writing software for fun on a daily basis. I've found that given experience and a solid foundation, coding in C is therapy compared to pretending the mountain of hidden complexity in your stack is someone else's problem. Pretending isn't healthy; it splits the personality and destroys self confidence.
 
 ### contexts
-c4life uses contexts to keep track of global state; for error handling etc. A context lookup function may be specified on init to control which context is used when and where. For single-threaded use, the following example is a good start:
+c4life uses contexts to keep track of global state; error handling etc. A context lookup function may be specified on init to control which context is used when and where. For single-threaded use, the following example is a good start:
 
 ```C
 #include <c4life/c4.h>
@@ -33,29 +33,33 @@ int main() {
 ```
 
 ### errors
-What's often missing in C is a way to pass information describing the error out of band to the code that needs it. Throwing an error in c4life doesn't unwind the stack to make sure someone is there to catch it. Errors are accumulated in the current try scope and propagated on exit; unhandled errors are printed to ```stderr``` on final scope exit.
+c4life adds the ability to throw and catch typed errors out of band. Throwing an error doesn't unwind the stack to make sure someone is there to catch it. Errors are accumulated in the current try scope and propagated on exit; unhandled errors are printed to ```stderr``` on final exit. Catching errors scans the accumulated error queue for the specified type or one of it's super types. Printing includes a stacktrace with try scopes, file names and line numbers.
+
+#### types
+Error types (```struct c4err_t```) are designed to be stack allocated. Since c4life keeps tack of available error types internally, the result of creating new error types from more than one thread at a time is undefined. 
 
 ```C
-#include <c4life/c4.h>
-#include <c4life/err.h>
 
-void err_tests() {
+static struct c4err_t custom_type;
+
+static void err_tests() {
+  c4err_t_init(&custom_type, NULL, "custom"); // NULL super type
+  
   C4TRY("outer") {
     struct c4err *err = NULL;
-
-    C4TRY("inner") {
-      err = C4THROW(&c4err, "test throw"); // throw basic c4err type
-    }
-
+    C4TRY("inner") { err = C4THROW(&custom_type, "test throw"); }
     bool caught = false;
     
-    C4CATCH(e, NULL) { // NULL catches everything
+    C4CATCH(e, &custom_type) {
       assert(e == err);
-      c4err_free(e); // free to handle err
+      c4err_free(e); // handle err by freeing
       caught = true;
     }
 
     assert(caught);
+
+    // make sure queue is empty, NULL matches any type
+    C4CATCH(e, NULL) { assert(false); }    
   }
 }
 

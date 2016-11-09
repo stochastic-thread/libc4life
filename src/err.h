@@ -1,16 +1,20 @@
 #ifndef C4LIFE_ERR
 #define C4LIFE_ERR
 
+#include <stdbool.h>
 #include <stdio.h>
 #include "ls.h"
 #include "macros.h"
 
-#define C4CATCH(var, type)						\
+#define _C4CATCH(var, type, _next)					\
   for (struct c4err *var = c4err_first(type),				\
-	 *next = var ? c4err_next(&var->errs_node, type) : NULL;	\
+	 *_next = var ? c4err_next(&var->errs_node, type) : NULL;	\
        var != NULL;							\
-       var = next,							\
-	 next = var ? c4err_next(&var->errs_node, type) : NULL)		\
+       var = _next,							\
+	 _next = var ? c4err_next(&var->errs_node, type) : NULL)	\
+
+#define C4CATCH(var, type)						\
+  _C4CATCH(var, type, UNIQUE(next))					\
 
 #define C4THROW(type, msg)						\
   ({									\
@@ -45,9 +49,16 @@ void c4try_ref(struct c4try *self);
 
 struct c4err_t {
   char *name;
+  struct c4err_t *super;
+  struct c4ls ts_node;
 };
 
-struct c4err_t *c4err_t_init(struct c4err_t *self, const char *name);
+struct c4ls *c4err_ts();
+
+struct c4err_t *c4err_t_init(struct c4err_t *self,
+			     struct c4err_t *super,			     
+			     const char *name);
+
 void c4err_t_free(struct c4err_t *self);
 
 struct c4err {
@@ -70,7 +81,7 @@ struct c4err *c4err_init(struct c4err *self,
 			 const char *file, int line);
 
 void c4err_free(struct c4err *self);
-
+bool c4err_isa(struct c4err *self, struct c4err_t *type);
 void c4err_print(struct c4err *self, FILE *out);
 
 #endif
