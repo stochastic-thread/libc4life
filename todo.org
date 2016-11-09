@@ -1,4 +1,3 @@
-* add c4map_set
 * add c4vec
 ** use slab for its
 ** take it_size as param
