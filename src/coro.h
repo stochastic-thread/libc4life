@@ -6,7 +6,7 @@
     switch(*_c4coro_line) {					\
     case 0:;							\
     
-#define C4CORO_END					\
+#define C4CORO_END()					\
   *_c4coro_line = 0;					\
   break;						\
  default: assert(false);				\
