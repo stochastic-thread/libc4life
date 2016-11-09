@@ -6,8 +6,9 @@
 * add c4map_splice()
 * add c4map_merge()
 ** base on cmap_splice()
-* add ls_add(, c4cmp_t)/ls_remove(, c4cmp_t)
-* coros / duffs device
+* add ls, slab, vec & map to README
 * add C4ERR_ENABLED define
 ** set to 1 if not defined in err.h
 ** use to bypass all error macros
+* ---
+* coros / duffs device
