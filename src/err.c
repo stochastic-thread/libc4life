@@ -18,12 +18,15 @@ struct c4try *c4try_init(struct c4try *self,
   c4ls_init(&self->errs);
   struct c4ctx *ctx = c4ctx();
   self->super = ctx->try;
+  if (self->super) { c4try_ref(self->super); }
   ctx->try = self;
   return self;
 }
 
 void c4try_free(struct c4try *self) {
   self->refs--;
+
+  if (self->super) { c4try_free(self->super); }
   
   if (self->refs == 0) {
     free(self->msg);
@@ -45,6 +48,10 @@ void c4try_close(struct c4try *self) {
   
   c4ctx()->try = super;
   c4try_free(self);
+}
+
+void c4try_ref(struct c4try *self) {
+  for (struct c4try *t = self; t; t = t->super) { t->refs++; }
 }
 
 struct c4err_t *c4err_t_init(struct c4err_t *self, const char *name) {
@@ -79,9 +86,9 @@ struct c4err *c4err_init(struct c4err *self,
 			 struct c4err_t *type,
 			 const char *msg,
 			 const char *file, int line) {
+  assert(try);
   self->try = try;
-  assert(self->try);
-  self->try->refs++;
+  c4try_ref(try);
   c4ls_prepend(&self->try->errs, &self->errs_node);
   self->type = type;
   self->msg = strdup(msg);
@@ -99,6 +106,10 @@ void c4err_free(struct c4err *self) {
 }
 
 void c4err_print(struct c4err *self, FILE *out) {
-  fprintf(out, "error at line %d in '%s': %s\n",
-	  self->line, self->file, self->msg);
+  fprintf(out, "error: %s\n%s:%d\n",
+	  self->msg, self->file, self->line);
+
+  for (struct c4try *try = self->try; try; try = try->super) {
+    fprintf(out, "\t%s\n\t%s:%d\n", try->msg, try->file, try->line);
+  }
 }

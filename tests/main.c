@@ -112,6 +112,8 @@ int main() {
     map_tests();
     rec_tests();
     tbl_tests();
+
+    C4THROW(&c4err, "test print");
   }
 
   c4ctx_free(ctx());

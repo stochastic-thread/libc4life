@@ -40,8 +40,8 @@ struct c4try *c4try_init(struct c4try *self,
 			 const char *file, int line);
 
 void c4try_free(struct c4try *self);
-
 void c4try_close(struct c4try *self);
+void c4try_ref(struct c4try *self);
 
 struct c4err_t {
   char *name;
