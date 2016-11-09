@@ -7,10 +7,11 @@ add_definitions(-g -std=gnu99 -Wall -Werror)
 include_directories(src)
 
 file(GLOB SOURCES src/*.c)
-add_library(${PROJECT_NAME} SHARED ${SOURCES})
+file(GLOB COL_SOURCES src/cols/*.c)
+add_library(${PROJECT_NAME} SHARED ${SOURCES} ${COL_SOURCES})
 
 file(GLOB TESTS tests/*.c)
-add_executable(tests ${SOURCES} ${TESTS})
+add_executable(tests ${SOURCES} ${COL_SOURCES} ${TESTS})
 
 install(TARGETS ${PROJECT_NAME} DESTINATION lib)
 

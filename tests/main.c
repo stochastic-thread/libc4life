@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include "c4.h"
 #include "col.h"
+#include "cols/str_col.h"
 #include "ctx.h"
 #include "err.h"
 #include "ls.h"
@@ -17,14 +18,14 @@ static int int_cmp(void *_x, void *_y) {
 }
 
 static void col_tests() {
-  struct c4col_t ct;
-  c4col_t_init(&ct, "foo");
+  struct c4val_t type;
+  c4val_t_init(&type, "foo");
 
-  struct c4col c;
-  c4col_init(&c, "bar", &ct);
+  struct c4col col;
+  c4col_init(&col, "bar", &ct);
   
-  c4col_free(&c);
-  c4col_t_free(&ct);
+  c4col_free(&col);
+  c4val_t_free(&type);
 }
 
 static struct c4err_t custom_type;
@@ -112,8 +113,15 @@ static void map_tests() {
 }
 
 static void rec_tests() {
-  struct c4rec r;
-  c4rec_init(&r); 
+  struct c4str_col foo;
+  c4str_col_init(&foo, "foo");
+
+  struct c4rec rec;
+  c4rec_init(&rec);
+  c4set_str(&rec, &foo, "abc");
+  assert(strcmp(c4get_str(&rec, &foo), "abc") == 0);
+
+  c4rec_free(&rec);
 }
 
 static void tbl_tests() {
