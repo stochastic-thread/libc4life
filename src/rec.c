@@ -19,6 +19,8 @@ void c4rec_free(struct c4rec *self) {
     struct c4col *col = _col;
     col->type->free_val(val);
   }
+
+  c4map_free(&self->flds);
 }
 
 void *c4rec_get(struct c4rec *self, struct c4col *col) {

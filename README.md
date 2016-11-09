@@ -11,6 +11,7 @@ c4life is designed to support and encourage stack allocation wherever possible. 
 c4life uses contexts to keep track of global state; error handling etc. A context lookup function may be specified on init to control which context is used when and where. For single-threaded use, the following example is a good start:
 
 ```C
+
 #include <c4life/c4.h>
 #include <c4life/ctx.h>
 
@@ -33,6 +34,7 @@ int main() {
   c4free();
   return 0;
 }
+
 ```
 
 ### errors
@@ -42,6 +44,8 @@ c4life adds the ability to throw and catch typed errors out of band. Throwing an
 Since c4life keeps track of error types internally, the result of creating new error types from more than one thread at a time is undefined. ```c4free()``` frees all registered types, calling ```c4err_t_free()``` unregisters the type.
 
 ```C
+
+#include <c4life/err.h>
 
 struct c4err_t custom_type;
 
@@ -64,6 +68,37 @@ void err_tests() {
     // make sure queue is empty, NULL matches any type
     C4CATCH(e, NULL) { assert(false); }    
   }
+}
+
+```
+
+### coroutines
+c4life provides coroutines in the form of a minimalistic layer of macros sprinkled with Duff's Device pixie dust. Anything that should persist across calls needs to be declared static, global or passed as parameters; the only thing c4life really cares about is the current line number.
+
+```C
+
+#include <c4life/coro.h>
+
+struct coro_ctx { int i, line; };
+
+static int coro(struct coro_ctx *ctx, int foo) {
+  C4CORO(&ctx->line);
+
+  for(ctx->i = 1; ctx->i <= 10; ctx->i++) {
+    C4CORO_RET(foo + ctx->i);
+  }
+  
+  C4CORO_END;
+  return -1;
+}
+
+static void coro_tests() {
+  struct coro_ctx ctx = {0, 0}; 
+  for (int i = 1; i <= 10; i++) {
+    assert(coro(&ctx, i) == i*2);
+  }
+  
+  assert(coro(&ctx, 0) == -1);
 }
 
 ```

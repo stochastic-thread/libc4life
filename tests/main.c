@@ -5,6 +5,7 @@
 #include "c4.h"
 #include "col.h"
 #include "cols/str_col.h"
+#include "coro.h"
 #include "ctx.h"
 #include "err.h"
 #include "ls.h"
@@ -28,6 +29,28 @@ static void col_tests() {
   
   c4col_free(&col);
   c4val_t_free(&type);
+}
+
+struct coro_ctx { int i, line; };
+
+static int coro(struct coro_ctx *ctx, int foo) {
+  C4CORO(&ctx->line);
+
+  for(ctx->i = 1; ctx->i <= 10; ctx->i++) {
+    C4CORO_RET(foo + ctx->i);
+  }
+  
+  C4CORO_END;
+  return -1;
+}
+
+static void coro_tests() {
+  struct coro_ctx ctx = {0, 0}; 
+  for (int i = 1; i <= 10; i++) {
+    assert(coro(&ctx, i) == i*2);
+  }
+  
+  assert(coro(&ctx, 0) == -1);
 }
 
 static struct c4err_t custom_type;
@@ -124,6 +147,7 @@ static void rec_tests() {
   assert(strcmp(c4get_str(&rec, &foo), "abc") == 0);
 
   c4rec_free(&rec);
+  c4str_col_free(&foo);
 }
 
 static void tbl_tests() {
@@ -148,6 +172,7 @@ int main() {
 
   C4TRY("run all tests") {
     col_tests();
+    coro_tests();
     err_tests();
     ls_tests();
     map_tests();

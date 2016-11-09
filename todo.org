@@ -1,4 +1,4 @@
-* add c4vec
+* add c4dyna
 ** use slab for its
 ** take it_size as param
 ** keep internal len
@@ -11,5 +11,3 @@
 * add C4ERR_ENABLED define
 ** set to 1 if not defined in err.h
 ** use to bypass all error macros
-* ---
-* coros / duffs device
