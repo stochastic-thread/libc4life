@@ -43,9 +43,9 @@ Since c4life keeps track of error types internally, the result of creating new e
 
 ```C
 
-static struct c4err_t custom_type;
+struct c4err_t custom_type;
 
-static void err_tests() {
+void err_tests() {
   c4err_t_init(&custom_type, NULL, "custom"); // NULL super type
   
   C4TRY("outer") {
