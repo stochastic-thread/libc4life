@@ -10,11 +10,12 @@ struct c4map *c4map_init(struct c4map *self, c4cmp_t cmp) {
 
 void c4map_free(struct c4map *self) { c4slab_free(&self->its); }
 
-struct c4map_it *c4map_add(struct c4map *self, void *key, void *val) {
+size_t c4map_add(struct c4map *self, void *key, void *val) {
   size_t idx;
   struct c4map_it *it = c4map_find(self, key, 0, &idx);
-  if (it) { return NULL; }
-  return c4map_insert(self, idx, key, val);
+  if (it) { return -1; }
+  c4map_insert(self, idx, key, val);
+  return idx;
 }
 
 struct c4map_it *c4map_find(struct c4map *self,
@@ -53,4 +54,12 @@ struct c4map_it *c4map_insert(struct c4map *self,
   it->val = val;
   self->len++;
   return it;
+}
+
+size_t c4map_set(struct c4map *self, void *key, void *val) {
+  size_t idx;
+  struct c4map_it *it = c4map_find(self, key, 0, &idx);
+  if (it) { it->val = val; }
+  else { c4map_insert(self, idx, key, val); }
+  return idx;
 }

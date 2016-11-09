@@ -19,7 +19,7 @@ struct c4map {
 
 struct c4map *c4map_init(struct c4map *map, c4cmp_t cmp);
 void c4map_free(struct c4map *map);
-struct c4map_it *c4map_add(struct c4map *self, void *key, void *val);
+size_t c4map_add(struct c4map *self, void *key, void *val);
 struct c4map_it *c4map_find(struct c4map *self,
 			    void *key, size_t start,
 			    size_t *idx);
@@ -27,5 +27,6 @@ void *c4map_get(struct c4map *self, void *key);
 struct c4map_it *c4map_insert(struct c4map *map,
 			      size_t idx,
 			      void *key, void *val);
+size_t c4map_set(struct c4map *self, void *key, void *val);
 
 #endif

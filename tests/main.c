@@ -78,7 +78,7 @@ static void ls_tests() {
   ls_splice_tests();
 }
 
-static void map_tests() {
+static void map_add_tests() {
   struct c4map m;
   c4map_init(&m, int_cmp);
 
@@ -91,6 +91,24 @@ static void map_tests() {
 
   for (int i = 0; i < 3; i++) { assert(c4map_get(&m, ks+i) == vs+i); }
   c4map_free(&m);
+}
+
+static void map_set_tests() {
+  struct c4map m;
+  c4map_init(&m, int_cmp);
+
+  int ks[3] = {1, 2, 3};
+  char vs[3] = {'a', 'b', 'c'};
+
+  for (int i = 0; i < 3; i++) { c4map_add(&m, ks+i, vs+i); }
+  for (int i = 0; i < 3; i++) { c4map_set(&m, ks+i, vs+3-i); }
+  for (int i = 0; i < 3; i++) { assert(c4map_get(&m, ks+i) == vs+3-i); }
+  c4map_free(&m);
+}
+
+static void map_tests() {
+  map_add_tests();
+  map_set_tests();
 }
 
 static void rec_tests() {
