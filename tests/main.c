@@ -12,7 +12,8 @@
 
 static int int_cmp(void *_x, void *_y) {
   int *x = _x, *y = _y;
-  return *x < *y;
+  if  (*x < *y) return -1;
+  return *x > *y;
 }
 
 static void col_tests() {
@@ -80,6 +81,15 @@ static void ls_tests() {
 static void map_tests() {
   struct c4map m;
   c4map_init(&m, int_cmp);
+
+  int ks[3] = {1, 2, 3};
+  char vs[3] = {'a', 'b', 'c'};
+  
+  c4map_add(&m, ks+1, vs+1);
+  c4map_add(&m, ks+2, vs+2);
+  c4map_add(&m, ks, vs);
+
+  for (int i = 0; i < 3; i++) { assert(c4map_get(&m, ks+i) == vs+i); }
   c4map_free(&m);
 }
 
@@ -116,7 +126,7 @@ int main() {
     rec_tests();
     tbl_tests();
 
-    C4THROW(&c4err, "test print");
+    //C4THROW(&c4err, "test print");
   }
 
   c4ctx_free(ctx());

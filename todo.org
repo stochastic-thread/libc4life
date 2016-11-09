@@ -1,7 +1,7 @@
 * add c4vec
 ** use slab for elems
-* add c4map_splice(self, i, its)
-* add c4map_merge
+* add c4map_splice()
+* add c4map_merge()
 * add ls_add(, c4cmp_t)/ls_remove(, c4cmp_t)
 * coros / duffs device
 * add C4ERR_ENABLED define
