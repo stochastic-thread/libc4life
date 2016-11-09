@@ -1,6 +1,10 @@
 * replace ctx.tries with try ptr
 ** add c4try field/init param super
 
+* ref count all super tries in err init/free
+
+* print trie stack in err_print
+
 * add optional super param / field to c4err_t
 ** NULL gives c4_err
 ** add c4err_isa(c4err *, c4err_t *)
