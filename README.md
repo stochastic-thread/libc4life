@@ -36,7 +36,7 @@ int main() {
 c4life adds the ability to throw and catch typed errors out of band. Throwing an error doesn't unwind the stack to make sure someone is there to catch it. Errors are accumulated in the current try scope and propagated on exit; unhandled errors are printed to ```stderr``` on final exit. Catching errors scans the accumulated error queue for the specified type or one of it's super types. Printing includes a stacktrace with try scopes, file names and line numbers.
 
 #### types
-Error types (```struct c4err_t```) are designed to be stack allocated. Since c4life keeps tack of available error types internally, the result of creating new error types from more than one thread at a time is undefined. 
+Since c4life keeps tack of available error types internally, the result of creating new error types from more than one thread at a time is undefined.
 
 ```C
 
