@@ -8,13 +8,6 @@
 #include "err.h"
 #include "macros.h"
 
-struct c4try *c4try() {
-  struct c4ls *tries = &c4ctx()->tries;
-  if (tries->prev == tries) { return NULL; }
-  struct c4try *try = STRUCTOF(tries->prev, struct c4try, tries_node);
-  return  try; 
-}
-
 struct c4try *c4try_init(struct c4try *self,
 			 const char *msg,
 			 const char *file, int line) {
@@ -23,12 +16,15 @@ struct c4try *c4try_init(struct c4try *self,
   self->line = line;
   self->refs = 1;
   c4ls_init(&self->errs);
-  c4ls_prepend(&c4ctx(NULL)->tries, &self->tries_node);
+  struct c4ctx *ctx = c4ctx();
+  self->super = ctx->try;
+  ctx->try = self;
   return self;
 }
 
 void c4try_free(struct c4try *self) {
   self->refs--;
+  
   if (self->refs == 0) {
     free(self->msg);
     free(self);
@@ -36,10 +32,10 @@ void c4try_free(struct c4try *self) {
 }
 
 void c4try_close(struct c4try *self) {
-  c4ls_delete(&self->tries_node);
-  if (self->errs.next != &self->errs) {
-    struct c4try *try = c4try();
-    if (try) { c4ls_splice(&try->errs, self->errs.next, self->errs.prev); }
+  struct c4try *super = self->super;
+  
+  if (self->errs.next != &self->errs) {  
+    if (super) { c4ls_splice(&super->errs, self->errs.next, self->errs.prev); }
     else {
       for (struct c4ls *e = self->errs.next; e != &self->errs; e = e->next) {
 	c4err_print(STRUCTOF(e, struct c4err, errs_node), stderr);
@@ -47,6 +43,7 @@ void c4try_close(struct c4try *self) {
     }
   }
   
+  c4ctx()->try = super;
   c4try_free(self);
 }
 
@@ -55,19 +52,18 @@ struct c4err_t *c4err_t_init(struct c4err_t *self, const char *name) {
   return self;
 }
 
-void c4err_t_free(struct c4err_t *self) {
-  free(self->name);
-}
+void c4err_t_free(struct c4err_t *self) { free(self->name); }
 
 struct c4err *c4err_first(struct c4err_t *type) {
-  struct c4try *try = c4try();
+  struct c4try *try = c4ctx()->try;
   assert(try);
   return c4err_next(&try->errs, type);
 }
 
 struct c4err *c4err_next(struct c4ls *start, struct c4err_t *type) {
-  struct c4try *try = c4try();
+  struct c4try *try = c4ctx()->try;
   assert(try);
+  
   for (struct c4ls *_e = start->next, *end = &try->errs;
        _e != end;
        _e = _e->next) {
@@ -79,10 +75,11 @@ struct c4err *c4err_next(struct c4ls *start, struct c4err_t *type) {
 }
 
 struct c4err *c4err_init(struct c4err *self,
+			 struct c4try *try,
 			 struct c4err_t *type,
 			 const char *msg,
 			 const char *file, int line) {
-  self->try = c4try();
+  self->try = try;
   assert(self->try);
   self->try->refs++;
   c4ls_prepend(&self->try->errs, &self->errs_node);

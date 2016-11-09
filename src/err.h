@@ -15,7 +15,7 @@
 #define C4THROW(type, msg)						\
   ({									\
     struct c4err *e = malloc(sizeof(struct c4err));			\
-    c4err_init(e, type, msg, __FILE__, __LINE__);			\
+    c4err_init(e, c4ctx()->try, type, msg, __FILE__, __LINE__);		\
   })									\
 
 #define _C4TRY(msg, _try)						\
@@ -31,10 +31,9 @@ struct c4try {
   char *msg;
   const char *file;
   int line, refs;
-  struct c4ls errs, tries_node;
+  struct c4ls errs;
+  struct c4try *super;
 };
-
-struct c4try *c4try();
 
 struct c4try *c4try_init(struct c4try *self,
 			 const char *msg,
@@ -65,6 +64,7 @@ struct c4err *c4err_first(struct c4err_t *type);
 struct c4err *c4err_next(struct c4ls *start, struct c4err_t *type);
 
 struct c4err *c4err_init(struct c4err *self,
+			 struct c4try *try,
 			 struct c4err_t *type,
 			 const char *msg,
 			 const char *file, int line);
