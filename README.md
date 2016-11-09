@@ -33,7 +33,7 @@ int main() {
 ```
 
 ### errors
-c4life's error handling facility is designed to complement prevailing strategies rather than replacing them. What's missing in C is a way to pass information describing the error out of band to the code that needs it. No one really likes automagic stack unwinding, even forcing it down peoples throats like Java didn't work; and the fact that it's doable in C has been proven enough times. Throwing an error in c4life doesn't stop the world to make sure someone is there to catch it. Errors are accumulated in the current try scope and propagated on exit; unhandled errors are printed to ```stderr``` on final scope exit.
+What's often missing in C is a way to pass information describing the error out of band to the code that needs it. Throwing an error in c4life doesn't unwind the stack to make sure someone is there to catch it. Errors are accumulated in the current try scope and propagated on exit; unhandled errors are printed to ```stderr``` on final scope exit.
 
 ```C
 #include <c4life/c4.h>
