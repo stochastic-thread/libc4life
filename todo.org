@@ -1,9 +1,3 @@
-* add val_t.free_val(val)
-** init to default imp
-* add val_t.clone_val(val)
-** init to default imp
-* add C4DO_MAP(map, key, val)
-* --- commit
 * add c4vec
 ** use slab for its
 ** take it_size as param

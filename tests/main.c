@@ -1,6 +1,7 @@
 #include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include "c4.h"
 #include "col.h"
 #include "cols/str_col.h"
@@ -10,6 +11,7 @@
 #include "map.h"
 #include "rec.h"
 #include "tbl.h"
+#include "val.h"
 
 static int int_cmp(void *_x, void *_y) {
   int *x = _x, *y = _y;
@@ -22,7 +24,7 @@ static void col_tests() {
   c4val_t_init(&type, "foo");
 
   struct c4col col;
-  c4col_init(&col, "bar", &ct);
+  c4col_init(&col, "bar", &type);
   
   c4col_free(&col);
   c4val_t_free(&type);

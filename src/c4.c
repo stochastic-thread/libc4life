@@ -17,7 +17,7 @@ struct c4err_t c4err;
 void c4init(c4get_ctx_t get_ctx) {
   _get_ctx = get_ctx;
   c4err_t_init(&c4err, NULL, "c4err");
-  c4val_t_init(&c4str, "str");
+  c4init_val_ts();
 }
 
 void c4free() {

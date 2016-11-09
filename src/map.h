@@ -5,6 +5,22 @@
 #include <stddef.h>
 #include "slab.h"
 
+#define _C4DO_MAP(map, vkey, vval, _idx, _it)				\
+  size_t idx = 0;							\
+  struct c4map_it *it = c4slab_slot(&(map)->its, 0);			\
+  for (void *vkey = it ? it->key : NULL,				\
+	 *vval = it ? it->val: NULL;					\
+       idx < (map)->len;						\
+       idx++,								\
+	 it = (idx < (map)->len)					\
+	 ? c4slab_slot(&(map)->its, idx)				\
+	 : NULL,							\
+	 vkey = it ? it->key : NULL,					\
+	 vval = it ? it->val : NULL)					\
+
+#define C4DO_MAP(map, key, val)				\
+  _C4DO_MAP(map, key, val, UNIQUE(idx), UNIQUE(it))	\
+
 typedef int (*c4cmp_t)(void *x, void *y);
 
 struct c4map_it {

@@ -1,6 +1,7 @@
 #include <string.h>
 #include "col.h"
 #include "rec.h"
+#include "slab.h"
 #include "val.h"
 
 static int col_cmp(void *_x, void *_y) {
@@ -16,7 +17,7 @@ struct c4rec *c4rec_init(struct c4rec *self) {
 void c4rec_free(struct c4rec *self) {
   C4DO_MAP(&self->flds, _col, val) {
     struct c4col *col = _col;
-    col.type.free_val(val);
+    col->type->free_val(val);
   }
 }
 

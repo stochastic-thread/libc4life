@@ -1,5 +1,6 @@
-#include "val.h"
+#include "rec.h"
 #include "str_col.h"
+#include "val.h"
 
 struct c4str_col *c4str_col_init(struct c4str_col *self, const char *name) {
   c4col_init(&self->super, name, &c4str);
@@ -11,9 +12,9 @@ void c4str_col_free(struct c4str_col *self) {
 }
 
 const char *c4get_str(struct c4rec *rec, struct c4str_col *col) {
-  return c4rec_get(&col->super);
+  return c4rec_get(rec, &col->super);
 }
 
 void c4set_str(struct c4rec *rec, struct c4str_col *col, const char *val) {
-  c4rec_set(&col->super, val);
+  c4rec_set(rec, &col->super, (void *)val);
 }
