@@ -8,7 +8,7 @@ c4life is a library of C utilities that has been polished over 30 years of writi
 c4life is designed to support and encourage stack allocation wherever possible. Most initializers and finalizers make no assumptions about how the memory pointed to was allocated, and take no responsibility for freeing memory explicitly allocated by user code.
 
 ### contexts
-c4life uses contexts to keep track of global state; error handling etc. A context lookup function may be specified on init to control which context is used when and where. For single-threaded use, the following example is a good start:
+c4life uses contexts to keep track of global state; error handling etc. A context callback function may be specified on init to control which context is used when and where. For single-threaded use, the following example is a good start:
 
 ```C
 
