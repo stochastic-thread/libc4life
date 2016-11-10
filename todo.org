@@ -1,7 +1,3 @@
-* add recid
-** add typedef c4recid_t uuid
-** add field to rec struct
-** take param, new if NULL
 * bring libvicsy up to speed
 * add c4dyna
 ** use slab for its
