@@ -81,6 +81,13 @@ static void err_tests() {
   }
 }
 
+typedef int (*lambda_t)(int, int);
+
+static void lambda_tests() {
+  lambda_t fn = C4LAMBDA({ return foo * bar; }, int, int foo, int bar);
+  assert(fn(2, 3) == 6); 
+}
+
 static void ls_splice_tests() {
   struct c4ls foo;
   struct c4ls bar;
@@ -168,6 +175,7 @@ int main() {
     coro_tests();
     defer_tests();
     err_tests();
+    lambda_tests();
     ls_tests();
     map_tests();
     rec_tests();

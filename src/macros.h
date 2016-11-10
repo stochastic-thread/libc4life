@@ -19,8 +19,17 @@
 #define _C4DEFER(code, _def)					\
   void _def() code;						\
   bool _def_trigger __attribute__((cleanup(_def)))		\
-
+       
 #define C4DEFER(code)				\
   _C4DEFER(code, UNIQUE(def))			\
+  
+#define _C4LAMBDA(code, ret, _fn, ...)			\
+  ({							\
+    ret _fn(__VA_ARGS__) code;				\
+    &_fn;						\
+  })							\
+	       
+#define C4LAMBDA(code, ret, ...)			\
+  _C4LAMBDA(code, ret, UNIQUE(fn), ##__VA_ARGS__)	\
 
 #endif

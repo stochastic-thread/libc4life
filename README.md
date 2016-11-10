@@ -60,6 +60,22 @@ void err_tests() {
 
 ```
 
+### lambda
+The ```C4LAMBDA()``` macro defines anonymous nested functions.
+
+```C
+
+#include "c4life/macros.h"
+
+typedef int (*lambda_t)(int, int);
+
+void lambda_tests() {
+  lambda_t fn = C4LAMBDA({ return foo * bar; }, int, int foo, int bar);
+  assert(fn(2, 3) == 6); 
+}
+
+```
+
 ### defer
 c4life supports deferring actions until scope exit using the ```C4DEFER()``` macro.
 
