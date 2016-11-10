@@ -65,7 +65,7 @@ The ```C4LAMBDA()``` macro defines anonymous nested functions.
 
 ```C
 
-#include "c4life/macros.h"
+#include <c4life/macros.h>
 
 static void lambda_tests() {
   assert(C4LAMBDA({ return x*y; }, int, int x, int y)(2, 3) == 6);
