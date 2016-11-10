@@ -60,7 +60,7 @@ void err_tests() {
 
 ```
 
-### lambda
+### lambdas
 The ```C4LAMBDA()``` macro defines anonymous nested functions.
 
 ```C
@@ -76,7 +76,7 @@ void lambda_tests() {
 
 ```
 
-### defer
+### deferred actions
 c4life supports deferring actions until scope exit using the ```C4DEFER()``` macro.
 
 ```C
