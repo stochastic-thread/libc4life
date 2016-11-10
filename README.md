@@ -98,22 +98,19 @@ c4life provides coroutines in the form of a minimalistic layer of macros with a 
 
 ```C
 
-#include <c4life/coro.h>
-
-struct coro_ctx { int i, line; };
-
-int coro(struct coro_ctx *ctx, int foo) {
-  C4CORO(&ctx->line);
-  for(ctx->i = 1; ctx->i <= 10; ctx->i++) { C4CORO_RET(foo + ctx->i); }
+struct c4rec *c4tbl_iter_next(struct c4tbl_iter *iter) {
+  C4CORO(&iter->line)
+    for (iter->idx = 0; iter->idx < iter->tbl->recs.len; iter->idx++) {
+      struct c4map_it *it = c4map_idx(&iter->tbl->recs, iter->idx);
+      c4uid_copy(iter->rec.id, it->key);
+      c4map_clear(&iter->rec.flds);
+      c4map_merge(&iter->rec.flds, it->val);
+      C4CORO_RET(&iter->rec);
+    }
   C4CORO_END();
   
-  return -1;
-}
-
-void coro_tests() {
-  struct coro_ctx ctx = {0, 0};
-  for (int i = 1; i <= 10; i++) { assert(coro(&ctx, i) == i*2); }
-  assert(coro(&ctx, 0) == -1);
+  c4tbl_iter_free(iter);
+  return NULL;
 }
 
 ```

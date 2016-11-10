@@ -47,7 +47,6 @@ struct c4rec *c4tbl_iter_next(struct c4tbl_iter *iter) {
 struct c4rec *c4tbl_upsert(struct c4tbl *self, struct c4rec *rec) {
   size_t idx;
   struct c4map_it *it = c4map_find(&self->recs, rec->id, 0, &idx);
-
   struct c4map *flds = NULL;
   
   if (it) {
