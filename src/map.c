@@ -18,13 +18,15 @@ size_t c4map_add(struct c4map *self, void *key, void *val) {
   return idx;
 }
 
+void c4map_clear(struct c4map *self) { self->len = 0; }
+
 struct c4map_it *c4map_find(struct c4map *self,
 			    void *key, size_t start,
 			    size_t *idx) {
   size_t min = start, max = self->len;
   while (min < max) {
     size_t i = (min + max) / 2;
-    struct c4map_it *it = c4slab_slot(&self->its, i);
+    struct c4map_it *it = c4slab_get(&self->its, i);
 
     int cmp = self->cmp(key, it->key);
     if (cmp < 0) { max = i; }
@@ -44,6 +46,10 @@ void *c4map_get(struct c4map *self, void *key) {
   return it ? it->val : NULL;
 }
 
+struct c4map_it *c4map_idx(struct c4map *self, size_t idx) {
+  return c4slab_get(&self->its, idx);
+}
+
 struct c4map_it *c4map_insert(struct c4map *self,
 			      size_t idx,
 			      void *key, void *val) {
@@ -54,6 +60,9 @@ struct c4map_it *c4map_insert(struct c4map *self,
   it->val = val;
   self->len++;
   return it;
+}
+
+void c4map_merge(struct c4map *self, struct c4map *src) {
 }
 
 size_t c4map_set(struct c4map *self, void *key, void *val) {

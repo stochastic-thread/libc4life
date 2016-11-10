@@ -161,10 +161,19 @@ static void rec_tests() {
 
 static void tbl_iter_tests() {
   struct c4tbl tbl;
-  c4tbl_init(&tbl);
+  c4tbl_init(&tbl, "foo");
+ 
+  struct c4rec rec;
+  c4rec_init(&rec, NULL);
+  c4tbl_upsert(&tbl, &rec);
+
   struct c4tbl_iter iter;
   c4tbl_iter(&tbl, &iter);
+  assert(c4uid_cmp(c4tbl_iter_next(&iter)->id, rec.id) == 0);
   assert(c4tbl_iter_next(&iter) == NULL);
+
+  c4rec_free(&rec);
+  c4tbl_free(&tbl);
 }
 
 static void tbl_tests() {

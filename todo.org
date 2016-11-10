@@ -1,22 +1,23 @@
+* free recs in c4tbl_free()
 * rename err_start()/_next() to try_X()
-* add tbl upsert()
-** store maps
-*** no need to dup store id
-** replace fields
-** add upsert to tbl_iter_tests
+* add vicsy_peer_save()
+* implement c4map_merge()
+** add c4map_splice()
+* add init macros
+** ex C4MAP(var, cmp)
+** declare var & run init
+** add for all types
+* add map to README
 * add tbl_reset()
 ** merge rec
-* add vicsy_peer_load()/save()
+* add vicsy_peer_load()
+* add automagic freeing of cols & tbls like err/val types
 * add c4dyna
 ** use slab for its
 ** take it_size as param
 ** keep internal len
 ** use instead of slab in c4map
 * add pthread chan based on vec & semaphore (sbcl docs)
-* add c4map_splice()
-* add c4map_merge()
-** base on cmap_splice()
-* add map to README
 * add C4PANIC/RECOVER macros
 ** use jmpbuf
 ** register recovers in ctx

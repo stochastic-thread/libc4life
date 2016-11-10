@@ -22,7 +22,7 @@ struct c4slab *c4slab_grow(struct c4slab *self, size_t len) {
 }
 
 void *c4slab_insert(struct c4slab *self, size_t idx) {
-  void *start = c4slab_slot(self, idx);
+  void *start = c4slab_get(self, idx);
 
   if (idx < self->len-1) {
     memmove(start + self->slot_size, start,
@@ -34,7 +34,7 @@ void *c4slab_insert(struct c4slab *self, size_t idx) {
 
 size_t c4slab_size(struct c4slab *self) { return self->len * self->slot_size; }
 
-void *c4slab_slot(struct c4slab *self, size_t idx) {
+void *c4slab_get(struct c4slab *self, size_t idx) {
   return self->slots + idx * self->slot_size;
 }
 

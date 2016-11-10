@@ -8,6 +8,8 @@ struct c4col {
   struct c4val_t *type;
 };
 
+int c4cols_cmp(void *_x, void *_y);
+
 struct c4col *c4col_init(struct c4col *self,
 			 const char *name,
 			 struct c4val_t *type);

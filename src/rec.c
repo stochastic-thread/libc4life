@@ -4,15 +4,10 @@
 #include "slab.h"
 #include "val.h"
 
-static int col_cmp(void *_x, void *_y) {
-  struct c4col *x = _x, *y = _y;
-  return strcmp(x->name, y->name);
-}
-
 struct c4rec *c4rec_init(struct c4rec *self, c4uid_t id) {
   if (id) { c4uid_copy(self->id, id); }
   else { c4uid_init(self->id); }
-  c4map_init(&self->flds, col_cmp);
+  c4map_init(&self->flds, c4cols_cmp);
   return self;
 }
 
