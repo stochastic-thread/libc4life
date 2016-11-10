@@ -12,6 +12,7 @@ add_library(${PROJECT_NAME} SHARED ${SOURCES} ${COL_SOURCES})
 
 file(GLOB TESTS tests/*.c)
 add_executable(tests ${SOURCES} ${COL_SOURCES} ${TESTS})
+target_link_libraries(tests uuid)
 
 install(TARGETS ${PROJECT_NAME} DESTINATION lib)
 

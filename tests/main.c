@@ -149,7 +149,7 @@ static void rec_tests() {
   c4str_col_init(&foo, "foo");
 
   struct c4rec rec;
-  c4rec_init(&rec);
+  c4rec_init(&rec, NULL);
   c4set_str(&rec, &foo, "abc");
   assert(strcmp(c4get_str(&rec, &foo), "abc") == 0);
 
@@ -181,7 +181,7 @@ int main() {
     col_tests();
     coro_tests();
     err_tests();
-    lambda_tests();
+    let_fn_tests();
     ls_tests();
     map_tests();
     rec_tests();
