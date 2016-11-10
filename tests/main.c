@@ -35,22 +35,15 @@ struct coro_ctx { int i, line; };
 
 static int coro(struct coro_ctx *ctx, int foo) {
   C4CORO(&ctx->line);
-
-  for(ctx->i = 1; ctx->i <= 10; ctx->i++) {
-    C4CORO_RET(foo + ctx->i);
-  }
-  
+  for(ctx->i = 1; ctx->i <= 10; ctx->i++) { C4CORO_RET(foo + ctx->i); }
   C4CORO_END();
+  
   return -1;
 }
 
 static void coro_tests() {
   struct coro_ctx ctx = {0, 0};
-  
-  for (int i = 1; i <= 10; i++) {
-    assert(coro(&ctx, i) == i*2);
-  }
-  
+  for (int i = 1; i <= 10; i++) { assert(coro(&ctx, i) == i*2); }
   assert(coro(&ctx, 0) == -1);
 }
 
