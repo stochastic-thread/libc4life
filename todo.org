@@ -20,6 +20,7 @@
 * add C4PANIC/RECOVER macros
 ** use jmpbuf
 ** register recovers in ctx
+*** else print stacktrace from tries & exit
 * add C4ERR_ENABLED define
 ** set to 1 if not defined in err.h
 ** use to bypass all error macros
