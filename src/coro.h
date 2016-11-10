@@ -10,7 +10,7 @@
   *_c4coro_line = 0;					\
   break;						\
  default: assert(false);				\
- }}							\
+  }}							\
   
 #define C4CORO_RET(...)				\
   do {						\
@@ -18,5 +18,5 @@
     return __VA_ARGS__;				\
   case __LINE__:;				\
   } while (0);					\
-
+  
 #endif

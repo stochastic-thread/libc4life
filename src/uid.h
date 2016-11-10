@@ -5,7 +5,8 @@
 
 typedef uuid_t c4uid_t;
 
-void c4uid_copy(c4uid_t dest, c4uid_t src);
 void c4uid_init(c4uid_t id);
+int c4uid_cmp(c4uid_t x, c4uid_t y);
+void c4uid_copy(c4uid_t dest, c4uid_t src);
 
 #endif

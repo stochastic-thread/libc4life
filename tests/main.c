@@ -151,8 +151,8 @@ static void rec_tests() {
 }
 
 static void tbl_tests() {
-  struct c4tbl t;
-  c4tbl_init(&t); 
+  struct c4tbl tbl;
+  c4tbl_init(&tbl);
 }
 
 int main() {

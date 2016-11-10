@@ -61,7 +61,7 @@ void err_tests() {
 ```
 
 ### scoped, nested functions
-c4life provides a macro to define scoped, nested functions. Only the name is scoped by the macro, the address it points to is usable outside of surrounding scopes as long as it doesn't reference anything that was deallocated on the way out.
+c4life provides a macro to define scoped, nested functions. Only the name is scoped by the macro, the address it points to is valid outside of the let.
 
 ```C
 
