@@ -78,6 +78,8 @@ c4life supports deferring actions until scope exit using the ```C4DEFER()``` mac
 
 ```C
 
+#include <c4life/macros.h>
+
 void defer_tests() {
   bool called = false;
 
@@ -100,7 +102,7 @@ c4life provides coroutines in the form of a minimalistic layer of macros with a 
 
 struct coro_ctx { int i, line; };
 
-static int coro(struct coro_ctx *ctx, int foo) {
+int coro(struct coro_ctx *ctx, int foo) {
   C4CORO(&ctx->line);
   for(ctx->i = 1; ctx->i <= 10; ctx->i++) { C4CORO_RET(foo + ctx->i); }
   C4CORO_END();
@@ -108,7 +110,7 @@ static int coro(struct coro_ctx *ctx, int foo) {
   return -1;
 }
 
-static void coro_tests() {
+void coro_tests() {
   struct coro_ctx ctx = {0, 0};
   for (int i = 1; i <= 10; i++) { assert(coro(&ctx, i) == i*2); }
   assert(coro(&ctx, 0) == -1);
