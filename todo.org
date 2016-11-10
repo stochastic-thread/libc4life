@@ -10,6 +10,13 @@
 ** use instead of slab in c4map
 
 * rename err_start()/_next() to try_X()
+* add struct c4seq
+** add as member in iters
+** contains next fn
+*** call regular iter
+** contains data member
+*** forward to next fn
+** add C4SEQ_DO/MAP
 * add db dir
 ** move tbl, rec & cols
 ** investigate recursive cmake globs
@@ -36,3 +43,5 @@
 * add struct c4proc
 ** based on pthreads
 ** mailbox based on semaphore & queue
+* add seqs dir
+** move dyna, ls, map, slab & seq
