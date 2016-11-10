@@ -16,4 +16,11 @@
 #define UNIQUE(prefix)                          \
   CONCAT(prefix, __LINE__)			\
 
+#define _C4LET_FN(var, code, ret, _fn, ...)			\
+  ret _fn(__VA_ARGS__) code					\
+  for (typeof(_fn) *var = &_fn; var != NULL; var = NULL)	\
+
+#define C4LET_FN(var, code, ret, ...)				\
+  _C4LET_FN(var, code, ret, UNIQUE(fn), ##__VA_ARGS__)	\
+
 #endif

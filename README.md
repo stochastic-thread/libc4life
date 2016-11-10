@@ -72,6 +72,21 @@ void err_tests() {
 
 ```
 
+### scoped, nested functions
+c4life provides a macro to define scoped, nested functions. Only the name is scoped by the macro, the address it points to is usable outside of surrounding scopes as long as it doesn't reference anything that was deallocated on the way out.
+
+```C
+
+#include "c4life/macros.h"
+
+void let_fn_tests() {
+  C4LET_FN(fn, { return foo * bar; }, int, int foo, int bar) {
+    assert(fn(2, 3) == 6); 
+  }
+}
+
+```
+
 ### coroutines
 c4life provides coroutines in the form of a minimalistic layer of macros with a touch of Duff's Device pixie dust. Anything that should persist across calls needs to be declared static, global or passed as parameters; the only thing the coroutine really cares about is the current line number.
 
