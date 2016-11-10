@@ -1,4 +1,8 @@
 * free recs in c4tbl_free()
+* add c4map_iter
+** like tbl iter
+** add map_iter field to tbl_iter
+*** use instead of indexing
 * rename err_start()/_next() to try_X()
 * add vicsy_peer_save()
 * implement c4map_merge()
@@ -25,3 +29,6 @@
 * add C4ERR_ENABLED define
 ** set to 1 if not defined in err.h
 ** use to bypass all error macros
+* add struct c4proc
+** based on pthreads
+** mailbox based on semaphore & queue
