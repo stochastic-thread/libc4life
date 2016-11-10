@@ -8,7 +8,7 @@ c4life is a library of ideas and tools that have accumulated over 30 years of wr
 In any modern Debian-based distro, this should get you started:
 
 ```bash
-sudo apt-get install cmake uuid-dev
+sudo apt-get install clang cmake uuid-dev
 git clone https://github.com/codr4life/libc4life.git
 cd libc4life
 mkdir build
