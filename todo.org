@@ -4,6 +4,9 @@
 ** add map_iter field to tbl_iter
 *** use instead of indexing
 * rename err_start()/_next() to try_X()
+* add db dir
+** move tbl, rec & cols
+** investigate recursive cmake globs
 * add vicsy_peer_save()
 * implement c4map_merge()
 ** add c4map_splice()
