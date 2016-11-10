@@ -7,9 +7,7 @@ struct c4str_col *c4str_col_init(struct c4str_col *self, const char *name) {
   return self;
 }
 
-void c4str_col_free(struct c4str_col *self) {
-  c4col_free(&self->super);
-}
+void c4str_col_free(struct c4str_col *self) { c4col_free(&self->super); }
 
 const char *c4get_str(struct c4rec *rec, struct c4str_col *col) {
   return c4rec_get(rec, &col->super);

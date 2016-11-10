@@ -1,4 +1,8 @@
-* bring libvicsy up to speed
+* add tbl upsert()
+** replace rec
+* add tbl_reset()
+** merge rec
+* add vicsy_peer_load()/save()
 * add c4dyna
 ** use slab for its
 ** take it_size as param
