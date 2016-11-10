@@ -1,7 +1,4 @@
 * free recs in c4tbl_free()
-* add c4slab_iter
-** like map iter
-** use instead of indexing
 * add c4dyna
 ** use slab for its
 ** take it_size as param
@@ -9,14 +6,21 @@
 ** add dyna_iter with slab_iter field
 ** use instead of slab in c4map
 
+* add C4DEFER_SCOPE(name) & C4DEFER_TO(scope)
+** use dyna as cleanup marker
+** push defers and pop on exit
+** free dyna before exit
+* add c4slab_iter
+** like map iter
+** use instead of indexing
 * rename err_start()/_next() to try_X()
 * add struct c4seq
 ** add as member in iters
-** contains next fn
+** contains next fn / bool skip fn
 *** call regular iter
 ** contains data member
 *** forward to next fn
-** add C4SEQ_DO/MAP
+** add C4SEQ_DO/MAP/DROP
 * add db dir
 ** move tbl, rec & cols
 ** investigate recursive cmake globs
