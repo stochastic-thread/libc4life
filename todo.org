@@ -3,6 +3,8 @@
 ** allocate index in iter()
 *** free after coro end
 * ---
+* add C4DEFER
+** use __attribute__((cleanup(fn))) with LET_FN
 * rename err_start()/_next() to try_X()
 * add tbl upsert()
 ** replace rec
