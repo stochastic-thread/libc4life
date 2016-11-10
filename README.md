@@ -5,7 +5,7 @@
 c4life is a growing library of C utilities that I have accumulated over 30 years of writing software for fun. I've found that given some experience and a solid foundation, coding in C is therapy compared to pretending the mountain of hidden complexity in your stack is someone else's problem. Pretending isn't healthy; it splits the personality and destroys self confidence.
 
 ### building
-In any modern Debian-based distro, the following should get you started:
+In any modern Debian-based distro, this should get you started:
 
 ```bash
 sudo apt-get install cmake uuid-dev
