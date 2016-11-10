@@ -81,11 +81,8 @@ static void err_tests() {
   }
 }
 
-typedef int (*lambda_t)(int, int);
-
 static void lambda_tests() {
-  lambda_t fn = C4LAMBDA({ return foo * bar; }, int, int foo, int bar);
-  assert(fn(2, 3) == 6); 
+  assert(C4LAMBDA({ return x*y; }, int, int x, int y)(2, 3) == 6);
 }
 
 static void ls_splice_tests() {
