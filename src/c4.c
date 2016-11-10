@@ -2,20 +2,25 @@
 #include <stddef.h>
 #include <stdio.h>
 #include "c4.h"
+#include "ctx.h"
 #include "err.h"
 #include "val.h"
 
-static c4get_ctx_t _get_ctx;
+struct c4ctx *c4ctx() {
+  static __thread struct c4ctx ctx;
+  static __thread bool init = true;
 
-struct c4ctx *c4ctx(c4get_ctx_t get_ctx) {
-  assert(_get_ctx);
-  return _get_ctx();
+  if (init) {
+    c4ctx_init(&ctx);
+    init = false;
+  }
+
+  return &ctx;
 }
 
 struct c4err_t c4err;
 
-void c4init(c4get_ctx_t get_ctx) {
-  _get_ctx = get_ctx;
+void c4init() {
   c4err_t_init(&c4err, NULL, "c4err");
   c4init_val_ts();
 }

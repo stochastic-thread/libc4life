@@ -19,38 +19,11 @@ make
 sudo make install
 ```
 
+### internal state
+c4life needs to keep track of internal state for some of it's features. Calling ```c4init()``` before accessing the library is highly recommended, ```c4free()``` deallocates all internal state. A context is allocated internally on demand per thread, calling ```c4ctx_free(c4ctx())``` deallocates the context for the current thread.
+
 ### stack allocation
 c4life is designed to support and encourage stack allocation wherever possible. Most initializers and finalizers make no assumptions about how the memory pointed to was allocated, and take no responsibility for freeing memory explicitly allocated by user code.
-
-### contexts
-c4life uses contexts to keep track of global state; error handling etc. A context callback function may be specified on init to control which context is used when and where. For single-threaded use, the following example is a good start:
-
-```C
-
-#include <c4life/c4.h>
-#include <c4life/ctx.h>
-
-static struct c4ctx *ctx() {
-  static struct c4ctx ctx;
-  static bool init = true;
-
-  if (init) {
-    c4ctx_init(&ctx);
-    init = false;
-  }
-
-  return &ctx;
-}
-
-int main() {
-  c4init(ctx);
-  //...
-  c4ctx_free(ctx());
-  c4free();
-  return 0;
-}
-
-```
 
 ### errors
 c4life adds the ability to throw and catch typed errors out of band. Throwing an error doesn't unwind the stack to make sure someone is there to catch it. Errors are accumulated in the current try scope and propagated on exit; unhandled errors are printed to ```stderr``` on final exit. Catching errors scans the accumulated error queue for the specified type or one of it's super types. Printing includes a stacktrace with try scopes, file names and line numbers.

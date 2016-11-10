@@ -155,20 +155,8 @@ static void tbl_tests() {
   c4tbl_init(&t); 
 }
 
-static struct c4ctx *ctx() {
-  static struct c4ctx ctx;
-  static bool init = true;
-
-  if (init) {
-    c4ctx_init(&ctx);
-    init = false;
-  }
-
-  return &ctx;
-}
-
 int main() {
-  c4init(ctx);
+  c4init();
 
   C4TRY("run all tests") {
     col_tests();
@@ -183,7 +171,7 @@ int main() {
     //C4THROW(&c4err, "test print");
   }
 
-  c4ctx_free(ctx());
   c4free();
+  c4ctx_free(c4ctx());
   return 0;
 }

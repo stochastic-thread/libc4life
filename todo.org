@@ -1,3 +1,9 @@
+* replace ctx callback with thread local ctx storage
+* add c4tbl_iter()
+** use let_fn with coro
+** allocate index in iter()
+*** free after coro end
+* ---
 * rename err_start()/_next() to try_X()
 * add tbl upsert()
 ** replace rec
