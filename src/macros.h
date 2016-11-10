@@ -16,6 +16,13 @@
 #define UNIQUE(prefix)                          \
   CONCAT(prefix, __LINE__)			\
 
+#define _C4DEFER(code, _def)					\
+  void _def() code;						\
+  bool _def_trigger __attribute__((cleanup(_def)))		\
+
+#define C4DEFER(code)				\
+  _C4DEFER(code, UNIQUE(def))			\
+
 #define _C4LET_FN(var, code, ret, _fn, ...)			\
   ret _fn(__VA_ARGS__) code					\
   for (typeof(_fn) *var = &_fn; var != NULL; var = NULL)	\

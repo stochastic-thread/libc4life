@@ -47,6 +47,17 @@ static void coro_tests() {
   assert(coro(&ctx, 0) == -1);
 }
 
+static void defer_trampoline(bool *called) {
+  C4DEFER({ *called = true; });
+  assert(!*called);
+}
+
+static void defer_tests() {
+  bool called = false;
+  defer_trampoline(&called);
+  assert(called);
+}
+
 static struct c4err_t custom_type;
 
 static void err_tests() {
@@ -161,6 +172,7 @@ int main() {
   C4TRY("run all tests") {
     col_tests();
     coro_tests();
+    defer_tests();
     err_tests();
     let_fn_tests();
     ls_tests();
