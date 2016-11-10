@@ -159,9 +159,16 @@ static void rec_tests() {
   c4str_col_free(&foo);
 }
 
-static void tbl_tests() {
+static void tbl_iter_tests() {
   struct c4tbl tbl;
   c4tbl_init(&tbl);
+  struct c4tbl_iter iter;
+  c4tbl_iter(&tbl, &iter);
+  assert(c4tbl_iter_next(&iter) == NULL);
+}
+
+static void tbl_tests() {
+  tbl_iter_tests();
 }
 
 int main() {

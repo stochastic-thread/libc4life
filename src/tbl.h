@@ -3,14 +3,21 @@
 
 #include "map.h"
 
+struct c4rec;
+
 struct c4tbl {
   struct c4map recs;
 };
 
-typedef struct c4rec *(*c4tbl_iter_t)();
+struct c4tbl_iter {
+  int i, line;
+  struct c4rec rec;
+  struct c4tbl *tbl;
+};
 
 struct c4tbl *c4tbl_init(struct c4tbl *self);
-
-c4tbl_iter_t c4tbl_iter(struct c4tbl *self);
+struct c4tbl_iter *c4tbl_iter(struct c4tbl *self, struct c4tbl_iter *iter);
+void c4tbl_iter_free(struct c4tbl_iter *iter);
+struct c4rec *c4tbl_iter_next(struct c4tbl_iter *iter);
 
 #endif
