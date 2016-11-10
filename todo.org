@@ -17,6 +17,9 @@
 * add c4map_merge()
 ** base on cmap_splice()
 * add map to README
+* add C4PANIC/RECOVER macros
+** use jmpbuf
+** register recovers in ctx
 * add C4ERR_ENABLED define
 ** set to 1 if not defined in err.h
 ** use to bypass all error macros

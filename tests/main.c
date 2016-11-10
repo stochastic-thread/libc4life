@@ -47,14 +47,14 @@ static void coro_tests() {
   assert(coro(&ctx, 0) == -1);
 }
 
-static void defer_trampoline(bool *called) {
-  C4DEFER({ *called = true; });
-  assert(!*called);
-}
-
 static void defer_tests() {
   bool called = false;
-  defer_trampoline(&called);
+
+  {
+    C4DEFER({ called = true; });
+    assert(!called);
+  }
+  
   assert(called);
 }
 

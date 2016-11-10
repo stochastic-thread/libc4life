@@ -81,16 +81,16 @@ c4life supports deferring actions until scope exit using the ```C4DEFER()``` mac
 
 ```C
 
-void defer_trampoline(bool *called) {
-  C4DEFER({ *called = true; });
-  assert(!*called);
-}
-
 void defer_tests() {
   bool called = false;
-  defer_trampoline(&called);
+
+  {
+    C4DEFER({ called = true; });
+    assert(!called);
+  }
+  
   assert(called);
-}	
+}
 
 ```
 
