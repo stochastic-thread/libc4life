@@ -2,7 +2,7 @@
 #### esoteric C essentials
 
 ### intro
-c4life is a library of ideas and tools that have accumulated over 30 years of writing software for fun. I've found that given some experience and a solid foundation, coding in C is therapy compared to pretending the mountain of hidden complexity in your stack is someone else's problem. Pretending isn't healthy; it splits the personality and destroys self confidence.
+c4life is a library of ideas and tools that have accumulated over 30 years of writing software for fun. I've found that given some experience and a solid foundation, coding in C is therapy compared to pretending the mountain of hidden complexity in your stack is someone else's problem.
 
 ### building
 In any modern Debian-based distro, this should get you started:
