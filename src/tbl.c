@@ -31,6 +31,7 @@ struct c4rec *c4tbl_iter_next(struct c4tbl_iter *iter) {
       C4CORO_RET(&iter->rec);
     }
   C4CORO_END();
+  
   c4tbl_iter_free(iter);
   return NULL;
 }
