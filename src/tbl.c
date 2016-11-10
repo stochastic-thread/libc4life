@@ -23,7 +23,7 @@ void c4tbl_free(struct c4tbl *self) {
 struct c4tbl_iter *c4tbl_iter(struct c4tbl *self, struct c4tbl_iter *iter) {
   iter->line = 0;
   c4rec_init(&iter->rec, NULL);
-  iter->tbl = self;
+  c4map_iter(&self->recs, &iter->recs_iter);
   return iter;
 }
 
@@ -31,8 +31,9 @@ void c4tbl_iter_free(struct c4tbl_iter *iter) { c4rec_free(&iter->rec); }
 
 struct c4rec *c4tbl_iter_next(struct c4tbl_iter *iter) {
   C4CORO(&iter->line)
-    for (iter->idx = 0; iter->idx < iter->tbl->recs.len; iter->idx++) {
-      struct c4map_it *it = c4map_idx(&iter->tbl->recs, iter->idx);
+    struct c4map_it *it;
+  
+    while ((it = c4map_iter_next(&iter->recs_iter))) {
       c4uid_copy(iter->rec.id, it->key);
       c4map_clear(&iter->rec.flds);
       c4map_merge(&iter->rec.flds, it->val);

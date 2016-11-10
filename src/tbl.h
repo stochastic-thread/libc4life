@@ -11,9 +11,9 @@ struct c4tbl {
 };
 
 struct c4tbl_iter {
-  int idx, line;
+  int line;
+  struct c4map_iter recs_iter;
   struct c4rec rec;
-  struct c4tbl *tbl;
 };
 
 struct c4tbl *c4tbl_init(struct c4tbl *self, const char *name);

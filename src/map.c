@@ -1,4 +1,6 @@
+#include <assert.h>
 #include <stdlib.h>
+#include "coro.h"
 #include "map.h"
 
 struct c4map *c4map_init(struct c4map *self, c4cmp_t cmp) {
@@ -60,6 +62,23 @@ struct c4map_it *c4map_insert(struct c4map *self,
   it->val = val;
   self->len++;
   return it;
+}
+
+struct c4map_iter *c4map_iter(struct c4map *self, struct c4map_iter *iter) {
+  iter->line = 0;
+  iter->map = self;
+  return iter;
+}
+
+struct c4map_it *c4map_iter_next(struct c4map_iter *iter) {
+  C4CORO(&iter->line)
+    for (iter->idx = 0; iter->idx < iter->map->len; iter->idx++) {
+      struct c4map_it *it = c4slab_get(&iter->map->its, iter->idx);
+      C4CORO_RET(it);
+    }
+  C4CORO_END();
+
+  return NULL;
 }
 
 void c4map_merge(struct c4map *self, struct c4map *src) {

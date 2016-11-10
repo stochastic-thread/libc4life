@@ -103,8 +103,9 @@ c4life provides coroutines in the form of a minimalistic layer of macros with a 
 
 struct c4rec *c4tbl_iter_next(struct c4tbl_iter *iter) {
   C4CORO(&iter->line)
-    for (iter->idx = 0; iter->idx < iter->tbl->recs.len; iter->idx++) {
-      struct c4map_it *it = c4map_idx(&iter->tbl->recs, iter->idx);
+    struct c4map_it *it;
+  
+    while ((it = c4map_iter_next(&iter->recs_iter))) {
       c4uid_copy(iter->rec.id, it->key);
       c4map_clear(&iter->rec.flds);
       c4map_merge(&iter->rec.flds, it->val);

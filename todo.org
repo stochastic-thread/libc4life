@@ -1,8 +1,14 @@
 * free recs in c4tbl_free()
-* add c4map_iter
-** like tbl iter
-** add map_iter field to tbl_iter
-*** use instead of indexing
+* add c4slab_iter
+** like map iter
+** use instead of indexing
+* add c4dyna
+** use slab for its
+** take it_size as param
+** keep internal len
+** add dyna_iter with slab_iter field
+** use instead of slab in c4map
+
 * rename err_start()/_next() to try_X()
 * add db dir
 ** move tbl, rec & cols
@@ -19,11 +25,6 @@
 ** merge rec
 * add vicsy_peer_load()
 * add automagic freeing of cols & tbls like err/val types
-* add c4dyna
-** use slab for its
-** take it_size as param
-** keep internal len
-** use instead of slab in c4map
 * add pthread chan based on vec & semaphore (sbcl docs)
 * add C4PANIC/RECOVER macros
 ** use jmpbuf
