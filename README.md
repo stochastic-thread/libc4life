@@ -7,8 +7,7 @@ c4life is a growing library of C utilities that I have accumulated over 30 years
 ### building
 In any modern Debian-based distro, the following should get you started:
 
-```
-
+```bash
 sudo apt-get install cmake uuid-dev
 git clone https://github.com/codr4life/libc4life.git
 cd libc4life
@@ -18,7 +17,6 @@ cmake ..
 make
 ./tests
 sudo make install
-
 ```
 
 ### stack allocation
