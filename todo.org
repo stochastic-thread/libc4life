@@ -1,9 +1,9 @@
-* add C4DEFER
-** use __attribute__((cleanup(fn))) with LET_FN
+* add tbl_iter
 * rename err_start()/_next() to try_X()
-* ---
 * add tbl upsert()
-** replace rec
+** store maps
+*** no need to dup store id
+** replace fields
 * add tbl_reset()
 ** merge rec
 * add vicsy_peer_load()/save()

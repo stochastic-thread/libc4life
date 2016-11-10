@@ -60,21 +60,6 @@ void err_tests() {
 
 ```
 
-### scoped, nested functions
-The ```C4LET_FN()``` macro defines scoped, nested functions. Only the name is scoped by the macro, the address it points to is valid outside of the let.
-
-```C
-
-#include "c4life/macros.h"
-
-void let_fn_tests() {
-  C4LET_FN(fn, { return foo * bar; }, int, int foo, int bar) {
-    assert(fn(2, 3) == 6); 
-  }
-}
-
-```
-
 ### defer
 c4life supports deferring actions until scope exit using the ```C4DEFER()``` macro.
 

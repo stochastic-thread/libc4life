@@ -81,12 +81,6 @@ static void err_tests() {
   }
 }
 
-static void let_fn_tests() {
-  C4LET_FN(fn, { return foo * bar; }, int, int foo, int bar) {
-    assert(fn(2, 3) == 6); 
-  }
-}
-
 static void ls_splice_tests() {
   struct c4ls foo;
   struct c4ls bar;
@@ -174,7 +168,6 @@ int main() {
     coro_tests();
     defer_tests();
     err_tests();
-    let_fn_tests();
     ls_tests();
     map_tests();
     rec_tests();
