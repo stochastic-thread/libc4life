@@ -13,13 +13,12 @@
 
 
 * rename err_start()/_next() to try_X()
-
+*---
 * add c4seq_skip(size_t n)
 ** add skip(n) method
 ** do nothing but increase idx if NULL
 ** forward to recs_iter in tbl
 ** forward skip to src seq_map
-
 * add struct c4seq *c4seq_gather(...)
 * add struct c4seq** c4seq_spread(self, n)
 * add ls_seq
