@@ -30,16 +30,10 @@ static void *map_next(struct c4seq *_seq) {
   return it;
 }
 
-struct c4seq *c4seq_map(struct c4seq *self,
-			c4seq_map_fnt fn,
-			struct c4seq_map *out) {
-  if (out) { c4seq_init(&out->super); }
-  else {
-    out = malloc(sizeof(struct c4seq_map));
-    c4seq_init(&out->super);
-    out->super.free = map_free;
-  }
-
+struct c4seq *c4seq_map(struct c4seq *self, c4seq_map_fnt fn) {
+  struct c4seq_map *out = malloc(sizeof(struct c4seq_map));
+  c4seq_init(&out->super);
+  out->super.free = map_free;
   out->super.next = map_next;
   out->src = self;
   out->fn = fn;  

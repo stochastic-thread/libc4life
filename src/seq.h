@@ -38,10 +38,7 @@ struct c4seq_map {
 
 struct c4seq *c4seq_init(struct c4seq *self);
 void c4seq_free(struct c4seq *self);
-
-struct c4seq *c4seq_map(struct c4seq *self,
-			c4seq_map_fnt fn,
-			struct c4seq_map *out);
+struct c4seq *c4seq_map(struct c4seq *self, c4seq_map_fnt fn);
 void *c4seq_next(struct c4seq *self);
 
 #endif

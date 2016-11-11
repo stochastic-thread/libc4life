@@ -116,17 +116,14 @@ void seq_tests() {
   C4SEQ(c4bmap, &bmap, seq);
 
   // Assign lazy sequence mapping lambda over bmap to val_seq,
-  // NULLs are automatically filtered from the result.
-  // Last parameter is out sequence, a new one is heap allocated
-  // and automatically deallocated if not specified.
-
+  // NULLs are automatically filtered from the result
+  
   struct c4seq *val_seq =
     c4seq_map(seq,
 	      C4LAMBDA({
 		  struct c4bmap_it *e = _e;
 		  return (e->key == keys + 1) ? e->val : NULL;
-		}, void *, void *_e),
-	      NULL);
+		}, void *, void *_e));
   
   // Loop over val_seq and check we got the right value
   
@@ -154,19 +151,19 @@ struct my_seq {
 };
 
 static void seq_free(struct c4seq *_seq) {
-  struct c4map_seq *seq = C4PTROF(my_seq, super, _seq);
+  struct my_seq *seq = C4PTROF(my_seq, super, _seq);
 
   // Code that frees additional state, if needed
 }
 
 static void *seq_next(struct c4seq *_seq) {
-  struct c4map_seq *seq = C4PTROF(my_seq, super, _seq);
+  struct my_seq *seq = C4PTROF(my_seq, super, _seq);
 
   // Code that returns next value, or NULL on eof;
-  // _seq->idx contains the current index.
+  // _seq->idx contains the current index
 }
 
-struct c4seq *c4map_seq(struct c4map *self, struct c4map_seq *seq) {
+struct c4seq *my_seq_seq(struct my_seq *self, struct my_seq *seq) {
   c4seq_init(&seq->super);
   seq->super.free = seq_free; // Optional
   seq->super.next = seq_next;

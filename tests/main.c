@@ -196,16 +196,13 @@ void seq_tests() {
 
   // Assign lazy sequence mapping lambda over bmap to val_seq,
   // NULLs are automatically filtered from the result.
-  // Last parameter is out sequence, a new one is heap allocated
-  // and automatically deallocated if not specified.
-
+  
   struct c4seq *val_seq =
     c4seq_map(seq,
 	      C4LAMBDA({
 		  struct c4bmap_it *e = _e;
 		  return (e->key == keys + 1) ? e->val : NULL;
-		}, void *, void *_e),
-	      NULL);
+		}, void *, void *_e));
   
   // Loop over val_seq and check we got the right value
   
