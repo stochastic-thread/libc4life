@@ -3,15 +3,19 @@
 
 #include <stdbool.h>
 
-#define _C4DO(type, model, var, _seq)				\
-  _C4SEQ(type, model, _seq, UNIQUE(tseq));			\
-  for (void *var = c4seq_next(_seq);				\
-       !_seq->eof;						\
-       var = c4seq_next(_seq))					\
+#define _C4DO(type, model, var, _tseq, _seq)			\
+  struct type _tseq;						\
+  struct c4seq *_seq = type(model, &_tseq);			\
+  C4DO_SEQ(_seq, var)						\
     
-#define C4DO(type, model, var)					\
-  _C4DO(CONCAT(type, _seq), model, var, UNIQUE(seq))	\
-  
+#define C4DO(type, model, var)						\
+  _C4DO(CONCAT(type, _seq), model, var, UNIQUE(tseq), UNIQUE(seq))	\
+
+#define C4DO_SEQ(seq, var)					\
+  for (void *var = c4seq_next(seq);				\
+       !seq->eof;						\
+       var = c4seq_next(seq))					\
+    
 #define _C4SEQ(type, model, var, _tseq)			\
   struct type _tseq;					\
   struct c4seq *var = type(model, &_tseq);		\
