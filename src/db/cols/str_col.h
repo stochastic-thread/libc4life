@@ -1,7 +1,7 @@
 #ifndef C4LIFE_STR_COL
 #define C4LIFE_STR_COL
 
-#include "col.h"
+#include "db/col.h"
 
 struct c4rec;
 

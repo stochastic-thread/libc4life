@@ -3,15 +3,15 @@
 #include <stdlib.h>
 #include <string.h>
 #include "c4.h"
-#include "col.h"
-#include "cols/str_col.h"
 #include "coro.h"
 #include "ctx.h"
+#include "db/col.h"
+#include "db/cols/str_col.h"
+#include "db/rec.h"
+#include "db/tbl.h"
 #include "err.h"
-#include "rec.h"
 #include "seqs/ls.h"
 #include "seqs/map.h"
-#include "tbl.h"
 #include "val.h"
 
 static int int_cmp(void *_x, void *_y) {
