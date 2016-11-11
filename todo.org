@@ -1,8 +1,6 @@
 * add struct c4seq
-** add slab seq
-** use in map
-*** copy tbl
 ** add C4SEQ_DO
+*** use same params as C4SEQ, but assigns vals to var
 ** document seqs
 * ---
 * free recs in c4tbl_free()

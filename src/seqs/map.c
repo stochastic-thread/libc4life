@@ -30,7 +30,7 @@ struct c4map_it *c4map_find(struct c4map *self,
   size_t min = start, max = self->len;
   while (min < max) {
     size_t i = (min + max) / 2;
-    struct c4map_it *it = c4slab_get(&self->its, i);
+    struct c4map_it *it = c4slab_idx(&self->its, i);
 
     int cmp = self->cmp(key, it->key);
     if (cmp < 0) { max = i; }
@@ -51,7 +51,7 @@ void *c4map_get(struct c4map *self, void *key) {
 }
 
 struct c4map_it *c4map_idx(struct c4map *self, size_t idx) {
-  return c4slab_get(&self->its, idx);
+  return c4slab_idx(&self->its, idx);
 }
 
 struct c4map_it *c4map_insert(struct c4map *self,
@@ -82,7 +82,7 @@ static void *seq_next(struct c4seq *_seq) {
   
   C4CORO(&seq->line)
     for (seq->idx = 0; seq->idx < seq->map->len; seq->idx++) {
-      struct c4map_it *it = c4slab_get(&seq->map->its, seq->idx);
+      void *it = c4slab_idx(&seq->map->its, seq->idx);
       C4CORO_RET(it);
     }
   C4CORO_END();

@@ -1,6 +1,10 @@
+#include <assert.h>
 #include <stdio.h>
+#include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
+#include "coro.h"
+#include "macros.h"
 #include "slab.h"
 
 struct c4slab *c4slab_init(struct c4slab *self, size_t slot_size) {
@@ -21,8 +25,12 @@ struct c4slab *c4slab_grow(struct c4slab *self, size_t len) {
   return self;
 }
 
+void *c4slab_idx(struct c4slab *self, size_t idx) {
+  return self->slots + idx * self->slot_size;
+}
+
 void *c4slab_insert(struct c4slab *self, size_t idx) {
-  void *start = c4slab_get(self, idx);
+  void *start = c4slab_idx(self, idx);
 
   if (idx < self->len-1) {
     memmove(start + self->slot_size, start,
@@ -32,9 +40,26 @@ void *c4slab_insert(struct c4slab *self, size_t idx) {
   return start;
 }
 
-size_t c4slab_size(struct c4slab *self) { return self->len * self->slot_size; }
+static void *seq_next(struct c4seq *_seq) {
+  struct c4slab_seq *seq = STRUCTOF(_seq, struct c4slab_seq, super);
+  
+  C4CORO(&seq->line)
+    for (seq->idx = 0; seq->idx < seq->slab->len; seq->idx++) {
+      void *it = c4slab_idx(seq->slab, seq->idx);
+      C4CORO_RET(it);
+    }
+  C4CORO_END();
 
-void *c4slab_get(struct c4slab *self, size_t idx) {
-  return self->slots + idx * self->slot_size;
+  return NULL;
 }
+
+struct c4seq *c4slab_seq(struct c4slab *self, struct c4slab_seq *seq) {
+  c4seq_init(&seq->super);
+  seq->super.next = seq_next;
+  seq->line = 0;
+  seq->slab = self;
+  return &seq->super;
+}
+
+size_t c4slab_size(struct c4slab *self) { return self->len * self->slot_size; }
 
