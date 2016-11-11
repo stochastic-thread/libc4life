@@ -124,8 +124,8 @@ Which allows this, among other things:
 
   struct c4map map;
   ...  
-  C4DO(c4map, &map, item) {
-    // item is assigned successive entries from map 
+  C4DO(c4map, &map, e) {
+    // e is assigned successive entries from map 
   }
 
 ```
