@@ -1,5 +1,5 @@
-#ifndef C4LIFE_SLAB
-#define C4LIFE_SLAB
+#ifndef C4SLAB_H
+#define C4SLAB_H
 
 #include <stddef.h>
 #include "seq.h"

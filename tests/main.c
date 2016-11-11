@@ -114,9 +114,7 @@ static void ls_tests() {
 }
 
 static void map_add_tests() {
-  struct c4bmap m;
-  c4bmap_init(&m, int_cmp);
-
+  C4BMAP(m, int_cmp);
   int ks[3] = {1, 2, 3};
   char vs[3] = {'a', 'b', 'c'};
   
@@ -129,9 +127,7 @@ static void map_add_tests() {
 }
 
 static void map_seq_tests() {
-  struct c4bmap m;
-  c4bmap_init(&m, int_cmp);
-
+  C4BMAP(m, int_cmp);
   int ks[3] = {1, 2, 3};
   char vs[3] = {'a', 'b', 'c'};
   for (int i = 0; i < 3; i++) { c4bmap_add(&m, ks, vs); }
@@ -147,9 +143,7 @@ static void map_seq_tests() {
 }
 
 static void map_set_tests() {
-  struct c4bmap m;
-  c4bmap_init(&m, int_cmp);
-
+  C4BMAP(m, int_cmp);
   int ks[3] = {1, 2, 3};
   char vs[3] = {'a', 'b', 'c'};
 
@@ -178,28 +172,47 @@ static void rec_tests() {
   c4str_col_free(&foo);
 }
 
-static void seq_tests() {
-  struct c4bmap map;
-  c4bmap_init(&map, int_cmp);
+void seq_tests() {
+  C4BMAP(bmap, int_cmp);
 
+  // Populate bmap
+  
   int keys[3] = {1, 2, 3};
   char vals[3] = {'a', 'b', 'c'};
-  for (int i = 0; i < 3; i++) { c4bmap_add(&map, keys+i, vals+i); }
+  for (int i = 0; i < 3; i++) { c4bmap_add(&bmap, keys+i, vals+i); }
 
-  C4SEQ(c4bmap, &map, entries);
-
-  struct c4seq *key_seq =
-    c4seq_map(entries,
-	      C4LAMBDA({ return ((struct c4bmap_it *)e)->key; },
-		       void *,
-		       void *e),
-	      NULL);
+  // Loop anonymous sequence for bmap
   
-  C4DO_SEQ(key_seq, key) {
-    assert(key == keys + key_seq->idx-1);
+  int *key = keys;
+  C4DO(c4bmap, &bmap, _e) {
+    struct c4bmap_it *e = _e;
+    assert(e->key == key);
+    key++;
   }
 
-  c4bmap_free(&map);
+  // Define and initialize seq to point to new sequence for bmap
+
+  C4SEQ(c4bmap, &bmap, seq);
+
+  // Assign lazy sequence mapping lambda over bmap to val_seq,
+  // NULLs are automatically filtered from the result
+
+  struct c4seq *val_seq =
+    c4seq_map(seq,
+	      C4LAMBDA({
+		  struct c4bmap_it *e = _e;
+		  return (e->key == keys + 1) ? e->val : NULL;
+		}, void *, void *_e),
+	      NULL);
+  
+  // Loop over val_seq and check we got the right value
+  
+  C4DO_SEQ(val_seq, val) {
+    assert(val_seq->idx == 1);
+    assert(val == vals + 1);
+  }
+  
+  c4bmap_free(&bmap);
 }
 
 static void tbl_seq_tests() {

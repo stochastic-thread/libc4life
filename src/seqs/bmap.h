@@ -1,10 +1,14 @@
-#ifndef C4BMAP
-#define C4BMAP
+#ifndef C4BMAP_H
+#define C4BMAP_H
 
 #include <stdbool.h>
 #include <stddef.h>
 #include "seq.h"
 #include "slab.h"
+
+#define C4BMAP(var, cmp)			\
+  struct c4bmap var;				\
+  c4bmap_init(&var, cmp);			\
 
 typedef int (*c4cmp_t)(void *x, void *y);
 

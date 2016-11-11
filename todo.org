@@ -22,6 +22,8 @@
 ** free dyna before exit
 
 * rename err_start()/_next() to try_X()
+* add struct c4seq *c4seq_gather(...)
+* add struct c4seq** c4seq_spread(self, n)
 * add ls_seq
 ** encapsulate next pre-fetch
 ** replaces DO_LS

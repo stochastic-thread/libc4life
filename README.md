@@ -87,46 +87,92 @@ void coro_tests() {
 ```
 
 ### sequences
-c4life implements several types that provide a sequence of values; embedded lists, dynamic arrays, ordered maps, tables and more. Each of them provide a function in the form of ```struct c4seq *[type]_seq(self, seq)``` to initialize a new sequential view of self. ```C4SEQ(type, model, var)``` stack allocates and initializes a view in one call, and ```C4DO(type, model, var)``` loops all items in an anonymous view. Any memory allocated by the sequence is automatically deallocated when it reaches it's end, or manually by calling ```c4seq_free(seq)```.
+c4life implements several types that provide a sequence of values; embedded lists, dynamic arrays, ordered maps, tables and more. Each of them provide a function in the form of ```struct c4seq *[type]_seq(self, seq)``` to initialize a new sequential view of self. Any memory allocated by the sequence is automatically deallocated when it reaches it's end, or manually by calling ```c4seq_free(seq)```. All operations in the following example are supported by any type implementing the sequence protocol.
+
+```C
+
+#include <c4life/seqs/bmap.h>
+
+void seq_tests() {
+  C4BMAP(bmap, int_cmp);
+
+  // Populate bmap
+  
+  int keys[3] = {1, 2, 3};
+  char vals[3] = {'a', 'b', 'c'};
+  for (int i = 0; i < 3; i++) { c4bmap_add(&bmap, keys+i, vals+i); }
+
+  // Loop anonymous sequence for bmap
+  
+  int *key = keys;
+  C4DO(c4bmap, &bmap, _e) {
+    struct c4bmap_it *e = _e;
+    assert(e->key == key);
+    key++;
+  }
+
+  // Define and initialize seq to point to new sequence for bmap
+  
+  C4SEQ(c4bmap, &bmap, seq);
+
+  // Assign lazy sequence mapping lambda over bmap to val_seq,
+  // NULLs are automatically filtered from the result.
+
+  struct c4seq *val_seq =
+    c4seq_map(seq,
+	      C4LAMBDA({
+		  struct c4bmap_it *e = _e;
+		  return (e->key == keys + 1) ? e->val : NULL;
+		}, void *, void *_e),
+	      NULL);
+  
+  // Loop over val_seq and check we got the right value
+  
+  C4DO_SEQ(val_seq, val) {
+    assert(val_seq->idx == 1);
+    assert(val == vals + 1);
+  }
+  
+  c4bmap_free(&bmap);
+}
+
+```
 
 #### rolling your own
-Hooking into the sequence framework is trivial; you need a struct named ```[type]_seq``` to hold your state and the ```c4seq``` struct; a constructor named ```[type]_seq``` to initialize the sequence; and a function that provides the next value. The framework keeps track of the index and eof status. The following example is the actual implementation from ```c4map```.
+Hooking into the sequence framework is trivial; you need a struct named ```[type]_seq``` to hold your state and the ```c4seq``` struct; a constructor named ```[type]_seq``` to initialize the sequence; and a function that provides the next value. The framework keeps track of the index and eof status.
 
 ```C
 
 #include <c4life/seq.h>
 
-struct c4map_seq {
+struct my_seq {
   struct c4seq super;
-  struct c4map *map;
+
+  // Additional state, if needed
 };
 
-static void *seq_next(struct c4seq *_seq) {
-  struct c4map_seq *seq = STRUCTOF(_seq, struct c4map_seq, super);
+static void seq_free(struct c4seq *_seq) {
+  struct c4map_seq *seq = C4PTROF(my_seq, super, _seq);
 
-  return (_seq->idx < seq->map->len)
-    ? c4slab_idx(&seq->map->its, _seq->idx)
-    : NULL;
+  // Code that frees additional state, if needed
+}
+
+static void *seq_next(struct c4seq *_seq) {
+  struct c4map_seq *seq = C4PTROF(my_seq, super, _seq);
+
+  // Code that returns next value, or NULL on eof;
+  // _seq->idx contains the current index.
 }
 
 struct c4seq *c4map_seq(struct c4map *self, struct c4map_seq *seq) {
   c4seq_init(&seq->super);
+  seq->super.free = seq_free; // Optional
   seq->super.next = seq_next;
-  seq->map = self;
+
+  // Code that inits additional state, if needed
+
   return &seq->super;
 }
-
-```
-
-Which allows this, among other things:
-
-```C
-
-  struct c4map map;
-  ...  
-  C4DO(c4map, &map, e) {
-    // e is assigned successive entries from map 
-  }
 
 ```
 

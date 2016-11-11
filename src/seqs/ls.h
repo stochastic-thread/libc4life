@@ -1,5 +1,5 @@
-#ifndef C4LIFE_LS
-#define C4LIFE_LS
+#ifndef C4LS_H
+#define C4LS_H
 
 #include "macros.h"
 
