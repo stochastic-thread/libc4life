@@ -44,9 +44,8 @@ static void *seq_next(struct c4seq *_seq) {
   struct c4slab_seq *seq = STRUCTOF(_seq, struct c4slab_seq, super);
   
   C4CORO(&seq->line)
-    for (seq->idx = 0; seq->idx < seq->slab->len; seq->idx++) {
-      void *it = c4slab_idx(seq->slab, seq->idx);
-      C4CORO_RET(it);
+    while (_seq->idx < seq->slab->len) {
+      C4CORO_RET(c4slab_idx(seq->slab, _seq->idx));
     }
   C4CORO_END();
 

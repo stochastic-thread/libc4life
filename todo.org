@@ -1,5 +1,6 @@
 * add struct c4seq
-** add C4DO_SEQ
+** test convert slab_seq from coros to iter
+** add C4DO
 *** use same params as C4SEQ, but assigns vals to var
 *** readme + example
 * ---

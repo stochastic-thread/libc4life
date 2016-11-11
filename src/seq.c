@@ -3,6 +3,8 @@
 #include "seq.h"
 
 struct c4seq *c4seq_init(struct c4seq *self) {
+  self->eof = false;
+  self->idx = 0;
   self->free = NULL;
   self->next = NULL;
   return self;
@@ -11,7 +13,13 @@ struct c4seq *c4seq_init(struct c4seq *self) {
 void *c4seq_next(struct c4seq *self) {
   assert(self->next);
   void *it = self->next(self);
-  if (!it) { c4seq_free(self); }
+
+  if (it) { self->idx++; }
+  else {
+    self->eof = true;
+    c4seq_free(self);
+  }
+
   return it;
 }
 
