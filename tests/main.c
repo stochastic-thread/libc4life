@@ -198,6 +198,8 @@ static void seq_tests() {
   C4DO_SEQ(key_seq, key) {
     assert(key == keys + key_seq->idx-1);
   }
+
+  c4map_free(&map);
 }
 
 static void tbl_seq_tests() {
