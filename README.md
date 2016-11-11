@@ -87,7 +87,7 @@ void coro_tests() {
 ```
 
 ### sequences
-c4life implements several types that provide a sequence of values; lists, dynamic arrays, ordered maps, tables and more. Each of them provide a function in the form of ```struct c4seq *[type]_seq(self, seq)``` to initialize a new sequential view of self. ```C4SEQ(type, model, var)``` stack allocates and initializes a view in one call, and ```C4DO(type, model, var)``` loops all items in an anonymous view. Any memory allocated by the sequence is automatically deallocated when it reaches it's end, or manually by calling ```c4seq_free(seq)```.
+c4life implements several types that provide a sequence of values; embedded lists, dynamic arrays, ordered maps, tables and more. Each of them provide a function in the form of ```struct c4seq *[type]_seq(self, seq)``` to initialize a new sequential view of self. ```C4SEQ(type, model, var)``` stack allocates and initializes a view in one call, and ```C4DO(type, model, var)``` loops all items in an anonymous view. Any memory allocated by the sequence is automatically deallocated when it reaches it's end, or manually by calling ```c4seq_free(seq)```.
 
 #### rolling your own
 Hooking into the sequence framework is trivial; you need a struct named ```[type]_seq``` to hold your state and the ```c4seq``` struct; a constructor named ```[type]_seq``` to initialize the sequence; and a function that provides the next value. The framework keeps track of the index and eof status. The following example is the actual implementation from ```c4map```.
