@@ -3,21 +3,21 @@
 
 #include <stdbool.h>
 
-#define _C4DO(type, owner, var, _seq)				\
-  _C4SEQ(type, owner, _seq, UNIQUE(tseq));			\
+#define _C4DO(type, model, var, _seq)				\
+  _C4SEQ(type, model, _seq, UNIQUE(tseq));			\
   for (void *var = c4seq_next(_seq);				\
        !_seq->eof;						\
        var = c4seq_next(_seq))					\
     
-#define C4DO(type, owner, var)					\
-  _C4DO(CONCAT(type, _seq), owner, var, UNIQUE(seq))	\
+#define C4DO(type, model, var)					\
+  _C4DO(CONCAT(type, _seq), model, var, UNIQUE(seq))	\
   
-#define _C4SEQ(type, owner, var, _tseq)			\
+#define _C4SEQ(type, model, var, _tseq)			\
   struct type _tseq;					\
-  struct c4seq *var = type(owner, &_tseq);		\
+  struct c4seq *var = type(model, &_tseq);		\
 
-#define C4SEQ(type, owner, var)					\
-  _C4SEQ(CONCAT(type, _seq), owner, var, UNIQUE(tseq))		\
+#define C4SEQ(type, model, var)					\
+  _C4SEQ(CONCAT(type, _seq), model, var, UNIQUE(tseq))		\
 
 struct c4seq {
   bool eof;

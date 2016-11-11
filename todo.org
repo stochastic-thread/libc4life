@@ -1,4 +1,5 @@
 * free recs in c4tbl_free()
+* extract C4DO_SEQ from C4DO
 * add c4dyna
 ** use slab for its
 ** take it_size as param
