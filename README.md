@@ -117,6 +117,8 @@ void seq_tests() {
 
   // Assign lazy sequence mapping lambda over bmap to val_seq,
   // NULLs are automatically filtered from the result.
+  // Last parameter is out sequence, a new one is heap allocated
+  // and automatically deallocated if not specified.
 
   struct c4seq *val_seq =
     c4seq_map(seq,
@@ -198,13 +200,13 @@ void err_tests() {
     
     C4CATCH(e, &custom_type) {
       assert(e == err);
-      c4err_free(e); // handle err by freeing
+      c4err_free(e); // Handle err by freeing
       caught = true;
     }
 
     assert(caught);
 
-    // make sure queue is empty, NULL matches any type
+    // Make sure queue is empty, NULL matches any type
     C4CATCH(e, NULL) { assert(false); }    
   }
 }
