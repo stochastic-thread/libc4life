@@ -1,7 +1,7 @@
 * add struct c4seq
 ** add C4SEQ_DO
 *** use same params as C4SEQ, but assigns vals to var
-** document seqs
+*** readme
 * ---
 * free recs in c4tbl_free()
 * rename rename slab_get to slab_idx
