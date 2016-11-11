@@ -1,5 +1,4 @@
 * add struct c4seq
-** rename C4SEQ
 ** add C4DO_SEQ
 *** use same params as C4SEQ, but assigns vals to var
 *** readme + example
