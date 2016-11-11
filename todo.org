@@ -1,3 +1,11 @@
+* add struct c4seq
+** move tbl_seq/map_seq structs to .c-files
+*** add c4seq members
+** contains void *next() / void free()
+*** call regular iter via STRUCTOF in fns
+*** add c4seq_next, c4seq_free trampolines
+** add C4SEQ_DO/MAP
+* ---
 * free recs in c4tbl_free()
 * add c4dyna
 ** use slab for its
@@ -14,13 +22,6 @@
 ** like map iter
 ** use instead of indexing
 * rename err_start()/_next() to try_X()
-* add struct c4seq
-** add as member in iters
-** contains next fn / bool skip fn
-*** call regular iter
-** contains data member
-*** forward to next fn
-** add C4SEQ_DO/MAP/DROP
 * add db dir
 ** move tbl, rec & cols
 ** investigate recursive cmake globs
