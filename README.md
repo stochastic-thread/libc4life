@@ -83,8 +83,8 @@ void *seq_next(struct my_seq *seq) {
 ### sequences
 c4life implements several abstractions that provide a sequence of values; slabs, ordered maps, tables and more. Each of them provide a function in the form of ```struct c4seq *c4[abstraction]_seq(self, seq)``` to initialize a new sequential view of self. To simplify general usage, ```C4SEQ(var, type, owner)``` is provided to stack allocate and initialize any kind of sequence in one call. Any memory allocated by the sequence is freed as soon as ```void *c4seq_next(seq)``` returns NULL, or prematurely by calling ```c4seq_free(seq)```.
 
-### rolling your own
-Hooking into the sequence abstraction is trivial; you need a struct to hold whatever state needed and the c4seq struct; a function to initialize a new sequence for self; and a function that provides the next value. The following example from ```c4map``` uses coroutines to encapsulate the loop inside the next-function.
+#### rolling your own
+Hooking into the sequence abstraction is trivial; you need a struct to hold whatever state needed and the ```c4seq``` struct; a function to initialize a new sequence for self; and a function that provides the next value. The following example from ```c4map``` uses coroutines to encapsulate the loop inside the next-function.
 
 ```C
 
