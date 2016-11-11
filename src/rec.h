@@ -1,7 +1,7 @@
 #ifndef C4LIFE_REC
 #define C4LIFE_REC
 
-#include "map.h"
+#include "seqs/map.h"
 #include "uid.h"
 
 struct c4col;

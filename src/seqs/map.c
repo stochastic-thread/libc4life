@@ -64,16 +64,16 @@ struct c4map_it *c4map_insert(struct c4map *self,
   return it;
 }
 
-struct c4map_iter *c4map_iter(struct c4map *self, struct c4map_iter *iter) {
-  iter->line = 0;
-  iter->map = self;
-  return iter;
+struct c4map_seq *c4map_seq(struct c4map *self, struct c4map_seq *seq) {
+  seq->line = 0;
+  seq->map = self;
+  return seq;
 }
 
-struct c4map_it *c4map_iter_next(struct c4map_iter *iter) {
-  C4CORO(&iter->line)
-    for (iter->idx = 0; iter->idx < iter->map->len; iter->idx++) {
-      struct c4map_it *it = c4slab_get(&iter->map->its, iter->idx);
+struct c4map_it *c4map_seq_next(struct c4map_seq *seq) {
+  C4CORO(&seq->line)
+    for (seq->idx = 0; seq->idx < seq->map->len; seq->idx++) {
+      struct c4map_it *it = c4slab_get(&seq->map->its, seq->idx);
       C4CORO_RET(it);
     }
   C4CORO_END();

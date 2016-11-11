@@ -1,7 +1,7 @@
 #include <string.h>
 #include "col.h"
 #include "rec.h"
-#include "slab.h"
+#include "seqs/slab.h"
 #include "val.h"
 
 struct c4rec *c4rec_init(struct c4rec *self, c4uid_t id) {

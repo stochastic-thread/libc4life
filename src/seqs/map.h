@@ -33,7 +33,7 @@ struct c4map_it {
   void *key, *val;
 };
 
-struct c4map_iter {
+struct c4map_seq {
   int idx, line;
   struct c4map *map;
 };
@@ -51,8 +51,8 @@ struct c4map_it *c4map_insert(struct c4map *map,
 			      size_t idx,
 			      void *key, void *val);
 
-struct c4map_iter *c4map_iter(struct c4map *self, struct c4map_iter *iter);
-struct c4map_it *c4map_iter_next(struct c4map_iter *iter);
+struct c4map_seq *c4map_seq(struct c4map *self, struct c4map_seq *seq);
+struct c4map_it *c4map_seq_next(struct c4map_seq *seq);
 
 void c4map_merge(struct c4map *self, struct c4map *src);
 size_t c4map_set(struct c4map *self, void *key, void *val);

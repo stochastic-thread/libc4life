@@ -8,9 +8,9 @@
 #include "coro.h"
 #include "ctx.h"
 #include "err.h"
-#include "ls.h"
-#include "map.h"
 #include "rec.h"
+#include "seqs/ls.h"
+#include "seqs/map.h"
 #include "tbl.h"
 #include "val.h"
 
@@ -159,7 +159,7 @@ static void rec_tests() {
   c4str_col_free(&foo);
 }
 
-static void tbl_iter_tests() {
+static void tbl_seq_tests() {
   struct c4tbl tbl;
   c4tbl_init(&tbl, "foo");
  
@@ -167,17 +167,17 @@ static void tbl_iter_tests() {
   c4rec_init(&rec, NULL);
   c4tbl_upsert(&tbl, &rec);
 
-  struct c4tbl_iter iter;
-  c4tbl_iter(&tbl, &iter);
-  assert(c4uid_cmp(c4tbl_iter_next(&iter)->id, rec.id) == 0);
-  assert(c4tbl_iter_next(&iter) == NULL);
+  struct c4tbl_seq seq;
+  c4tbl_seq(&tbl, &seq);
+  assert(c4uid_cmp(c4tbl_seq_next(&seq)->id, rec.id) == 0);
+  assert(c4tbl_seq_next(&seq) == NULL);
 
   c4rec_free(&rec);
   c4tbl_free(&tbl);
 }
 
 static void tbl_tests() {
-  tbl_iter_tests();
+  tbl_seq_tests();
 }
 
 int main() {

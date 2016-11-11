@@ -3,7 +3,7 @@
 
 #include <stdbool.h>
 #include <stdio.h>
-#include "ls.h"
+#include "seqs/ls.h"
 #include "macros.h"
 
 #define _C4CATCH(var, type, _next)					\

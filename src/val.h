@@ -1,7 +1,7 @@
 #ifndef C4LIFE_VAL
 #define C4LIFE_VAL
 
-#include "ls.h"
+#include "seqs/ls.h"
 
 struct c4val_t {
   char *name;

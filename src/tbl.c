@@ -20,28 +20,28 @@ void c4tbl_free(struct c4tbl *self) {
   c4map_free(&self->recs);
 }
 
-struct c4tbl_iter *c4tbl_iter(struct c4tbl *self, struct c4tbl_iter *iter) {
-  iter->line = 0;
-  c4rec_init(&iter->rec, NULL);
-  c4map_iter(&self->recs, &iter->recs_iter);
-  return iter;
+struct c4tbl_seq *c4tbl_seq(struct c4tbl *self, struct c4tbl_seq *seq) {
+  seq->line = 0;
+  c4rec_init(&seq->rec, NULL);
+  c4map_seq(&self->recs, &seq->recs_seq);
+  return seq;
 }
 
-void c4tbl_iter_free(struct c4tbl_iter *iter) { c4rec_free(&iter->rec); }
+void c4tbl_seq_free(struct c4tbl_seq *seq) { c4rec_free(&seq->rec); }
 
-struct c4rec *c4tbl_iter_next(struct c4tbl_iter *iter) {
-  C4CORO(&iter->line)
+struct c4rec *c4tbl_seq_next(struct c4tbl_seq *seq) {
+  C4CORO(&seq->line)
     struct c4map_it *it;
   
-    while ((it = c4map_iter_next(&iter->recs_iter))) {
-      c4uid_copy(iter->rec.id, it->key);
-      c4map_clear(&iter->rec.flds);
-      c4map_merge(&iter->rec.flds, it->val);
-      C4CORO_RET(&iter->rec);
+    while ((it = c4map_seq_next(&seq->recs_seq))) {
+      c4uid_copy(seq->rec.id, it->key);
+      c4map_clear(&seq->rec.flds);
+      c4map_merge(&seq->rec.flds, it->val);
+      C4CORO_RET(&seq->rec);
     }
   C4CORO_END();
   
-  c4tbl_iter_free(iter);
+  c4tbl_seq_free(seq);
   return NULL;
 }
 
