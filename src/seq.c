@@ -10,9 +10,11 @@ struct c4seq *c4seq_init(struct c4seq *self) {
 
 void *c4seq_next(struct c4seq *self) {
   assert(self->next);
-  return self->next(self);
+  void *it = self->next(self);
+  if (!it) { c4seq_free(self); }
+  return it;
 }
 
-void s4seq_free(struct c4seq *self) {
+void c4seq_free(struct c4seq *self) {
   if (self->free) { self->free(self); }
 }

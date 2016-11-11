@@ -167,10 +167,9 @@ static void tbl_seq_tests() {
   c4rec_init(&rec, NULL);
   c4tbl_upsert(&tbl, &rec);
 
-  struct c4tbl_seq seq;
-  c4tbl_seq(&tbl, &seq);
-  assert(c4uid_cmp(c4tbl_seq_next(&seq)->id, rec.id) == 0);
-  assert(c4tbl_seq_next(&seq) == NULL);
+  C4SEQ(seq, c4tbl_seq, &tbl);  
+  assert(c4uid_cmp(((struct c4rec *)c4seq_next(seq))->id, rec.id) == 0);
+  assert(c4seq_next(seq) == NULL);
 
   c4rec_free(&rec);
   c4tbl_free(&tbl);

@@ -1,10 +1,9 @@
 * add struct c4seq
-** move tbl_seq/map_seq structs to .c-files
-*** add c4seq members
-** contains void *next() / void free()
-*** call regular iter via STRUCTOF in fns
-*** add c4seq_next, c4seq_free trampolines
-** add C4SEQ_DO/MAP
+** add slab seq
+** use in map
+*** copy tbl
+** add C4SEQ_DO
+** document seqs
 * ---
 * free recs in c4tbl_free()
 * rename rename slab_get to slab_idx
