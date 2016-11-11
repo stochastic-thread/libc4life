@@ -2,18 +2,18 @@
 #define C4LIFE_TBL
 
 #include "seq.h"
-#include "seqs/map.h"
+#include "seqs/bmap.h"
 
 struct c4rec;
 
 struct c4tbl {
   char *name;
-  struct c4map recs;
+  struct c4bmap recs;
 };
 
 struct c4tbl_seq {
   struct c4seq super;
-  struct c4map_seq recs_seq;
+  struct c4bmap_seq recs_seq;
   struct c4rec rec;
 };
 

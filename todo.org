@@ -1,5 +1,6 @@
-* free recs in c4tbl_free()
-* add C4MAP_SEQ / C4MAP
+* add C4MAP macro
+** update tests
+** add DO_SEQ/map/MAP to readme
 * add c4seq_drop(size_t n)
 ** add drop(n) method
 ** do nothing but increase idx if NULL

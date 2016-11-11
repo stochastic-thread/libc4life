@@ -1,14 +1,14 @@
-#ifndef C4LIFE_REC
-#define C4LIFE_REC
+#ifndef C4REC
+#define C4REC
 
-#include "seqs/map.h"
+#include "seqs/bmap.h"
 #include "uid.h"
 
 struct c4col;
 
 struct c4rec {
   c4uid_t id;
-  struct c4map flds;
+  struct c4bmap flds;
 };
 
 struct c4rec *c4rec_init(struct c4rec *self, c4uid_t id);

@@ -11,7 +11,7 @@
 #include "db/tbl.h"
 #include "err.h"
 #include "seqs/ls.h"
-#include "seqs/map.h"
+#include "seqs/bmap.h"
 #include "val.h"
 
 static int int_cmp(void *_x, void *_y) {
@@ -114,49 +114,49 @@ static void ls_tests() {
 }
 
 static void map_add_tests() {
-  struct c4map m;
-  c4map_init(&m, int_cmp);
+  struct c4bmap m;
+  c4bmap_init(&m, int_cmp);
 
   int ks[3] = {1, 2, 3};
   char vs[3] = {'a', 'b', 'c'};
   
-  c4map_add(&m, ks+1, vs+1);
-  c4map_add(&m, ks+2, vs+2);
-  c4map_add(&m, ks, vs);
+  c4bmap_add(&m, ks+1, vs+1);
+  c4bmap_add(&m, ks+2, vs+2);
+  c4bmap_add(&m, ks, vs);
 
-  for (int i = 0; i < 3; i++) { assert(c4map_get(&m, ks+i) == vs+i); }
-  c4map_free(&m);
+  for (int i = 0; i < 3; i++) { assert(c4bmap_get(&m, ks+i) == vs+i); }
+  c4bmap_free(&m);
 }
 
 static void map_seq_tests() {
-  struct c4map m;
-  c4map_init(&m, int_cmp);
+  struct c4bmap m;
+  c4bmap_init(&m, int_cmp);
 
   int ks[3] = {1, 2, 3};
   char vs[3] = {'a', 'b', 'c'};
-  for (int i = 0; i < 3; i++) { c4map_add(&m, ks, vs); }
+  for (int i = 0; i < 3; i++) { c4bmap_add(&m, ks, vs); }
 
   int i = 0;
-  C4DO(c4map, &m, _it) {
-    struct c4map_it *it = _it;
+  C4DO(c4bmap, &m, _it) {
+    struct c4bmap_it *it = _it;
     assert(it->key == ks+i);
     i++;
   }
 
-  c4map_free(&m);
+  c4bmap_free(&m);
 }
 
 static void map_set_tests() {
-  struct c4map m;
-  c4map_init(&m, int_cmp);
+  struct c4bmap m;
+  c4bmap_init(&m, int_cmp);
 
   int ks[3] = {1, 2, 3};
   char vs[3] = {'a', 'b', 'c'};
 
-  for (int i = 0; i < 3; i++) { c4map_add(&m, ks+i, vs+i); }
-  for (int i = 0; i < 3; i++) { c4map_set(&m, ks+i, vs+3-i); }
-  for (int i = 0; i < 3; i++) { assert(c4map_get(&m, ks+i) == vs+3-i); }
-  c4map_free(&m);
+  for (int i = 0; i < 3; i++) { c4bmap_add(&m, ks+i, vs+i); }
+  for (int i = 0; i < 3; i++) { c4bmap_set(&m, ks+i, vs+3-i); }
+  for (int i = 0; i < 3; i++) { assert(c4bmap_get(&m, ks+i) == vs+3-i); }
+  c4bmap_free(&m);
 }
 
 static void map_tests() {
@@ -179,18 +179,18 @@ static void rec_tests() {
 }
 
 static void seq_tests() {
-  struct c4map map;
-  c4map_init(&map, int_cmp);
+  struct c4bmap map;
+  c4bmap_init(&map, int_cmp);
 
   int keys[3] = {1, 2, 3};
   char vals[3] = {'a', 'b', 'c'};
-  for (int i = 0; i < 3; i++) { c4map_add(&map, keys+i, vals+i); }
+  for (int i = 0; i < 3; i++) { c4bmap_add(&map, keys+i, vals+i); }
 
-  C4SEQ(c4map, &map, entries);
+  C4SEQ(c4bmap, &map, entries);
 
   struct c4seq *key_seq =
     c4seq_map(entries,
-	      C4LAMBDA({ return ((struct c4map_it *)e)->key; },
+	      C4LAMBDA({ return ((struct c4bmap_it *)e)->key; },
 		       void *,
 		       void *e),
 	      NULL);
@@ -199,7 +199,7 @@ static void seq_tests() {
     assert(key == keys + key_seq->idx-1);
   }
 
-  c4map_free(&map);
+  c4bmap_free(&map);
 }
 
 static void tbl_seq_tests() {
