@@ -42,20 +42,12 @@ void *c4slab_insert(struct c4slab *self, size_t idx) {
 
 static void *seq_next(struct c4seq *_seq) {
   struct c4slab_seq *seq = STRUCTOF(_seq, struct c4slab_seq, super);
-  
-  C4CORO(&seq->line)
-    while (_seq->idx < seq->slab->len) {
-      C4CORO_RET(c4slab_idx(seq->slab, _seq->idx));
-    }
-  C4CORO_END();
-
-  return NULL;
+  return (_seq->idx < seq->slab->len) ? c4slab_idx(seq->slab, _seq->idx) : NULL;
 }
 
 struct c4seq *c4slab_seq(struct c4slab *self, struct c4slab_seq *seq) {
   c4seq_init(&seq->super);
   seq->super.next = seq_next;
-  seq->line = 0;
   seq->slab = self;
   return &seq->super;
 }

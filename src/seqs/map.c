@@ -79,20 +79,15 @@ size_t c4map_set(struct c4map *self, void *key, void *val) {
 
 static void *seq_next(struct c4seq *_seq) {
   struct c4map_seq *seq = STRUCTOF(_seq, struct c4map_seq, super);
-  
-  C4CORO(&seq->line)
-    while (_seq->idx < seq->map->len) {
-      C4CORO_RET(c4slab_idx(&seq->map->its, _seq->idx));
-    }
-  C4CORO_END();
 
-  return NULL;
+  return (_seq->idx < seq->map->len)
+    ? c4slab_idx(&seq->map->its, _seq->idx)
+    : NULL;
 }
 
 struct c4seq *c4map_seq(struct c4map *self, struct c4map_seq *seq) {
   c4seq_init(&seq->super);
   seq->super.next = seq_next;
-  seq->line = 0;
   seq->map = self;
   return &seq->super;
 }

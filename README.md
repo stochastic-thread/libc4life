@@ -62,7 +62,7 @@ void defer_tests() {
 ```
 
 ### coroutines
-c4life provides coroutines in the form of a minimalistic layer of macros with a touch of Duff's Device pixie dust. Anything that should persist across calls needs to be declared static, global or passed as parameters; the only thing the coroutine really cares about is the current line number. Calling a coroutine is the same as calling any other function, all the details are neatly encapsulated inside.
+c4life provides coroutines in the form of a minimalistic layer of macros inspired by Duff's Device. Anything that should persist across calls needs to be declared static, global or passed as parameters; the only thing the coroutine really cares about is the current line number. Calling a coroutine is the same as calling any other function, all the details are neatly encapsulated inside.
 
 ```C
 
@@ -87,10 +87,10 @@ void coro_tests() {
 ```
 
 ### sequences
-c4life implements several types that provide a sequence of values; lists, dynamic arrays, ordered maps, tables and more. Each of them provide a function in the form of ```struct c4seq *c4[type]_seq(self, seq)``` to initialize a new sequential view of self. To simplify general usage, ```C4SEQ(var, type, owner)``` is provided to stack allocate and initialize any kind of sequence in one call. Any memory allocated by the sequence is freed as soon as ```void *c4seq_next(seq)``` returns NULL, or prematurely by calling ```c4seq_free(seq)```.
+c4life implements several types that provide a sequence of values; lists, dynamic arrays, ordered maps, tables and more. Each of them provide a function in the form of ```struct c4seq *c4[type]_seq(self, seq)``` to initialize a new sequential view of self. To simplify general usage, ```C4SEQ(var, type, owner)``` is provided to stack allocate and initialize any kind of sequence in one call. Any memory allocated by the sequence is deallocated automatically when it reaches it's end, or manually by calling ```c4seq_free(seq)```.
 
 #### rolling your own
-Hooking into the sequence framework is trivial; you need a struct to hold whatever state needed and the ```c4seq``` struct; a function to initialize a new sequence for self; and a function that provides the next value.
+Hooking into the sequence framework is trivial; you need a struct named ```c4[type]_seq``` to hold your state and the ```c4seq``` struct; a constructor named ```c4[type]_seq```; and a function that provides the next value. The framework keeps track of the index and eof status.
 
 ```C
 
@@ -98,27 +98,20 @@ Hooking into the sequence framework is trivial; you need a struct to hold whatev
 
 struct c4map_seq {
   struct c4seq super;
-  int idx, line;
   struct c4map *map;
 };
 
 static void *seq_next(struct c4seq *_seq) {
   struct c4map_seq *seq = STRUCTOF(_seq, struct c4map_seq, super);
-  
-  C4CORO(&seq->line)
-    for (seq->idx = 0; seq->idx < seq->map->len; seq->idx++) {
-      void *it = c4slab_idx(&seq->map->its, seq->idx);
-      C4CORO_RET(it);
-    }
-  C4CORO_END();
 
-  return NULL;
+  return (_seq->idx < seq->map->len)
+    ? c4slab_idx(&seq->map->its, _seq->idx)
+    : NULL;
 }
 
 struct c4seq *c4map_seq(struct c4map *self, struct c4map_seq *seq) {
   c4seq_init(&seq->super);
   seq->super.next = seq_next;
-  seq->line = 0;
   seq->map = self;
   return &seq->super;
 }

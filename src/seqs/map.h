@@ -36,7 +36,6 @@ struct c4map_it {
 
 struct c4map_seq {
   struct c4seq super;
-  int line;
   struct c4map *map;
 };
 

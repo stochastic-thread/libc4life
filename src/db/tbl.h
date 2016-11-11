@@ -13,7 +13,6 @@ struct c4tbl {
 
 struct c4tbl_seq {
   struct c4seq super;
-  int line;
   struct c4map_seq recs_seq;
   struct c4rec rec;
 };

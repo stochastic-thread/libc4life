@@ -11,7 +11,6 @@ struct c4slab {
 
 struct c4slab_seq {
   struct c4seq super;
-  int line;
   struct c4slab *slab;
 };
 

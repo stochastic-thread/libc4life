@@ -28,26 +28,21 @@ static void seq_free(struct c4seq *_seq) {
 static void *seq_next(struct c4seq *_seq) {
   struct c4tbl_seq *seq = STRUCTOF(_seq, struct c4tbl_seq, super);
   struct c4seq *recs_seq = &seq->recs_seq.super;
-  
-  C4CORO(&seq->line)
-    struct c4map_it *it;
-    
-    while ((it = c4seq_next(recs_seq))) {
-      c4uid_copy(seq->rec.id, it->key);
-      c4map_clear(&seq->rec.flds);
-      c4map_merge(&seq->rec.flds, it->val);
-      C4CORO_RET(&seq->rec);
-    }
-  C4CORO_END();
-  
-  return NULL;
+  struct c4map_it *it;
+
+  if (!(it = c4seq_next(recs_seq))) { return NULL; }
+
+  if (_seq->idx) { c4uid_copy(seq->rec.id, it->key); }   
+  else { c4rec_init(&seq->rec, it->key); }
+  c4map_clear(&seq->rec.flds);
+  c4map_merge(&seq->rec.flds, it->val);
+  return &seq->rec;
 }
 
 struct c4seq *c4tbl_seq(struct c4tbl *self, struct c4tbl_seq *seq) {
   c4seq_init(&seq->super);
   seq->super.free = seq_free;
   seq->super.next = seq_next;
-  seq->line = 0;
   c4rec_init(&seq->rec, NULL);
   c4map_seq(&self->recs, &seq->recs_seq);
   return &seq->super;
