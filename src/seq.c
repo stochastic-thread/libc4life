@@ -13,12 +13,12 @@ struct c4seq *c4seq_init(struct c4seq *self) {
 }
 
 static void map_free(struct c4seq *_seq) {
-  struct c4seq_map *seq = c4ptrof(c4seq_map, super, _seq);
+  struct c4seq_map *seq = C4PTROF(c4seq_map, super, _seq);
   free(seq);
 }
 
 static void *map_next(struct c4seq *_seq) {
-  struct c4seq_map *seq = c4ptrof(c4seq_map, super, _seq);
+  struct c4seq_map *seq = C4PTROF(c4seq_map, super, _seq);
   void *it = NULL;
 
   while (!it && !seq->src->eof) {

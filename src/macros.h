@@ -26,7 +26,7 @@
 #define C4GSYM(prefix)				\
   C4SYMS(prefix, __LINE__)			\
   
-#define c4ptrof(type, field, ptr)					\
+#define C4PTROF(type, field, ptr)					\
   ({									\
     const typeof(((struct type *)0)->field) *_field_ptr = (ptr);	\
     (struct type *)((char *)_field_ptr -				\

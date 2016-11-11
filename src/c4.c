@@ -26,7 +26,7 @@ void c4init() {
 }
 
 void c4free() {
-  C4LS_DO(c4err_ts(), t) { c4err_t_free(c4ptrof(c4err_t, ts_node, t)); }
-  C4LS_DO(c4val_ts(), t) { c4val_t_free(c4ptrof(c4val_t, ts_node, t)); }
+  C4LS_DO(c4err_ts(), t) { c4err_t_free(C4PTROF(c4err_t, ts_node, t)); }
+  C4LS_DO(c4val_ts(), t) { c4val_t_free(C4PTROF(c4val_t, ts_node, t)); }
 }
 
