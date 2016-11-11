@@ -1,7 +1,9 @@
 #include <assert.h>
 #include <stdlib.h>
 #include "coro.h"
+#include "macros.h"
 #include "map.h"
+#include "seq.h"
 
 struct c4map *c4map_init(struct c4map *self, c4cmp_t cmp) {
   self->cmp = cmp;
@@ -64,13 +66,20 @@ struct c4map_it *c4map_insert(struct c4map *self,
   return it;
 }
 
-struct c4map_seq *c4map_seq(struct c4map *self, struct c4map_seq *seq) {
-  seq->line = 0;
-  seq->map = self;
-  return seq;
+void c4map_merge(struct c4map *self, struct c4map *src) {
 }
 
-struct c4map_it *c4map_seq_next(struct c4map_seq *seq) {
+size_t c4map_set(struct c4map *self, void *key, void *val) {
+  size_t idx;
+  struct c4map_it *it = c4map_find(self, key, 0, &idx);
+  if (it) { it->val = val; }
+  else { c4map_insert(self, idx, key, val); }
+  return idx;
+}
+
+static void *seq_next(struct c4seq *_seq) {
+  struct c4map_seq *seq = STRUCTOF(_seq, struct c4map_seq, super);
+  
   C4CORO(&seq->line)
     for (seq->idx = 0; seq->idx < seq->map->len; seq->idx++) {
       struct c4map_it *it = c4slab_get(&seq->map->its, seq->idx);
@@ -81,13 +90,10 @@ struct c4map_it *c4map_seq_next(struct c4map_seq *seq) {
   return NULL;
 }
 
-void c4map_merge(struct c4map *self, struct c4map *src) {
-}
-
-size_t c4map_set(struct c4map *self, void *key, void *val) {
-  size_t idx;
-  struct c4map_it *it = c4map_find(self, key, 0, &idx);
-  if (it) { it->val = val; }
-  else { c4map_insert(self, idx, key, val); }
-  return idx;
+struct c4seq *c4map_seq(struct c4map *self, struct c4map_seq *seq) {
+  c4seq_init(&seq->super);
+  seq->super.next = seq_next;
+  seq->line = 0;
+  seq->map = self;
+  return &seq->super;
 }

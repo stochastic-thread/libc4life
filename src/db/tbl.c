@@ -33,7 +33,7 @@ struct c4rec *c4tbl_seq_next(struct c4tbl_seq *seq) {
   C4CORO(&seq->line)
     struct c4map_it *it;
   
-    while ((it = c4map_seq_next(&seq->recs_seq))) {
+    while ((it = c4seq_next(&seq->recs_seq.super))) {
       c4uid_copy(seq->rec.id, it->key);
       c4map_clear(&seq->rec.flds);
       c4map_merge(&seq->rec.flds, it->val);
