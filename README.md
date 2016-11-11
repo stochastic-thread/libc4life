@@ -90,7 +90,7 @@ void coro_tests() {
 c4life implements several types that provide a sequence of values; lists, dynamic arrays, ordered maps, tables and more. Each of them provide a function in the form of ```struct c4seq *c4[type]_seq(self, seq)``` to initialize a new sequential view of self. To simplify general usage, ```C4SEQ(var, type, owner)``` is provided to stack allocate and initialize any kind of sequence in one call. Any memory allocated by the sequence is deallocated automatically when it reaches it's end, or manually by calling ```c4seq_free(seq)```.
 
 #### rolling your own
-Hooking into the sequence framework is trivial; you need a struct named ```c4[type]_seq``` to hold your state and the ```c4seq``` struct; a constructor named ```c4[type]_seq```; and a function that provides the next value. The framework keeps track of the index and eof status.
+Hooking into the sequence framework is trivial; you need a struct named ```c4[type]_seq``` to hold your state and the ```c4seq``` struct; a constructor named ```c4[type]_seq```; and a function that provides the next value. The framework keeps track of the index and eof status. The following example is the actual implementation from ```c4map```.
 
 ```C
 
@@ -115,6 +115,18 @@ struct c4seq *c4map_seq(struct c4map *self, struct c4map_seq *seq) {
   seq->map = self;
   return &seq->super;
 }
+
+```
+
+Which allows this, among other things:
+
+```C
+
+  struct c4map map;
+  ...  
+  C4DO(c4map, &map, item) {
+    // item is assigned successive entries from map 
+  }
 
 ```
 

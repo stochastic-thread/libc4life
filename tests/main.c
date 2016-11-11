@@ -128,6 +128,24 @@ static void map_add_tests() {
   c4map_free(&m);
 }
 
+static void map_seq_tests() {
+  struct c4map m;
+  c4map_init(&m, int_cmp);
+
+  int ks[3] = {1, 2, 3};
+  char vs[3] = {'a', 'b', 'c'};
+  for (int i = 0; i < 3; i++) { c4map_add(&m, ks, vs); }
+
+  int i = 0;
+  C4DO(c4map, &m, _it) {
+    struct c4map_it *it = _it;
+    assert(it->key == ks+i);
+    i++;
+  }
+
+  c4map_free(&m);
+}
+
 static void map_set_tests() {
   struct c4map m;
   c4map_init(&m, int_cmp);
@@ -143,6 +161,7 @@ static void map_set_tests() {
 
 static void map_tests() {
   map_add_tests();
+  map_seq_tests();
   map_set_tests();
 }
 
@@ -167,7 +186,7 @@ static void tbl_seq_tests() {
   c4rec_init(&rec, NULL);
   c4tbl_upsert(&tbl, &rec);
 
-  C4SEQ(seq, c4tbl_seq, &tbl);  
+  C4SEQ(c4tbl, &tbl, seq);  
   assert(c4uid_cmp(((struct c4rec *)c4seq_next(seq))->id, rec.id) == 0);
   assert(c4seq_next(seq) == NULL);
 

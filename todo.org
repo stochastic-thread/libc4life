@@ -1,13 +1,4 @@
-* add struct c4seq
-** test convert slab_seq from coros to iter
-** add C4DO
-*** use same params as C4SEQ, but assigns vals to var
-*** readme + example
-* ---
 * free recs in c4tbl_free()
-* add ls_seq
-** encapsulate next pre-fetch
-** replaces DO_LS
 * add c4dyna
 ** use slab for its
 ** take it_size as param
@@ -20,9 +11,13 @@
 ** push defers and pop on exit
 ** free dyna before exit
 * rename err_start()/_next() to try_X()
-* add db dir
-** move tbl, rec & cols
-** investigate recursive cmake globs
+* add ls_seq
+** encapsulate next pre-fetch
+** replaces DO_LS
+
+* add array_seq
+** init with it_size
+
 * add vicsy_peer_save()
 * implement c4map_merge()
 ** add c4map_splice()
