@@ -1,5 +1,5 @@
-#ifndef C4LIFE_MACROS
-#define C4LIFE_MACROS
+#ifndef C4MACROS_H
+#define C4MACROS_H
 
 #define _C4DEFER(code, _def)				\
   void _def() code;					\

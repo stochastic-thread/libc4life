@@ -1,5 +1,5 @@
-#ifndef C4LIFE_COL
-#define C4LIFE_COL
+#ifndef C4COL_H
+#define C4COL_H
 
 struct c4val_t;
 

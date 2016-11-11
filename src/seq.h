@@ -1,5 +1,5 @@
-#ifndef C4LIFE_SEQ
-#define C4LIFE_SEQ
+#ifndef C4SEQ_H
+#define C4SEQ_H
 
 #include <stdbool.h>
 

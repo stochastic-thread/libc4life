@@ -1,5 +1,5 @@
-#ifndef C4LIFE_UID
-#define C4LIFE_UID
+#ifndef C4UID_H
+#define C4UID_H
 
 #include <uuid/uuid.h>
 

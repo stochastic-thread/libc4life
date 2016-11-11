@@ -1,5 +1,5 @@
-#ifndef C4LIFE_TBL
-#define C4LIFE_TBL
+#ifndef C4TBL_H
+#define C4TBL_H
 
 #include "seq.h"
 #include "seqs/bmap.h"

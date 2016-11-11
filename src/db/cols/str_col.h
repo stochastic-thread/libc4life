@@ -1,5 +1,5 @@
-#ifndef C4LIFE_STR_COL
-#define C4LIFE_STR_COL
+#ifndef C4STR_COL_H
+#define C4STR_COL_H
 
 #include "db/col.h"
 

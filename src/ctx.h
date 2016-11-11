@@ -1,5 +1,5 @@
-#ifndef C4LIFE_CTX
-#define C4LIFE_CTX
+#ifndef C4CTX_H
+#define C4CTX_H
 
 struct c4try;
 

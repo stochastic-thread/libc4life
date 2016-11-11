@@ -1,5 +1,5 @@
-#ifndef C4LIFE
-#define C4LIFE
+#ifndef C4_H
+#define C4_H
 
 struct c4ctx;
 struct c4err_t;

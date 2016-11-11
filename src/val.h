@@ -1,5 +1,5 @@
-#ifndef C4LIFE_VAL
-#define C4LIFE_VAL
+#ifndef C4VAL_H
+#define C4VAL_H
 
 #include "seqs/ls.h"
 

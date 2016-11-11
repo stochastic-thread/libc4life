@@ -1,16 +1,16 @@
-#ifndef C4LIFE_CORO
-#define C4LIFE_CORO
+#ifndef C4CORO_H
+#define C4CORO_H
 
-#define C4CORO(line)						\
-  { int *_c4coro_line = line;					\
-    switch(*_c4coro_line) {					\
-    case 0:;							\
+#define C4CORO(line)				\
+  { int *_c4coro_line = line;			\
+    switch(*_c4coro_line) {			\
+    case 0:;					\
     
-#define C4CORO_END()					\
-  *_c4coro_line = 0;					\
-  break;						\
- default: assert(false);				\
-  }}							\
+#define C4CORO_END()				\
+      *_c4coro_line = 0;			\
+      break;					\
+    default: assert(false);			\
+    }}						\
   
 #define C4CORO_RET(...)				\
   do {						\

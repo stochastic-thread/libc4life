@@ -1,5 +1,5 @@
-#ifndef C4LIFE_ERR
-#define C4LIFE_ERR
+#ifndef C4ERR_H
+#define C4ERR_H
 
 #include <stdbool.h>
 #include <stdio.h>
@@ -13,14 +13,14 @@
        var = _next,							\
 	 _next = var ? c4err_next(&var->errs_node, type) : NULL)	\
 
-#define C4CATCH(var, type)						\
-  _C4CATCH(var, type, C4GSYM(next))					\
+#define C4CATCH(var, type)			\
+  _C4CATCH(var, type, C4GSYM(next))		\
 
-#define C4THROW(type, msg)						\
-  ({									\
-    struct c4err *e = malloc(sizeof(struct c4err));			\
-    c4err_init(e, c4ctx()->try, type, msg, __FILE__, __LINE__);		\
-  })									\
+#define C4THROW(type, msg)					\
+  ({								\
+    struct c4err *e = malloc(sizeof(struct c4err));		\
+    c4err_init(e, c4ctx()->try, type, msg, __FILE__, __LINE__);	\
+  })								\
 
 #define _C4TRY(msg, _try)						\
   for (struct c4try *_try = c4try_init(malloc(sizeof(struct c4try)),	\

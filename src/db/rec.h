@@ -1,5 +1,5 @@
-#ifndef C4REC
-#define C4REC
+#ifndef C4REC_H
+#define C4REC_H
 
 #include "seqs/bmap.h"
 #include "uid.h"
