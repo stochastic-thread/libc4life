@@ -19,5 +19,11 @@ install(TARGETS ${PROJECT_NAME} DESTINATION lib)
 file(GLOB HEADERS src/*.h)
 install(FILES ${HEADERS}  DESTINATION include/${PROJECT_NAME})
 
-file(GLOB COL_HEADERS src/cols/*.h)
-install(FILES ${COL_HEADERS} DESTINATION include/${PROJECT_NAME}/cols)
+file(GLOB DB_HEADERS src/db/*.h)
+install(FILES ${DB_HEADERS} DESTINATION include/${PROJECT_NAME}/db)
+
+file(GLOB DB_COL_HEADERS src/db/cols/*.h)
+install(FILES ${DB_COL_HEADERS} DESTINATION include/${PROJECT_NAME}/db/cols)
+
+file(GLOB SEQ_HEADERS src/seqs/*.h)
+install(FILES ${SEQ_HEADERS} DESTINATION include/${PROJECT_NAME}/seqs)
