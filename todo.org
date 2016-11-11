@@ -1,10 +1,19 @@
+* add C4PTROF() to declare var
+** C4PTROF(c4seq_map, super, seq)
+*** expect to find var name with underscore
+*** declare new with specified name
+** rename existing to c4ptrof() & compile
+
 * add C4MAP macro
 ** update tests
 ** add DO_SEQ/map/MAP to readme
+
 * add c4seq_drop(size_t n)
 ** add drop(n) method
 ** do nothing but increase idx if NULL
-** implement to drop from recs_iter in tbl
+** forward to recs_iter in tbl
+** forward drop to src seq_map
+
 * add c4dyna
 ** use slab for its
 ** take it_size as param
@@ -12,10 +21,12 @@
 ** add dyna_iter with slab_iter field
 ** use instead of slab in c4map
 
+
 * add C4DEFER_SCOPE(name) & C4DEFER_TO(scope)
 ** use dyna as cleanup marker
 ** push defers and pop on exit
 ** free dyna before exit
+
 * rename err_start()/_next() to try_X()
 * add ls_seq
 ** encapsulate next pre-fetch

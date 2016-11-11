@@ -19,8 +19,15 @@ static void map_free(struct c4seq *_seq) {
 
 static void *map_next(struct c4seq *_seq) {
   struct c4seq_map *seq = STRUCTOF(_seq, struct c4seq_map, super);
-  void *it = c4seq_next(seq->src);
-  return it ? seq->fn(it) : NULL;
+  void *it = NULL;
+
+  while (!it && !seq->src->eof) {
+    it = c4seq_next(seq->src);
+    if (!it) { return NULL; }
+    it = seq->fn(it);
+  }
+  
+  return it;
 }
 
 struct c4seq *c4seq_map(struct c4seq *self,
