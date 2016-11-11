@@ -178,6 +178,28 @@ static void rec_tests() {
   c4str_col_free(&foo);
 }
 
+static void seq_tests() {
+  struct c4map map;
+  c4map_init(&map, int_cmp);
+
+  int keys[3] = {1, 2, 3};
+  char vals[3] = {'a', 'b', 'c'};
+  for (int i = 0; i < 3; i++) { c4map_add(&map, keys+i, vals+i); }
+
+  C4SEQ(c4map, &map, entries);
+
+  struct c4seq *key_seq =
+    c4seq_map(entries,
+	      C4LAMBDA({ return ((struct c4map_it *)e)->key; },
+		       void *,
+		       void *e),
+	      NULL);
+  
+  C4DO_SEQ(key_seq, key) {
+    assert(key == keys + key_seq->idx-1);
+  }
+}
+
 static void tbl_seq_tests() {
   struct c4tbl tbl;
   c4tbl_init(&tbl, "foo");
@@ -210,6 +232,7 @@ int main() {
     ls_tests();
     map_tests();
     rec_tests();
+    seq_tests();
     tbl_tests();
 
     //C4THROW(&c4err, "test print");

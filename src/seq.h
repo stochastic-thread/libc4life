@@ -12,10 +12,8 @@
   _C4DO(CONCAT(type, _seq), model, var, UNIQUE(tseq), UNIQUE(seq))	\
 
 #define C4DO_SEQ(seq, var)					\
-  for (void *var = c4seq_next(seq);				\
-       !seq->eof;						\
-       var = c4seq_next(seq))					\
-    
+  for (void *var; (var = c4seq_next(seq));)	\
+
 #define _C4SEQ(type, model, var, _tseq)			\
   struct type _tseq;					\
   struct c4seq *var = type(model, &_tseq);		\
@@ -30,8 +28,20 @@ struct c4seq {
   void *(*next)(struct c4seq *);
 };
 
+typedef void *(*c4seq_map_fnt)(void *);
+
+struct c4seq_map {
+  struct c4seq super;
+  c4seq_map_fnt fn;
+  struct c4seq *src;
+};
+
 struct c4seq *c4seq_init(struct c4seq *self);
-void *c4seq_next(struct c4seq *self);
 void c4seq_free(struct c4seq *self);
+
+struct c4seq *c4seq_map(struct c4seq *self,
+			c4seq_map_fnt fn,
+			struct c4seq_map *out);
+void *c4seq_next(struct c4seq *self);
 
 #endif
