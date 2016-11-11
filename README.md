@@ -138,7 +138,7 @@ void seq_tests() {
 ```
 
 #### rolling your own
-Hooking into the sequence framework is trivial; you need a struct named ```[type]_seq``` to hold your state and the ```c4seq``` struct; a constructor named ```[type]_seq``` to initialize the sequence; and a function that provides the next value. The framework keeps track of the index and eof status.
+Hooking into the sequence framework is trivial; you need a struct named ```[type]_seq``` to hold your state and the ```c4seq``` struct; a constructor named ```[type]_seq``` to initialize the sequence; and a function that provides the next value. The framework keeps track of index and eof status.
 
 ```C
 
