@@ -1,9 +1,13 @@
 * add struct c4seq
-** add C4SEQ_DO
+** rename C4SEQ
+** add C4DO_SEQ
 *** use same params as C4SEQ, but assigns vals to var
 *** readme + example
 * ---
 * free recs in c4tbl_free()
+* add ls_seq
+** encapsulate next pre-fetch
+** replaces DO_LS
 * add c4dyna
 ** use slab for its
 ** take it_size as param
