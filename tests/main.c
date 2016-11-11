@@ -195,7 +195,7 @@ void seq_tests() {
   C4SEQ(c4bmap, &bmap, seq);
 
   // Assign lazy sequence mapping lambda over bmap to val_seq,
-  // NULLs are automatically filtered from the result.
+  // NULLs are automatically filtered from the result
   
   struct c4seq *val_seq =
     c4seq_map(seq,
