@@ -121,9 +121,9 @@ void seq_tests() {
   struct c4seq *val_seq =
     c4seq_map(seq,
 	      C4LAMBDA({
-		  struct c4bmap_it *e = _e;
-		  return (e->key == keys + 1) ? e->val : NULL;
-		}, void *, void *_e));
+	        struct c4bmap_it *e = _e;
+		return (e->key == keys + 1) ? e->val : NULL;
+	      }, void *, void *_e));
   
   // Loop over val_seq and check we got the right value
   
