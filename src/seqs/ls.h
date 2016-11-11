@@ -9,7 +9,7 @@
        var = _next, _next = var->next)					\
     
 #define C4LS_DO(ls, var)			\
-  _C4LS_DO(ls, var, UNIQUE(root), UNIQUE(next))	\
+  _C4LS_DO(ls, var, C4GSYM(root), C4GSYM(next))	\
 
 struct c4ls {
   struct c4ls *next, *prev;

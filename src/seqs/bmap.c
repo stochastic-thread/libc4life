@@ -78,7 +78,7 @@ size_t c4bmap_set(struct c4bmap *self, void *key, void *val) {
 }
 
 static void *seq_next(struct c4seq *_seq) {
-  struct c4bmap_seq *seq = STRUCTOF(_seq, struct c4bmap_seq, super);
+  struct c4bmap_seq *seq = c4ptrof(c4bmap_seq, super, _seq);
 
   return (_seq->idx < seq->map->len)
     ? c4slab_idx(&seq->map->its, _seq->idx)

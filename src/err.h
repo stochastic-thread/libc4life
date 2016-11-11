@@ -14,7 +14,7 @@
 	 _next = var ? c4err_next(&var->errs_node, type) : NULL)	\
 
 #define C4CATCH(var, type)						\
-  _C4CATCH(var, type, UNIQUE(next))					\
+  _C4CATCH(var, type, C4GSYM(next))					\
 
 #define C4THROW(type, msg)						\
   ({									\
@@ -29,7 +29,7 @@
        c4try_close(_try), _try = NULL)					\
     
 #define C4TRY(msg)				\
-  _C4TRY(msg, UNIQUE(try))			\
+  _C4TRY(msg, C4GSYM(try))			\
 
 struct c4try {
   char *msg;

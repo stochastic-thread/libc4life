@@ -3,23 +3,23 @@
 
 #include <stdbool.h>
 
-#define _C4DO(type, model, var, _tseq, _seq)			\
-  struct type _tseq;						\
-  struct c4seq *_seq = type(model, &_tseq);			\
-  C4DO_SEQ(_seq, var)						\
+#define _C4DO(type, model, var, _tseq, _seq)	\
+  struct type _tseq;				\
+  struct c4seq *_seq = type(model, &_tseq);	\
+  C4DO_SEQ(_seq, var)				\
     
 #define C4DO(type, model, var)						\
-  _C4DO(CONCAT(type, _seq), model, var, UNIQUE(tseq), UNIQUE(seq))	\
+  _C4DO(C4SYMS(type, _seq), model, var, C4GSYM(tseq), C4GSYM(seq))	\
 
-#define C4DO_SEQ(seq, var)					\
+#define C4DO_SEQ(seq, var)			\
   for (void *var; (var = c4seq_next(seq));)	\
 
-#define _C4SEQ(type, model, var, _tseq)			\
-  struct type _tseq;					\
-  struct c4seq *var = type(model, &_tseq);		\
+#define _C4SEQ(type, model, var, _tseq)		\
+  struct type _tseq;				\
+  struct c4seq *var = type(model, &_tseq);	\
 
-#define C4SEQ(type, model, var)					\
-  _C4SEQ(CONCAT(type, _seq), model, var, UNIQUE(tseq))		\
+#define C4SEQ(type, model, var)				\
+  _C4SEQ(C4SYMS(type, _seq), model, var, C4GSYM(tseq))	\
 
 struct c4seq {
   bool eof;

@@ -28,12 +28,12 @@ void c4tbl_free(struct c4tbl *self) {
 }
 
 static void seq_free(struct c4seq *_seq) {
-  struct c4tbl_seq *seq = STRUCTOF(_seq, struct c4tbl_seq, super);
+  struct c4tbl_seq *seq = c4ptrof(c4tbl_seq, super, _seq);
   c4rec_free(&seq->rec);
 }
 
 static void *seq_next(struct c4seq *_seq) {
-  struct c4tbl_seq *seq = STRUCTOF(_seq, struct c4tbl_seq, super);
+  struct c4tbl_seq *seq = c4ptrof(c4tbl_seq, super, _seq);
   struct c4seq *recs_seq = &seq->recs_seq.super;
   struct c4bmap_it *it;
 

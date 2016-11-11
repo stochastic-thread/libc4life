@@ -1,35 +1,36 @@
 #ifndef C4LIFE_MACROS
 #define C4LIFE_MACROS
 
-#define _CONCAT(x, y)                           \
-  x ## y					\
-
-#define CONCAT(x, y)                            \
-  _CONCAT(x, y)					\
-  
-#define STRUCTOF(ptr, type, field)					\
-  ({									\
-    const typeof(((type *)0)->field) *_field_ptr = (ptr);		\
-    (type *)((char *)_field_ptr - offsetof(type, field));		\
-  })									\
-
-#define UNIQUE(prefix)                          \
-  CONCAT(prefix, __LINE__)			\
-
-#define _C4DEFER(code, _def)					\
-  void _def() code;						\
-  bool _def_trigger __attribute__((cleanup(_def)))		\
+#define _C4DEFER(code, _def)				\
+  void _def() code;					\
+  bool _def_trigger __attribute__((cleanup(_def)))	\
        
 #define C4DEFER(code)				\
-  _C4DEFER(code, UNIQUE(def))			\
+  _C4DEFER(code, C4GSYM(def))			\
   
-#define _C4LAMBDA(code, ret, _fn, ...)			\
-  ({							\
-    ret _fn(__VA_ARGS__) code;				\
-    &_fn;						\
-  })							\
-	       
+#define _C4LAMBDA(code, ret, _fn, ...)		\
+  ({						\
+    ret _fn(__VA_ARGS__) code;			\
+    &_fn;					\
+  })						\
+  
 #define C4LAMBDA(code, ret, ...)			\
-  _C4LAMBDA(code, ret, UNIQUE(fn), ##__VA_ARGS__)	\
+  _C4LAMBDA(code, ret, C4GSYM(fn), ##__VA_ARGS__)	\
 
+#define _C4SYMS(x, y)				\
+  x ## y					\
+  
+#define C4SYMS(x, y)				\
+  _C4SYMS(x, y)					\
+
+#define C4GSYM(prefix)				\
+  C4SYMS(prefix, __LINE__)			\
+  
+#define c4ptrof(type, field, ptr)					\
+  ({									\
+    const typeof(((struct type *)0)->field) *_field_ptr = (ptr);	\
+    (struct type *)((char *)_field_ptr -				\
+		    offsetof(struct type, field));			\
+  })									\
+    
 #endif

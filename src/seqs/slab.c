@@ -41,7 +41,7 @@ void *c4slab_insert(struct c4slab *self, size_t idx) {
 }
 
 static void *seq_next(struct c4seq *_seq) {
-  struct c4slab_seq *seq = STRUCTOF(_seq, struct c4slab_seq, super);
+  struct c4slab_seq *seq = c4ptrof(c4slab_seq, super, _seq);
   return (_seq->idx < seq->slab->len) ? c4slab_idx(seq->slab, _seq->idx) : NULL;
 }
 

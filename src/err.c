@@ -41,7 +41,7 @@ void c4try_close(struct c4try *self) {
     if (super) { c4ls_splice(&super->errs, self->errs.next, self->errs.prev); }
     else {
       C4LS_DO(&self->errs, e) {
-	c4err_print(STRUCTOF(e, struct c4err, errs_node), stderr);
+	c4err_print(c4ptrof(c4err, errs_node, e), stderr);
       }
     }
   }
@@ -93,7 +93,7 @@ struct c4err *c4err_next(struct c4ls *start, struct c4err_t *type) {
   for (struct c4ls *_e = start->next, *end = &try->errs;
        _e != end;
        _e = _e->next) {
-    struct c4err *e = STRUCTOF(_e, struct c4err, errs_node);
+    struct c4err *e = c4ptrof(c4err, errs_node, _e);
     if (!type || c4err_isa(e, type)) { return e; }
   }
 
