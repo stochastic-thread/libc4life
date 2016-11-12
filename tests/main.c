@@ -187,11 +187,11 @@ static void map_tests() {
 }
 
 static void mpool_tests() {
-  // Define and initialize pool
+  // Define and initialize
 
-  C4MPOOL(mp);
+  C4MPOOL(mp, NULL);
   
-  // Deallocate all memory in pool on scope exit
+  // Deallocate on scope exit
 
   C4DEFER({ c4mpool_free(&mp); });
 
@@ -204,7 +204,7 @@ static void mpool_tests() {
     ptrs[i] = c4mpool_acquire(&mp, sizeof(int));
   }
 
-  // Remove pointer from pool and deallocate
+  // Remove pointer and deallocate
   
   c4mpool_release(&mp, ptrs[0]);
 
@@ -216,17 +216,30 @@ static void mpool_tests() {
 static void mslab_tests() {
   const int LEN = 10;
 
-  C4MSLAB(ms, sizeof(int) * LEN, NULL);
-  C4DEFER({ c4mslab_free(&ms); });
+  // Define and initialize with specified slab size
 
-  void *prev_ptr = NULL;
+  C4MSLAB(ms, sizeof(int) * LEN, NULL);
   
+  // Deallocate on scope exit
+
+  C4DEFER({ c4mslab_free(&ms); });
+  
+  void *prev_ptr = NULL;
   for (int i = 0; i < LEN; i++) {
+    // Allocate memory
     void *ptr = c4mslab_acquire(&ms, sizeof(int));
+
+    // Make sure we're using the same block of memory
+    
     assert(!prev_ptr || ptr == prev_ptr + sizeof(int));
+    
+    // Make sure slab offset matches our view of reality
+
     assert(c4mslab_it(&ms)->offs == sizeof(int) * (i+1));
     prev_ptr = ptr;
   }
+
+  // Trigger allocation of new slab and verify offset
   
   c4mslab_acquire(&ms, 1);
   assert(c4mslab_it(&ms)->offs == 1);

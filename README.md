@@ -28,6 +28,9 @@ c4life needs to keep track of internal state for some of it's features. Calling 
 ### memory
 c4life is designed to support and encourage stack allocation wherever possible. Most initializers and finalizers make no assumptions about how the memory pointed to was allocated, and take no responsibility for freeing memory explicitly allocated by user code.
 
+#### allocators
+c4life provides a general, extensible allocator interface and a set of stackable implementations that focus on specific aspects of dynamic memory allocation.
+
 #### pools
 Memory pools allow treating sets of allocations as single blocks of memory by keeping track of individual pointers. The data needed for book keeping is prefixed to each allocation and supports O(1) addition and removal without additional allocations.
 
@@ -36,11 +39,11 @@ Memory pools allow treating sets of allocations as single blocks of memory by ke
 #include <c4life/mem/mpool.h>
 
 void mpool_tests() {
-  // Define and initialize pool
+  // Define and initialize
 
   C4MPOOL(mp);
   
-  // Deallocate all memory in pool on scope exit
+  // Deallocate on scope exit
 
   C4DEFER({ c4mpool_free(&mp); });
 
@@ -53,13 +56,54 @@ void mpool_tests() {
     ptrs[i] = c4mpool_acquire(&mp, sizeof(int));
   }
 
-  // Remove pointer from pool and deallocate
+  // Remove pointer and deallocate
 
   c4mpool_release(&mp, ptrs[0]);
 
   // Reallocate pointer
   
   ptrs[1] = c4mpool_require(&mp, ptrs[1], sizeof(long));
+}
+
+```
+
+#### slabs
+Memory slabs emulate an unlimited block of memory by allocating slabs of user defined size and keeping track of available space within them. Since the allocator doesn't keep any information about individual allocations; the only way to release allocated memory is to free the allocator. They are useful for reducing the number of allocations in code that doesn't need to free individual pointers; or to feed memory pools in code that needs pointer tracking.
+
+```C
+
+#include <c4life/mem/mslab.h>
+
+void mslab_tests() {
+  const int LEN = 10;
+
+  // Define and initialize with specified slab size
+
+  C4MSLAB(ms, sizeof(int) * LEN, NULL);
+  
+  // Deallocate on scope exit
+
+  C4DEFER({ c4mslab_free(&ms); });
+  
+  void *prev_ptr = NULL;
+  for (int i = 0; i < LEN; i++) {
+    // Allocate memory
+    void *ptr = c4mslab_acquire(&ms, sizeof(int));
+
+    // Make sure we're using the same block of memory
+    
+    assert(!prev_ptr || ptr == prev_ptr + sizeof(int));
+    
+    // Make sure slab offset matches our view of reality
+
+    assert(c4mslab_it(&ms)->offs == sizeof(int) * (i+1));
+    prev_ptr = ptr;
+  }
+
+  // Trigger allocation of new slab and verify offset
+  
+  c4mslab_acquire(&ms, 1);
+  assert(c4mslab_it(&ms)->offs == 1);
 }
 
 ```

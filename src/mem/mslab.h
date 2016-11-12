@@ -15,10 +15,9 @@ struct c4mslab_it {
 };
 
 struct c4mslab {
-  struct c4malloc *src;
   size_t it_size;
   struct c4ls full_its, live_its;
-  struct c4malloc malloc;
+  struct c4malloc malloc, *src;
 };
 
 struct c4mslab *c4mslab_init(struct c4mslab *self, size_t it_size,

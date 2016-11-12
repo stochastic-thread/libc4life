@@ -5,9 +5,9 @@
 #include "malloc.h"
 #include "seqs/ls.h"
 
-#define C4MPOOL(var)				\
+#define C4MPOOL(var, src)			\
   struct c4mpool var;				\
-  c4mpool_init(&var);				\
+  c4mpool_init(&var, src);			\
 
 struct c4mpool_it {
   struct c4ls its_node;
@@ -16,10 +16,10 @@ struct c4mpool_it {
 
 struct c4mpool {
   struct c4ls its;
-  struct c4malloc malloc;
+  struct c4malloc malloc, *src;
 };
 
-struct c4mpool *c4mpool_init(struct c4mpool *self);
+struct c4mpool *c4mpool_init(struct c4mpool *self, struct c4malloc *src);
 void c4mpool_free(struct c4mpool *self);
 
 void *c4mpool_add(struct c4mpool *self, struct c4mpool_it *it);
