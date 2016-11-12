@@ -28,6 +28,34 @@ c4life needs to keep track of internal state for some of it's features. Calling 
 ### memory
 c4life is designed to support and encourage stack allocation wherever possible. Most initializers and finalizers make no assumptions about how the memory pointed to was allocated, and take no responsibility for freeing memory explicitly allocated by user code.
 
+#### pools
+Memory pools allow treating sets of allocations as single blocks of memory, all they do is keep track of pointers. The data needed for book keeping is prefixed to each allocation and supports O(1) addition and removal without additional allocations.
+
+```C
+
+static void mpool_tests() {
+  // Define and initialize pool
+  C4MPOOL(mp);
+  
+  // Deallocate all memory in pool on scope exit
+  C4DEFER({ c4mpool_free(&mp); });
+
+  void *ptrs[10];
+  
+  // Allocate memory
+  for (int i = 0; i < 10; i++) {
+    ptrs[i] = c4mpool_alloc(&mp, sizeof(int) * 2);
+  }
+
+  // Remove pointer from pool and free manually
+  free(c4mpool_remove(&mp, ptrs[0]));
+
+  // Undo removing pointer, or transfer pointers between pools
+  c4mpool_add(&mp, c4mpool_remove(&mp, ptrs[1]));
+}
+
+```
+
 ### lambdas
 The ```C4LAMBDA()``` macro defines anonymous nested functions.
 
@@ -57,34 +85,6 @@ void defer_tests() {
   }
   
   assert(called);
-}
-
-```
-
-### memory pools
-Memory pools allow treating sets of allocations as single blocks of memory, all they do is keep track of pointers. The data needed for book keeping is prefixed to each allocation and supports O(1) addition and removal without additional allocations.
-
-```C
-
-static void mpool_tests() {
-  // Define and initialize pool
-  C4MPOOL(mp);
-  
-  // Deallocate all memory in pool on scope exit
-  C4DEFER({ c4mpool_free(&mp); });
-
-  void *ptrs[10];
-  
-  // Allocate memory
-  for (int i = 0; i < 10; i++) {
-    ptrs[i] = c4mpool_alloc(&mp, sizeof(int) * 2);
-  }
-
-  // Remove pointer from pool and free manually
-  free(c4mpool_remove(&mp, ptrs[0]));
-
-  // Undo removing pointer, or transfer pointers between pools
-  c4mpool_add(&mp, c4mpool_remove(&mp, ptrs[1]));
 }
 
 ```
