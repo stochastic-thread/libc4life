@@ -252,6 +252,7 @@ static void seq_tests() {
     }, _it, val_seq);
       
   // Loop over val_seq and check we got the right value
+
   for (char *val; (val = c4seq_next(val_seq));) {
     assert(val_seq->idx == 1);
     assert(val == vals + 1);

@@ -154,6 +154,7 @@ void seq_tests() {
     }, _it, val_seq);
       
   // Loop over val_seq and check we got the right value
+  
   for (char *val; (val = c4seq_next(val_seq));) {
     assert(val_seq->idx == 1);
     assert(val == vals + 1);
@@ -165,7 +166,7 @@ void seq_tests() {
 ```
 
 #### dynamic arrays
-c4life provides dynamic arrays with user specified item size; they are implemented as a single block of memory that is grown automatically when needed.
+c4life provides dynamic arrays with user specified item size; they're implemented as a single block of memory that is grown automatically when needed.
 
 ```C
 
