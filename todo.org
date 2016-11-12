@@ -1,3 +1,5 @@
+* add C4SLAB_DO
+* add C4DYNA_DO
 * add C4BMAP_DO
 ** loop entries
 ** use in tbl & rec
@@ -7,8 +9,12 @@
 ** use dyna as cleanup marker
 ** push defers and pop on exit
 ** free dyna before exit
+* add c4ls_seq
+** encapsulate next pre-fetch from LS_DO
+* add c4array_seq
+** init with void *, len & it_size
 * rename err_start()/_next() to try_X()
-*---
+---
 * add automagic freeing of cols & tbls like err/val types
 * add vicsy_peer_save()
 * implement c4map_merge()
@@ -24,13 +30,6 @@
 * add struct c4seq *_c4seq_gather(...)
 ** add c4seq_gather macro to NULL terminate
 * add struct c4seq *c4seq_spread(self, cnt)
-* add ls_seq
-** encapsulate next pre-fetch
-** replaces DO_LS
-
-* add array_seq
-** init with it_size
-
 * add pthread chan based on vec & semaphore (sbcl docs)
 * add C4PANIC/RECOVER macros
 ** use jmpbuf
