@@ -102,32 +102,31 @@ void seq_tests() {
   char vals[3] = {'a', 'b', 'c'};
   for (int i = 0; i < 3; i++) { c4bmap_add(&bmap, keys+i, vals+i); }
 
-  // Loop anonymous sequence for bmap
+  // Define and initialize seq to stack allocated sequence for bmap,
+  // same as:
+  // 
+  // struct c4bmap_seq _seq;
+  // struct c4seq *seq = c4bmap_seq(&bmap, &_seq);
   
-  int *key = keys;
-  C4DO(c4bmap, &bmap, _e) {
-    struct c4bmap_it *e = _e;
-    assert(e->key == key);
-    key++;
-  }
-
-  // Define and initialize seq to point to new sequence for bmap
-
   C4SEQ(c4bmap, &bmap, seq);
 
-  // Assign lazy sequence mapping lambda over bmap to val_seq,
-  // NULLs are automatically filtered from the result
-  
-  struct c4seq *val_seq =
-    c4seq_map(seq,
-	      C4LAMBDA({
-		  struct c4bmap_it *e = _e;
-		  return (e->key == keys + 1) ? e->val : NULL;
-		}, void *, void *_e));
-  
+  // Define and initialize val_seq to stack allocated sequence mapping
+  // lambda over bmap, NULLs are automatically filtered from the result;
+  // same as:
+  //
+  // struct c4seq_map _val_seq;
+  // struct c4seq *val_seq = c4seq_map(seq, C4LAMBDA({
+  //   struct c4bmap_it *it = _it;
+  //   return (it->key == keys + 1) ? it->val : NULL;
+  // }, void *, void *it), &_val_seq);
+
+  C4SEQ_MAP(seq, {
+      struct c4bmap_it *it = _it;
+      return (it->key == keys + 1) ? it->val : NULL;
+    }, _it, val_seq);
+      
   // Loop over val_seq and check we got the right value
-  
-  C4DO_SEQ(val_seq, val) {
+  for (char *val; (val = c4seq_next(val_seq));) {
     assert(val_seq->idx == 1);
     assert(val == vals + 1);
   }

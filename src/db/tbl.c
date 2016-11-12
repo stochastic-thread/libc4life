@@ -18,8 +18,8 @@ struct c4tbl *c4tbl_init(struct c4tbl *self, const char *name) {
 void c4tbl_free(struct c4tbl *self) {
   free(self->name);
 
-  C4DO(c4bmap, &self->recs, _e) {
-    struct c4bmap_it *e = _e;
+  C4SEQ(c4bmap, &self->recs, rec_seq);
+  for (struct c4bmap_it *e; (e = c4seq_next(rec_seq));) {
     c4bmap_free(e->val);
     free(e->val);
   }

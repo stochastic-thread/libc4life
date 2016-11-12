@@ -12,10 +12,10 @@ struct c4rec *c4rec_init(struct c4rec *self, c4uid_t id) {
 }
 
 void c4rec_free(struct c4rec *self) {
-  C4DO(c4bmap, &self->flds, _e) {
-    struct c4bmap_it *e = _e;
-    struct c4col *col = e->key;
-    col->type->free_val(e->val);
+  C4SEQ(c4bmap, &self->flds, fld_seq);
+  for (struct c4bmap_it *it; (it = c4seq_next(fld_seq));) {
+    struct c4col *col = it->key;
+    col->type->free_val(it->val);
   }
 
   c4bmap_free(&self->flds);
