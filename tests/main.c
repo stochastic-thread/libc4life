@@ -209,7 +209,7 @@ static void mpool_tests() {
 
   // Reallocate pointer
   
-  ptrs[2] = c4mpool_require(&mp, ptrs[2], sizeof(long));
+  ptrs[1] = c4mpool_require(&mp, ptrs[1], sizeof(long));
 }
 
 static void rec_tests() {
