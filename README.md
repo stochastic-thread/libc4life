@@ -50,20 +50,16 @@ void mpool_tests() {
   // Allocate memory
 
   for (int i = 0; i < LEN; i++) {
-    ptrs[i] = c4mpool_alloc(&mp, sizeof(int));
+    ptrs[i] = c4mpool_acquire(&mp, sizeof(int));
   }
 
-  // Remove pointer from pool and free manually
+  // Remove pointer from pool and deallocate
 
-  free(c4mpool_remove(&mp, ptrs[0]));
-
-  // Undo removing pointer, or transfer pointers between pools
-
-  c4mpool_add(&mp, c4mpool_remove(&mp, ptrs[1]));
+  c4mpool_release(&mp, ptrs[0]);
 
   // Reallocate to change size
   
-  ptrs[2] = c4mpool_realloc(&mp, ptrs[2], sizeof(long));
+  ptrs[2] = c4mpool_require(&mp, ptrs[2], sizeof(long));
 }
 
 ```

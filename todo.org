@@ -3,6 +3,7 @@
 ** single block of memory
 ** no freeing
 ** realloc takes new memory
+** dyna with it_size 1
 * add mem/c4mrealloc struct
 ** dyna with it size for memory
 ** prefix ls to its, add free list
