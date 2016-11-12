@@ -217,7 +217,7 @@ void err_tests() {
 MIT
 
 ### support
-Thanks to a permanently messed up spine and a complete lack of patience for authorities and capitalistic, imperialistic bullshit; I'm mostly unemployed these days. The good news is that it frees a lot of time for thinking, coding and sharing. Any assistance with solving the rest of the equation would be most appreciated.
+Thanks to a permanently messed up spine and a complete lack of patience with authorities and capitalistic, imperialistic bullshit; I'm mostly unemployed these days. The good news is that it frees a lot of time for thinking, coding and sharing. Any assistance with solving the rest of the equation would be most appreciated.
 
 https://www.paypal.me/codr4life
 
