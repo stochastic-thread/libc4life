@@ -68,7 +68,7 @@ void mpool_tests() {
 ```
 
 #### slabs
-Memory slabs emulate an unlimited block of memory by allocating slabs of user defined size and keeping track of available space within them. Since the allocator doesn't keep any information about individual allocations; the only way to release allocated memory is to free the allocator. They are useful for reducing the number of allocations in code that doesn't need to free individual pointers; or to feed memory pools in code that needs pointer tracking.
+Memory slabs emulate an unlimited block of memory by allocating slabs of user defined size and keeping track of available space within them. Since the allocator doesn't keep any information about individual allocations; the only way to release allocated memory is to free the allocator. They are useful for reducing the number of allocations in code that doesn't need to free individual pointers; or to feed memory pools in code that needs pointer tracking as well.
 
 ```C
 
