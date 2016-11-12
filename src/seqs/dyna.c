@@ -11,7 +11,9 @@ struct c4dyna *c4dyna_init(struct c4dyna *self, size_t it_size) {
 void c4dyna_free(struct c4dyna *self) { c4slab_free(&self->its); }
 
 void c4dyna_delete(struct c4dyna *self, size_t idx) {
-  c4slab_delete(&self->its, idx, self->len);
+  assert(idx < self->len);
+  self->len--;
+  if (idx < self->len) { c4slab_move(&self->its, idx, idx+1, self->len - idx); }
 }
 
 void c4dyna_clear(struct c4dyna *self) { self->len = 0; }
@@ -21,19 +23,23 @@ void c4dyna_grow(struct c4dyna *self, size_t len) {
 }
 
 void *c4dyna_idx(struct c4dyna *self, size_t idx) {
-  return c4slab_idx(&self->its, idx, self->len);
+  assert(idx < self->len);
+  return c4slab_idx(&self->its, idx);
 }
 
 void *c4dyna_insert(struct c4dyna *self, size_t idx) {
     if (self->len == self->its.len) { c4slab_grow(&self->its, self->len + 1); }
+    if (idx < self->len-1) {
+      c4slab_move(&self->its, idx+1, idx, self->len - idx);
+    }
     self->len++;
-    return c4slab_insert(&self->its, idx, self->len);
+    return c4slab_idx(&self->its, idx);
 }
 
 void *c4dyna_pop(struct c4dyna *self) {
   assert(self->len > 0);
   self->len--;
-  return c4slab_idx(&self->its, self->len, self->len+1);
+  return c4slab_idx(&self->its, self->len);
 }
 
 void *c4dyna_push(struct c4dyna *self) {
@@ -43,7 +49,7 @@ void *c4dyna_push(struct c4dyna *self) {
 static void *seq_next(struct c4seq *_seq) {
   struct c4dyna_seq *seq = C4PTROF(c4dyna_seq, super, _seq);
   return (_seq->idx < seq->dyna->len)
-    ? c4dyna_idx(seq->dyna, _seq->idx)
+    ? c4slab_idx(&seq->dyna->its, _seq->idx)
     : NULL;
 }
 

@@ -76,7 +76,7 @@ size_t c4bmap_set(struct c4bmap *self, void *key, void *val) {
 static void *seq_next(struct c4seq *_seq) {
   struct c4bmap_seq *seq = C4PTROF(c4bmap_seq, super, _seq);
   return (_seq->idx < seq->bmap->its.len)
-    ? c4bmap_idx(seq->bmap, _seq->idx)
+    ? c4dyna_idx(&seq->bmap->its, _seq->idx)
     : NULL;
 }
 
