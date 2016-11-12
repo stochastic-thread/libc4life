@@ -29,7 +29,7 @@ c4life needs to keep track of internal state for some of it's features. Calling 
 c4life is designed to support and encourage stack allocation wherever possible. Most initializers and finalizers make no assumptions about how the memory pointed to was allocated, and take no responsibility for freeing memory explicitly allocated by user code.
 
 #### pools
-Memory pools allow treating sets of allocations as single blocks of memory, all they do is keep track of pointers. The data needed for book keeping is prefixed to each allocation and supports O(1) addition and removal without additional allocations.
+Memory pools allow treating sets of allocations as single blocks of memory by keeping track of individual pointers. The data needed for book keeping is prefixed to each allocation and supports O(1) addition and removal without additional allocations.
 
 ```C
 
