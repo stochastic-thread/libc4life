@@ -3,10 +3,12 @@
 ** no freeing
 ** realloc takes new memory
 * change mpool & mslab to use malloc->prev
+* simplify seq example to use dyna of ints and inc
 * ---
 * add mem/remalloc
-** dyna with it size for memory
-** prefix ls to its, add free list
+** ls of fixed size slabs
+** init with it_size & slab_size
+** ls freelist
 * add c4pair with variable key/val size
 ** one char data[] member, c4pair_x(pair), c4pair_y(pair, x_size) 
 * add c4bset with it_size
