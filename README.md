@@ -76,8 +76,8 @@ static void mpool_tests() {
   void *ptrs[10];
   
   // Allocate memory
-  for (int i = 1; i <= 10; i++) {
-    ptrs[i-1] = c4mpool_alloc(&mp, sizeof(int) * 2);
+  for (int i = 0; i < 10; i++) {
+    ptrs[i] = c4mpool_alloc(&mp, sizeof(int) * 2);
   }
 
   // Remove pointer from pool and free manually
