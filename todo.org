@@ -1,9 +1,9 @@
-* add C4DEFER_SCOPE(name) & C4DEFER_TO(scope)
+* add C4DEFER_SCOPE(name) {} & C4DEFER_TO(scope)
 ** check cleanup docs for fn cleanup
+** limit scope of name with for()
 ** use dyna as cleanup marker
 ** push defers and pop on exit
 ** free dyna before exit
-
 
 * rename err_start()/_next() to try_X()
 
