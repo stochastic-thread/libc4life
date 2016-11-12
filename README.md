@@ -153,7 +153,7 @@ void seq_tests() {
       return (it->key == keys + 1) ? it->val : NULL;
     }, _it, val_seq);
       
-  // Loop over val_seq and check we got the right value
+  // Loop val_seq and check value
   
   for (char *val; (val = c4seq_next(val_seq));) {
     assert(val_seq->idx == 1);
