@@ -164,6 +164,39 @@ void seq_tests() {
 
 ```
 
+#### dynamic arrays
+c4life provides dynamic arrays with user specified item size; they are implemented as a single block of memory that is grown automatically when needed.
+
+```C
+
+#include <c4life/seqs/dyna.h>
+
+void dyna_tests() {
+  // Declare and initialize dynamic array named arr for int sized items
+  
+  C4DYNA(arr, sizeof(int));
+  const int LEN = 10;
+
+  // Preallocate to fit at least LEN/2 items
+
+  c4dyna_grow(&arr, LEN/2);
+
+  // Populate array
+
+  for (int i = 0; i < LEN; i++) { *(int *)c4dyna_push(&arr) = 1; }
+  assert(arr.len == LEN);
+
+  // Empty array and check reverse order
+
+  for (int i = LEN-1; i >= 0; i--) { *(int *)c4dyna_pop(&arr) = i; }
+  assert(arr.len == 0);
+
+  c4dyna_free(&arr);
+}
+
+
+```
+
 #### rolling your own
 Hooking into the sequence framework is trivial; you need a struct named ```[type]_seq``` to hold your state and the ```c4seq``` struct; a constructor named ```[type]_seq``` to initialize the sequence; and a function that provides the next value. The framework keeps track of index and eof status.
 

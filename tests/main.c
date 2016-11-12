@@ -61,15 +61,26 @@ static void defer_tests() {
 }
 
 static void dyna_tests() {
-  C4DYNA(d, sizeof(int));
+  // Declare and initialize dynamic array named arr for int sized items
+  
+  C4DYNA(arr, sizeof(int));
+  const int LEN = 10;
 
-  for (int i = 0; i < 10; i++) { *(int *)c4dyna_push(&d) = 1; }
-  assert(d.len == 10);
+  // Preallocate to fit at least LEN/2 items
 
-  for (int i = 9; i >= 0; i--) { *(int *)c4dyna_pop(&d) = i; }
-  assert(d.len == 0);
+  c4dyna_grow(&arr, LEN/2);
 
-  c4dyna_free(&d);
+  // Populate array
+
+  for (int i = 0; i < LEN; i++) { *(int *)c4dyna_push(&arr) = 1; }
+  assert(arr.len == LEN);
+
+  // Empty array and check reverse order
+
+  for (int i = LEN-1; i >= 0; i--) { *(int *)c4dyna_pop(&arr) = i; }
+  assert(arr.len == 0);
+
+  c4dyna_free(&arr);
 }
 
 static struct c4err_t custom_type;
