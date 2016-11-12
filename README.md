@@ -62,7 +62,7 @@ void defer_tests() {
 ```
 
 ### memory pools
-Memory pools allow treating sets of allocations as single blocks of memory, all they do is keep track of pointers. The data needed for book-keeping is prefixed to each allocation and supports O(1) addition and removal without additional allocations.
+Memory pools allow treating sets of allocations as single blocks of memory, all they do is keep track of pointers. The data needed for book keeping is prefixed to each allocation and supports O(1) addition and removal without additional allocations.
 
 ```C
 
