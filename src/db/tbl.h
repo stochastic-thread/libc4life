@@ -1,8 +1,8 @@
 #ifndef C4TBL_H
 #define C4TBL_H
 
-#include "seq.h"
 #include "seqs/bmap.h"
+#include "seqs/seq.h"
 
 struct c4rec;
 
