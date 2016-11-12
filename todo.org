@@ -1,6 +1,7 @@
 * add void *mpool_realloc(void *)
 * add c4pair with variable key/val size
 ** one char data[] member, c4pair_x(pair), c4pair_y(pair, x_size) 
+* move seq.* to seqs
 * add c4bset with it_size
 ** base on dyna/bmap
 ** return ptr from insert/add

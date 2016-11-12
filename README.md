@@ -33,6 +33,8 @@ Memory pools allow treating sets of allocations as single blocks of memory, all 
 
 ```C
 
+#include <c4life/mem/mpool.h>
+
 void mpool_tests() {
   // Define and initialize pool
   C4MPOOL(mp);

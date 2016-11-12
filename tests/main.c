@@ -10,10 +10,10 @@
 #include "db/rec.h"
 #include "db/tbl.h"
 #include "err.h"
+#include "mem/mpool.h"
 #include "seqs/bmap.h"
 #include "seqs/dyna.h"
 #include "seqs/ls.h"
-#include "mpool.h"
 #include "val.h"
 
 static int int_cmp(void *_x, void *_y) {
