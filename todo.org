@@ -1,9 +1,3 @@
-* add mpool
-** mpool_alloc & mpool_free 
-** alloc enough for ptr + ls
-** keep ls of allocs in pool and free all in mpool_free
-** add MPOOL_ALLOC(self, type)  macro that calls sizeof
-
 * add C4DEFER_SCOPE(name) & C4DEFER_TO(scope)
 ** check cleanup docs for fn cleanup
 ** use dyna as cleanup marker
