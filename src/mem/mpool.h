@@ -20,6 +20,7 @@ void c4mpool_free(struct c4mpool *self);
 
 void *c4mpool_add(struct c4mpool *self, struct c4mpool_it *it);
 void *c4mpool_alloc(struct c4mpool *self, size_t size);
+void *c4mpool_realloc(struct c4mpool *self, void *ptr, size_t size);
 struct c4mpool_it *c4mpool_remove(struct c4mpool *self, void *ptr);
 
 #endif

@@ -25,5 +25,8 @@ install(FILES ${DB_HEADERS} DESTINATION include/${PROJECT_NAME}/db)
 file(GLOB DB_COL_HEADERS src/db/cols/*.h)
 install(FILES ${DB_COL_HEADERS} DESTINATION include/${PROJECT_NAME}/db/cols)
 
+file(GLOB MEM_HEADERS src/mem/*.h)
+install(FILES ${DB_HEADERS} DESTINATION include/${PROJECT_NAME}/mem)
+
 file(GLOB SEQ_HEADERS src/seqs/*.h)
 install(FILES ${SEQ_HEADERS} DESTINATION include/${PROJECT_NAME}/seqs)

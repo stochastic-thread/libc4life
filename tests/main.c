@@ -187,23 +187,33 @@ static void map_tests() {
 
 static void mpool_tests() {
   // Define and initialize pool
+
   C4MPOOL(mp);
   
   // Deallocate all memory in pool on scope exit
+
   C4DEFER({ c4mpool_free(&mp); });
 
-  int *ptrs[10];
+  const int LEN = 10;
+  void *ptrs[LEN];
   
   // Allocate memory
-  for (int i = 0; i < 10; i++) {
+
+  for (int i = 0; i < LEN; i++) {
     ptrs[i] = c4mpool_alloc(&mp, sizeof(int));
   }
 
   // Remove pointer from pool and free manually
+
   free(c4mpool_remove(&mp, ptrs[0]));
 
   // Undo removing pointer, or transfer pointers between pools
+
   c4mpool_add(&mp, c4mpool_remove(&mp, ptrs[1]));
+
+  // Reallocate to change size
+  
+  ptrs[2] = c4mpool_realloc(&mp, ptrs[2], sizeof(long));
 }
 
 static void rec_tests() {

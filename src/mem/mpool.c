@@ -20,6 +20,14 @@ void *c4mpool_alloc(struct c4mpool *self, size_t size) {
   return c4mpool_add(self, it);
 }
 
+void *c4mpool_realloc(struct c4mpool *self, void *ptr, size_t size) {
+  struct c4mpool_it *it = C4PTROF(c4mpool_it, ptr, ptr);
+  c4ls_delete(&it->its_node);
+  it = realloc(it, sizeof(struct c4mpool_it) + size);
+  c4ls_prepend(&self->its, &it->its_node);
+  return it->ptr;
+}
+
 struct c4mpool_it *c4mpool_remove(struct c4mpool *self, void *ptr) {
   struct c4mpool_it *it = C4PTROF(c4mpool_it, ptr, ptr);
   c4ls_delete(&it->its_node);

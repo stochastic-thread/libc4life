@@ -1,4 +1,11 @@
-* add void *mpool_realloc(void *)
+* add mem/c4malloc interface
+* add mem/c4mslab
+** single block of memory
+** no freeing
+** realloc takes new memory
+* add mem/c4mrealloc struct
+** dyna with it size for memory
+** prefix ls to its, add free list
 * add c4pair with variable key/val size
 ** one char data[] member, c4pair_x(pair), c4pair_y(pair, x_size) 
 * move seq.* to seqs
