@@ -14,6 +14,12 @@
 * add c4array_seq
 ** init with void *, len & it_size
 * rename err_start()/_next() to try_X()
+* add c4seq_skip(size_t n)
+** add skip(n) method
+** do nothing but increase idx if NULL
+** forward to recs_iter in tbl
+** forward to src seq_map
+** init to call c4seq_next() n times
 ---
 * add automagic freeing of cols & tbls like err/val types
 * add vicsy_peer_save()
@@ -22,11 +28,6 @@
 * add tbl_reset()
 ** merge rec
 * add vicsy_peer_load()
-* add c4seq_skip(size_t n)
-** add skip(n) method
-** do nothing but increase idx if NULL
-** forward to recs_iter in tbl
-** forward skip to src seq_map
 * add struct c4seq *_c4seq_gather(...)
 ** add c4seq_gather macro to NULL terminate
 * add struct c4seq *c4seq_spread(self, cnt)
