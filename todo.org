@@ -13,6 +13,13 @@
 ** keep ls of allocs in pool
 
 *---
+* add automagic freeing of cols & tbls like err/val types
+* add vicsy_peer_save()
+* implement c4map_merge()
+** add c4map_splice()
+* add tbl_reset()
+** merge rec
+* add vicsy_peer_load()
 * add c4seq_skip(size_t n)
 ** add skip(n) method
 ** do nothing but increase idx if NULL
@@ -28,18 +35,6 @@
 * add array_seq
 ** init with it_size
 
-* add vicsy_peer_save()
-* implement c4map_merge()
-** add c4map_splice()
-* add init macros
-** ex C4MAP(var, cmp)
-** declare var & run init
-** add for all types
-* add map to README
-* add tbl_reset()
-** merge rec
-* add vicsy_peer_load()
-* add automagic freeing of cols & tbls like err/val types
 * add pthread chan based on vec & semaphore (sbcl docs)
 * add C4PANIC/RECOVER macros
 ** use jmpbuf
