@@ -4,7 +4,6 @@
 #include <stdlib.h>
 
 struct c4malloc {
-  struct c4malloc *prev;
   void *(*acquire)(struct c4malloc *, size_t);
   void (*release)(struct c4malloc *, void *);
   void *(*require)(struct c4malloc *, void *, size_t);

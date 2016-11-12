@@ -2,6 +2,7 @@
 #include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include "c4.h"
 #include "macros.h"
 #include "mslab.h"
 
@@ -9,8 +10,10 @@ static void *acquire(struct c4malloc *self, size_t size) {
   return c4mslab_acquire(C4PTROF(c4mslab, malloc, self), size);
 }
 
-struct c4mslab *c4mslab_init(struct c4mslab *self, size_t it_size) {
+struct c4mslab *c4mslab_init(struct c4mslab *self, size_t it_size,
+			     struct c4malloc *src) {
   self->it_size = it_size;
+  self->src = src ? src : &c4malloc;
   c4malloc_init(&self->malloc);
   self->malloc.acquire = acquire;
   c4ls_init(&self->full_its);
@@ -19,8 +22,13 @@ struct c4mslab *c4mslab_init(struct c4mslab *self, size_t it_size) {
 }
 
 void c4mslab_free(struct c4mslab *self) {
-  C4LS_DO(&self->full_its, _it) { free(C4PTROF(c4mslab_it, its_node, _it)); }
-  C4LS_DO(&self->live_its, _it) { free(C4PTROF(c4mslab_it, its_node, _it)); }
+  C4LS_DO(&self->full_its, _it) {
+    c4malloc_release(self->src, C4PTROF(c4mslab_it, its_node, _it));
+  }
+  
+  C4LS_DO(&self->live_its, _it) {
+    c4malloc_release(self->src, C4PTROF(c4mslab_it, its_node, _it));
+  }
 }
 
 void *c4mslab_acquire(struct c4mslab *self, size_t size) {
@@ -39,7 +47,9 @@ void *c4mslab_acquire(struct c4mslab *self, size_t size) {
     } 
   }
 
-  struct c4mslab_it *it = malloc(sizeof(struct c4mslab_it) + self->it_size);
+  struct c4mslab_it *it =
+    c4malloc_acquire(self->src, sizeof(struct c4mslab_it) + self->it_size);
+  
   it->offs = size;
   c4ls_prepend(&self->live_its, &it->its_node);
   return it->data;

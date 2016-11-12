@@ -22,7 +22,7 @@ struct c4bmap_it {
 };
 
 struct c4bmap_seq {
-  struct c4seq super;
+  struct c4seq seq;
   struct c4bmap *bmap;
 };
 

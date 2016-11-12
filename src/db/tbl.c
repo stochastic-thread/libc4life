@@ -34,7 +34,7 @@ static void seq_free(struct c4seq *_seq) {
 
 static void *seq_next(struct c4seq *_seq) {
   struct c4tbl_seq *seq = C4PTROF(c4tbl_seq, super, _seq);
-  struct c4seq *recs_seq = &seq->recs_seq.super;
+  struct c4seq *recs_seq = &seq->recs_seq.seq;
   struct c4bmap_it *it;
 
   if (!(it = c4seq_next(recs_seq))) { return NULL; }

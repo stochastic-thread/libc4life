@@ -1,0 +1,60 @@
+* change mpool & mslab to use malloc->prev
+* simplify seq example to use dyna of ints and inc
+* add mem/remalloc
+** init with mpool * & it_size
+** assert it_size in acquire
+** ls freelist
+** move back and forth between freelist / mpool
+* add c4pair with variable key/val size
+** one char data[] member, c4pair_x(pair), c4pair_y(pair, x_size) 
+* ---
+* add c4bset with it_size
+** base on dyna/bmap
+** return ptr from insert/add
+** add C4BSET_ADD / INSERT with type params to streamline usage
+*** copy deref
+* change c4bmap to use cbset
+* adapt cbmap to pair with variable key/val size
+* add C4SLAB_DO
+* add C4DYNA_DO
+* add C4BMAP_DO
+** loop entries
+** use in tbl & rec
+* add C4DEFER_SCOPE(name) {} & C4DEFER_TO(scope)
+** check cleanup docs for fn cleanup
+** limit scope of name with for()
+** use dyna as cleanup marker
+** push defers and pop on exit
+** free dyna before exit
+* add c4ls_seq
+** encapsulate next pre-fetch from LS_DO
+* add c4array_seq
+** init with void *, len & it_size
+* rename err_start()/_next() to try_X()
+* add c4seq_skip(size_t n)
+** add skip(n) method
+** do nothing but increase idx if NULL
+** forward to recs_iter in tbl
+** forward to src seq_map
+** init to call c4seq_next() n times
+---
+* add automagic freeing of cols & tbls like err/val types
+* add vicsy_peer_save()
+* add c4pair
+* implement c4map_merge()
+** add c4map_splice()
+* add tbl_reset()
+** merge rec
+* add vicsy_peer_load()
+* add struct c4seq *_c4seq_gather(...)
+** add c4seq_gather macro to NULL terminate
+* add struct c4seq *c4seq_spread(self, cnt)
+* add pthread chan based on vec & semaphore (sbcl docs)
+* add C4PANIC/RECOVER macros
+** use jmpbuf
+** register recovers in ctx
+*** else print stacktrace from tries & exit
+* add C4ERR_ENABLED define
+** set to 1 if not defined in err.h
+** use to bypass all error macros
+* add c4mbox based on pthread semaphore & queue

@@ -216,7 +216,7 @@ static void mpool_tests() {
 static void mslab_tests() {
   const int LEN = 10;
 
-  C4MSLAB(ms, sizeof(int) * LEN);
+  C4MSLAB(ms, sizeof(int) * LEN, NULL);
   C4DEFER({ c4mslab_free(&ms); });
 
   void *prev_ptr = NULL;
