@@ -39,9 +39,9 @@ Memory pools allow treating sets of allocations as single blocks of memory by ke
 #include <c4life/mem/mpool.h>
 
 void mpool_tests() {
-  // Define and initialize
+  // Define and initialize with default source
 
-  C4MPOOL(mp);
+  C4MPOOL(mp, NULL);
   
   // Deallocate on scope exit
 
@@ -77,7 +77,7 @@ Memory slabs emulate an unlimited block of memory by allocating slabs of user de
 void mslab_tests() {
   const int LEN = 10;
 
-  // Define and initialize with specified slab size
+  // Define and initialize with specified slab size and default source
 
   C4MSLAB(ms, sizeof(int) * LEN, NULL);
   

@@ -187,7 +187,7 @@ static void map_tests() {
 }
 
 static void mpool_tests() {
-  // Define and initialize
+  // Define and initialize with default source
 
   C4MPOOL(mp, NULL);
   
@@ -216,7 +216,7 @@ static void mpool_tests() {
 static void mslab_tests() {
   const int LEN = 10;
 
-  // Define and initialize with specified slab size
+  // Define and initialize with specified slab size and default source
 
   C4MSLAB(ms, sizeof(int) * LEN, NULL);
   
