@@ -1,7 +1,9 @@
 #include <assert.h>
+#include "c4.h"
 #include "malloc.h"
 
 struct c4malloc *c4malloc_init(struct c4malloc *self) {
+  self->prev = &c4malloc;
   self->acquire = NULL;
   self->release = NULL;
   self->require = NULL;

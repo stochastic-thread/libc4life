@@ -4,6 +4,7 @@
 #include "c4.h"
 #include "ctx.h"
 #include "err.h"
+#include "mem/malloc.h"
 #include "val.h"
 
 struct c4ctx *c4ctx() {
@@ -19,9 +20,28 @@ struct c4ctx *c4ctx() {
 }
 
 struct c4err_t c4err;
+struct c4malloc c4malloc;
+
+static void *acquire(struct c4malloc *self, size_t size) {
+  return malloc(size);
+}
+
+static void release(struct c4malloc *self, void *ptr) {
+  free(ptr);
+}
+
+static void *require(struct c4malloc *self, void *ptr, size_t size) {
+  return realloc(ptr, size);
+}
 
 void c4init() {
   c4err_t_init(&c4err, NULL, "c4err");
+
+  c4malloc_init(&c4malloc);
+  c4malloc.acquire = acquire;
+  c4malloc.release = release;
+  c4malloc.require = require;
+  
   c4init_val_ts();
 }
 
