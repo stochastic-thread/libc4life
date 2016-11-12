@@ -192,11 +192,11 @@ static void mpool_tests() {
   // Deallocate all memory in pool on scope exit
   C4DEFER({ c4mpool_free(&mp); });
 
-  void *ptrs[10];
+  int *ptrs[10];
   
   // Allocate memory
   for (int i = 0; i < 10; i++) {
-    ptrs[i] = c4mpool_alloc(&mp, sizeof(int) * 2);
+    ptrs[i] = c4mpool_alloc(&mp, sizeof(int));
   }
 
   // Remove pointer from pool and free manually
