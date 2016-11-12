@@ -57,7 +57,7 @@ void mpool_tests() {
 
   c4mpool_release(&mp, ptrs[0]);
 
-  // Reallocate to change size
+  // Reallocate pointer
   
   ptrs[1] = c4mpool_require(&mp, ptrs[1], sizeof(long));
 }
