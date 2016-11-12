@@ -13,10 +13,12 @@
 ** assert it_size in acquire
 ** ls freelist
 ** move back and forth between freelist / mpool
-
+* add c4malloc example
+** put remalloc on top of mpool on top of mslab
+* document rolling your own allocator
+* ---
 * add c4pair with variable key/val size
 ** one char data[] member, c4pair_x(pair), c4pair_y(pair, x_size) 
-* ---
 * add c4bset with it_size
 ** base on dyna/bmap
 ** return ptr from insert/add
