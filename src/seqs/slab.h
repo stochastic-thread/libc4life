@@ -5,8 +5,8 @@
 #include "seq.h"
 
 struct c4slab {
-  size_t len, slot_size;
-  void *slots;
+  size_t len, it_size;
+  void *its;
 };
 
 struct c4slab_seq {
@@ -14,13 +14,13 @@ struct c4slab_seq {
   struct c4slab *slab;
 };
 
-struct c4slab *c4slab_init(struct c4slab *self, size_t size);
+struct c4slab *c4slab_init(struct c4slab *self, size_t it_size);
 void c4slab_free(struct c4slab *self);
 
-struct c4slab *c4slab_grow(struct c4slab *self, size_t len);
-void *c4slab_idx(struct c4slab *self, size_t idx);
-void *c4slab_insert(struct c4slab *self, size_t idx);
+void c4slab_delete(struct c4slab *self, size_t idx, size_t len);
+void c4slab_grow(struct c4slab *self, size_t len);
+void *c4slab_idx(struct c4slab *self, size_t idx, size_t len);
+void *c4slab_insert(struct c4slab *self, size_t idx, size_t len);
 struct c4seq *c4slab_seq(struct c4slab *self, struct c4slab_seq *seq);
-size_t c4slab_size(struct c4slab *self);
 
 #endif

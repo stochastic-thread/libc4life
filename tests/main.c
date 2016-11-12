@@ -10,8 +10,9 @@
 #include "db/rec.h"
 #include "db/tbl.h"
 #include "err.h"
-#include "seqs/ls.h"
 #include "seqs/bmap.h"
+#include "seqs/dyna.h"
+#include "seqs/ls.h"
 #include "val.h"
 
 static int int_cmp(void *_x, void *_y) {
@@ -56,6 +57,18 @@ static void defer_tests() {
   }
   
   assert(called);
+}
+
+static void dyna_tests() {
+  C4DYNA(d, sizeof(int));
+
+  for (int i = 0; i < 10; i++) { *(int *)c4dyna_push(&d) = 1; }
+  assert(d.len == 10);
+
+  for (int i = 9; i >= 0; i--) { *(int *)c4dyna_pop(&d) = i; }
+  assert(d.len == 0);
+
+  c4dyna_free(&d);
 }
 
 static struct c4err_t custom_type;
@@ -241,6 +254,7 @@ int main() {
     col_tests();
     coro_tests();
     defer_tests();
+    dyna_tests();
     err_tests();
     lambda_tests();
     ls_tests();

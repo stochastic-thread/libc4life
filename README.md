@@ -143,6 +143,10 @@ Hooking into the sequence framework is trivial; you need a struct named ```[type
 
 #include <c4life/seq.h>
 
+struct my {
+  // Your type
+};
+
 struct my_seq {
   struct c4seq super;
 
@@ -162,7 +166,7 @@ static void *seq_next(struct c4seq *_seq) {
   // _seq->idx contains the current index
 }
 
-struct c4seq *my_seq_seq(struct my_seq *self, struct my_seq *seq) {
+struct c4seq *my_seq(struct my *self, struct my_seq *seq) {
   c4seq_init(&seq->super);
   seq->super.free = seq_free; // Optional
   seq->super.next = seq_next;

@@ -1,26 +1,31 @@
 * add c4dyna
-** use slab for its
-** take it_size as param
-** keep internal len
-** add dyna_iter with slab_iter field
+** add dyna_push/pop
+** add test
 ** use instead of slab in c4map
 
-
 * add C4DEFER_SCOPE(name) & C4DEFER_TO(scope)
+** check cleanup docs for fn cleanup
 ** use dyna as cleanup marker
 ** push defers and pop on exit
 ** free dyna before exit
 
 
 * rename err_start()/_next() to try_X()
+
+* add mpool
+** mpool_alloc & mpool_free 
+** alloc enough for ptr + ls
+** keep ls of allocs in pool
+
 *---
 * add c4seq_skip(size_t n)
 ** add skip(n) method
 ** do nothing but increase idx if NULL
 ** forward to recs_iter in tbl
 ** forward skip to src seq_map
-* add struct c4seq *c4seq_gather(...)
-* add struct c4seq** c4seq_spread(self, n)
+* add struct c4seq *_c4seq_gather(...)
+** add c4seq_gather macro to NULL terminate
+* add struct c4seq *c4seq_spread(self, cnt)
 * add ls_seq
 ** encapsulate next pre-fetch
 ** replaces DO_LS
