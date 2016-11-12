@@ -13,6 +13,7 @@
 #include "seqs/bmap.h"
 #include "seqs/dyna.h"
 #include "seqs/ls.h"
+#include "mpool.h"
 #include "val.h"
 
 static int int_cmp(void *_x, void *_y) {
@@ -173,6 +174,27 @@ static void map_tests() {
   map_set_tests();
 }
 
+static void mpool_tests() {
+  // Define and initialize pool
+  C4MPOOL(mp);
+  
+  // Deallocate all memory in pool on scope exit
+  C4DEFER({ c4mpool_free(&mp); });
+
+  void *ptrs[10];
+  
+  // Allocate memory
+  for (int i = 1; i <= 10; i++) {
+    ptrs[i-1] = c4mpool_alloc(&mp, sizeof(int) * 2);
+  }
+
+  // Remove pointer from pool and free manually
+  free(c4mpool_remove(&mp, ptrs[0]));
+
+  // Undo removing pointer, or transfer pointers between pools
+  c4mpool_add(&mp, c4mpool_remove(&mp, ptrs[1]));
+}
+
 static void rec_tests() {
   struct c4str_col foo;
   c4str_col_init(&foo, "foo");
@@ -259,6 +281,7 @@ int main() {
     lambda_tests();
     ls_tests();
     map_tests();
+    mpool_tests();
     rec_tests();
     seq_tests();
     tbl_tests();

@@ -61,6 +61,34 @@ void defer_tests() {
 
 ```
 
+### memory pools
+Memory pools allow treating sets of allocations single blocks of memory for freeing, all they do is keep track of pointers. The data needed for book-keeping is prefixed to each allocation and supports O(1) addition and removal.
+
+```C
+
+static void mpool_tests() {
+  // Define and initialize pool
+  C4MPOOL(mp);
+  
+  // Deallocate all memory in pool on scope exit
+  C4DEFER({ c4mpool_free(&mp); });
+
+  void *ptrs[10];
+  
+  // Allocate memory
+  for (int i = 1; i <= 10; i++) {
+    ptrs[i-1] = c4mpool_alloc(&mp, sizeof(int) * 2);
+  }
+
+  // Remove pointer from pool and free manually
+  free(c4mpool_remove(&mp, ptrs[0]));
+
+  // Undo removing pointer, or transfer pointers between pools
+  c4mpool_add(&mp, c4mpool_remove(&mp, ptrs[1]));
+}
+
+```
+
 ### coroutines
 c4life provides coroutines in the form of a minimalistic layer of macros inspired by Duff's Device. Anything that should persist across calls needs to be declared static, global or passed as parameters; the only thing the coroutine really cares about is the current line number. Calling a coroutine is the same as calling any other function, all the details are neatly encapsulated inside.
 
