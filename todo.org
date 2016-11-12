@@ -1,3 +1,11 @@
+* add c4bset with it_size
+** base on dyna/bmap
+** return ptr from insert/add
+** add C4BSET_ADD / INSERT with type params to streamline usage
+*** copy deref
+* change c4bmap to use cbset
+* add c4pair with variable key/val size
+* adapt cbmap to pair with variable key/val size
 * add C4SLAB_DO
 * add C4DYNA_DO
 * add C4BMAP_DO
@@ -23,6 +31,7 @@
 ---
 * add automagic freeing of cols & tbls like err/val types
 * add vicsy_peer_save()
+* add c4pair
 * implement c4map_merge()
 ** add c4map_splice()
 * add tbl_reset()
