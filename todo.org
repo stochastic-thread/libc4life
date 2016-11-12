@@ -1,8 +1,3 @@
-* add c4dyna
-** add dyna_push/pop
-** add test
-** use instead of slab in c4map
-
 * add C4DEFER_SCOPE(name) & C4DEFER_TO(scope)
 ** check cleanup docs for fn cleanup
 ** use dyna as cleanup marker

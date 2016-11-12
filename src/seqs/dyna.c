@@ -14,6 +14,8 @@ void c4dyna_delete(struct c4dyna *self, size_t idx) {
   c4slab_delete(&self->its, idx, self->len);
 }
 
+void c4dyna_clear(struct c4dyna *self) { self->len = 0; }
+
 void c4dyna_grow(struct c4dyna *self, size_t len) {
   c4slab_grow(&self->its, len);
 }
@@ -40,15 +42,15 @@ void *c4dyna_push(struct c4dyna *self) {
 
 static void *seq_next(struct c4seq *_seq) {
   struct c4dyna_seq *seq = C4PTROF(c4dyna_seq, super, _seq);
-  return (_seq->idx < seq->array->len)
-    ? c4dyna_idx(seq->array, _seq->idx)
+  return (_seq->idx < seq->dyna->len)
+    ? c4dyna_idx(seq->dyna, _seq->idx)
     : NULL;
 }
 
 struct c4seq *c4dyna_seq(struct c4dyna *self, struct c4dyna_seq *seq) {
   c4seq_init(&seq->super);
   seq->super.next = seq_next;
-  seq->array = self;
+  seq->dyna = self;
   return &seq->super;
 }
 

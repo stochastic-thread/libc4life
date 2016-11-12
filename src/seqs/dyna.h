@@ -14,12 +14,13 @@ struct c4dyna {
 
 struct c4dyna_seq {
   struct c4seq super;
-  struct c4dyna *array;
+  struct c4dyna *dyna;
 };
 
 struct c4dyna *c4dyna_init(struct c4dyna *self, size_t it_size);
 void c4dyna_free(struct c4dyna *self);
 
+void c4dyna_clear(struct c4dyna *self);
 void c4dyna_delete(struct c4dyna *self, size_t idx);
 void c4dyna_grow(struct c4dyna *self, size_t len);
 void *c4dyna_idx(struct c4dyna *self, size_t idx);

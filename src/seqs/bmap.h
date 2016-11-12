@@ -3,8 +3,8 @@
 
 #include <stdbool.h>
 #include <stddef.h>
+#include "dyna.h"
 #include "seq.h"
-#include "slab.h"
 
 #define C4BMAP(var, cmp)			\
   struct c4bmap var;				\
@@ -14,8 +14,7 @@ typedef int (*c4cmp_t)(void *x, void *y);
 
 struct c4bmap {
   c4cmp_t cmp;
-  size_t len;
-  struct c4slab its;
+  struct c4dyna its;
 };
 
 struct c4bmap_it {
@@ -24,7 +23,7 @@ struct c4bmap_it {
 
 struct c4bmap_seq {
   struct c4seq super;
-  struct c4bmap *map;
+  struct c4bmap *bmap;
 };
 
 struct c4bmap *c4bmap_init(struct c4bmap *bmap, c4cmp_t cmp);
