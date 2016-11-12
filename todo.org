@@ -4,7 +4,7 @@
 ** realloc takes new memory
 * change mpool & mslab to use malloc->prev
 * ---
-* add mem/c4mrealloc struct
+* add mem/remalloc
 ** dyna with it size for memory
 ** prefix ls to its, add free list
 * add c4pair with variable key/val size
