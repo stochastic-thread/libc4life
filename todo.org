@@ -1,10 +1,12 @@
+* add void *mpool_realloc(void *)
+* add c4pair with variable key/val size
+** one char data[] member, c4pair_x(pair), c4pair_y(pair, x_size) 
 * add c4bset with it_size
 ** base on dyna/bmap
 ** return ptr from insert/add
 ** add C4BSET_ADD / INSERT with type params to streamline usage
 *** copy deref
 * change c4bmap to use cbset
-* add c4pair with variable key/val size
 * adapt cbmap to pair with variable key/val size
 * add C4SLAB_DO
 * add C4DYNA_DO
