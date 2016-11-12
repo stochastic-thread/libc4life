@@ -11,6 +11,7 @@
 #include "db/tbl.h"
 #include "err.h"
 #include "mem/mpool.h"
+#include "mem/mslab.h"
 #include "seqs/bmap.h"
 #include "seqs/dyna.h"
 #include "seqs/ls.h"
@@ -212,6 +213,25 @@ static void mpool_tests() {
   ptrs[1] = c4mpool_require(&mp, ptrs[1], sizeof(long));
 }
 
+static void mslab_tests() {
+  const int LEN = 10;
+
+  C4MSLAB(ms, sizeof(int) * LEN);
+  C4DEFER({ c4mslab_free(&ms); });
+
+  void *prev_ptr = NULL;
+  
+  for (int i = 0; i < LEN; i++) {
+    void *ptr = c4mslab_acquire(&ms, sizeof(int));
+    assert(!prev_ptr || ptr == prev_ptr + sizeof(int));
+    assert(c4mslab_it(&ms)->offs == sizeof(int) * (i+1));
+    prev_ptr = ptr;
+  }
+  
+  c4mslab_acquire(&ms, 1);
+  assert(c4mslab_it(&ms)->offs == 1);
+}
+
 static void rec_tests() {
   struct c4str_col foo;
   c4str_col_init(&foo, "foo");
@@ -300,6 +320,7 @@ int main() {
     ls_tests();
     map_tests();
     mpool_tests();
+    mslab_tests();
     rec_tests();
     seq_tests();
     tbl_tests();

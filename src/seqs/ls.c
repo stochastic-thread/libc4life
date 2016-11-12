@@ -18,6 +18,8 @@ void c4ls_delete(struct c4ls *self) {
   self->prev->next = self->next;
 }
 
+bool c4ls_empty(struct c4ls *self) { return self->next == self; }
+
 struct c4ls *c4ls_prepend(struct c4ls *self, struct c4ls *prev) {
   self->prev->next = prev;
   prev->prev = self->prev;
