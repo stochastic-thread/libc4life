@@ -31,7 +31,7 @@ c4life is designed to support and encourage stack allocation wherever possible. 
 #### allocators
 c4life provides a general, extensible allocator interface and a set of stackable implementations that focus on specific aspects of dynamic memory allocation.
 
-#### pool allocator
+#### pool
 The pool allocator allows treating sets of separate allocations as single blocks of memory by keeping track of individual pointers. The data needed for book keeping is prefixed to each allocation and supports O(1) addition and removal without additional allocations.
 
 ```C
@@ -65,7 +65,7 @@ void mpool_tests() {
 
 ```
 
-#### slab allocator
+#### slab
 The slab allocator allocates memory as slabs of user defined size and keeps track of available space within them. Since it doesn't keep any information about individual allocations; the only way to release allocated memory is to free the allocator. It's useful for reducing the number of allocations in code that doesn't need to free individual pointers; or to feed memory pools.
 
 ```C
@@ -103,7 +103,7 @@ void mslab_tests() {
 
 ```
 
-#### freelist allocator
+#### freelist
 The freelist allocator is useful for recycling released pool memory, it reuses the embedded book keeping to track released pointers.
 
 ```C
