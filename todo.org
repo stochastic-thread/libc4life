@@ -1,24 +1,11 @@
 * change to random deletes in perf test
-* add register vars
-* check gnu extensions for inlining
-** add custom inline macro?
-* test benchmark with alt. malloc imp
-* convert benchmark to use tags
-** add c4bench type
-** add c4bench_run(tags, code)
-*** 1 warmup + avg(3 runs)
-** add adds to existing tags for nested runs
-** keep tags, cpu & real times
-** print tags tab separated
-* add c4timer_run()
-** keep two longs in struct instead of timespecs
+* add CTIMER_RUN() based on for
+** keep two uint64_t's in struct instead of timespecs
 *** inc in run
 *** replaces accessors
 * simplify seq example to use dyna of ints and inc
 * document rolling your own allocator
 * ---
-* add c4pair with variable key/val size
-** one char data[] member, c4pair_x(pair), c4pair_y(pair, x_size) 
 * add c4bset with it_size
 ** base on dyna/bmap
 ** return ptr from insert/add
