@@ -3,8 +3,11 @@
 #include <stdbool.h>
 #include <stdlib.h>
 #include <string.h>
+#include "c4.h"
 #include "coro.h"
+#include "ctx.h"
 #include "macros.h"
+#include "mem/malloc.h"
 #include "slab.h"
 
 struct c4slab *c4slab_init(struct c4slab *self, size_t it_size) {
@@ -15,13 +18,18 @@ struct c4slab *c4slab_init(struct c4slab *self, size_t it_size) {
 }
 
 void c4slab_free(struct c4slab *self) {
-  if (self->its) { free(self->its); }
+  if (self->its) { c4malloc_release(c4ctx()->malloc, self->its); }
 }
 
 void c4slab_grow(struct c4slab *self, size_t len) {
-  if (self->len) { while (self->len < len) { self->len *= 2; } }
-  else { self->len = len; }
-  self->its = realloc(self->its, self->len * self->it_size);
+  if (self->len) {
+    while (self->len < len) { self->len *= 2; }
+    self->its = c4malloc_require(c4ctx()->malloc,
+				 self->its, self->len * self->it_size);
+  } else {
+    self->len = len;
+    self->its = c4malloc_acquire(c4ctx()->malloc, self->len * self->it_size);
+  }
 }
 
 void *c4slab_idx(struct c4slab *self, size_t idx) {

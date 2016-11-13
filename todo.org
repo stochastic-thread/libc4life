@@ -1,15 +1,20 @@
-* add ctx->malloc and use instead of malloc(
-** set to c4malloc in init
 * add CTIMER_RUN() based on for
 ** keep two uint64_t's in struct instead of timespecs
 *** inc in run
 *** replaces accessors
+* add c4tags
+** use c4dyna to store str
+** add c4dyna_splice to insert new
+** c4tags_add
+** c4tags_remove
+** use binary search to find pos
 * add c4bset with it_size
 ** base on dyna/bmap
 ** return ptr from insert/add
 ** add C4BSET_ADD / INSERT with type params to streamline usage
 *** copy deref
 * change c4bmap to use cbset
+* investigate lost memory in valgrind/malloc_perf
 * ---
 * document rolling your own allocator
 * rename err_start()/_next() to try_X()

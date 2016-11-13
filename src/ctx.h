@@ -1,9 +1,11 @@
 #ifndef C4CTX_H
 #define C4CTX_H
 
+struct c4malloc;
 struct c4try;
 
 struct c4ctx {
+  struct c4malloc *malloc;
   struct c4try *try;
 };
 
