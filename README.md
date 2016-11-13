@@ -32,7 +32,7 @@ c4life needs to keep track of internal state for some of it's features. Calling 
 c4life is designed to support and encourage stack allocation wherever possible. Most initializers and finalizers make no assumptions about how the memory pointed to was allocated, and take no responsibility for freeing memory explicitly allocated by user code.
 
 #### allocators
-c4life provides a composable, extensible allocator protocol and a set of implementations that focus on specific aspects of dynamic memory allocation.
+c4life provides a composable, extensible allocator protocol and a set of implementations that focus on specific aspects of dynamic memory allocation. The api is designed to support exploring different options by changing a few lines of initialization code.
 
 #### pool
 The pool allocator allows treating sets of separate allocations as single blocks of memory, while retaining the ability to release individual pointers. The data needed for book keeping is prefixed to each allocation and supports O(1) addition and removal without additional allocations.
@@ -146,6 +146,9 @@ void mfreel_tests() {
 }
 
 ```
+
+#### performance
+The short story is that slabs are faster than malloc/free up to a certain slab size. Using through a pool is always slower, but combining the two approaches is more or less equal to malloc/free. Adding a freelist to recycle released pool memory typically cuts allocation time in half when the majority of the allocated memory is freed and reused.
 
 ### lambdas
 The ```C4LAMBDA()``` macro defines anonymous nested functions.

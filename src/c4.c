@@ -1,6 +1,7 @@
 #include <assert.h>
 #include <stddef.h>
 #include <stdio.h>
+#include <time.h>
 #include "c4.h"
 #include "ctx.h"
 #include "err.h"
@@ -35,6 +36,7 @@ static void *require(struct c4malloc *self, void *ptr, size_t size) {
 }
 
 void c4init() {
+  srand(time(NULL));
   c4err_t_init(&c4err, NULL, "c4err");
 
   c4malloc_init(&c4malloc);

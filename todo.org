@@ -1,4 +1,5 @@
-* change to random deletes in perf test
+* add ctx->malloc and use instead of malloc(
+** set to c4malloc in init
 * add CTIMER_RUN() based on for
 ** keep two uint64_t's in struct instead of timespecs
 *** inc in run
