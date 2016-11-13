@@ -70,6 +70,7 @@ The slab allocator allocates memory as slabs of user defined size and keeps trac
 
 ```C
 
+#include <c4life/c4.h>
 #include <c4life/mem/mslab.h>
 
 void mslab_tests() {
@@ -77,7 +78,7 @@ void mslab_tests() {
 
   // Define and initialize with specified slab size and default source
 
-  C4MSLAB(ms, sizeof(int) * LEN, NULL);
+  C4MSLAB(ms, sizeof(int) * LEN, &c4malloc);
   C4DEFER({ c4mslab_free(&ms); });
   
   void *prev_ptr = NULL;
@@ -107,6 +108,9 @@ void mslab_tests() {
 The freelist allocator is useful for recycling released pool memory, it reuses the embedded book keeping to track released pointers.
 
 ```C
+
+#include <c4life/c4.h>
+#include <c4life/mem/mfreel.h>
 
 void mfreel_tests() {
   // Define and initialize with default source
