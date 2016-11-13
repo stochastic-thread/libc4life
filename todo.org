@@ -1,5 +1,7 @@
 * simplify seq example to use dyna of ints and inc
 
+c4mfreel
+
 * add C4DEFER_SCOPE(name) {} & C4DEFER_TO(scope)
 ** add defer.h
 ** check cleanup docs for fn cleanup
