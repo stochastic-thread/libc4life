@@ -1,7 +1,3 @@
-* add CTIMER_RUN() based on for
-** keep two uint64_t's in struct instead of timespecs
-*** inc in run
-*** replaces accessors
 * add c4tags
 ** use c4dyna to store str
 ** add c4dyna_splice to insert new

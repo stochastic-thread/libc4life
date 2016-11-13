@@ -371,7 +371,7 @@ int main() {
     err_tests();
     lambda_tests();
     ls_tests();
-    //malloc_perf_tests();
+    malloc_perf_tests();
     map_tests();
     mfreel_tests();
     mpool_tests();
