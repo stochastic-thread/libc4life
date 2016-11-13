@@ -229,7 +229,7 @@ static void mpool_tests() {
     ptrs[i] = c4mpool_acquire(&mp, sizeof(int));
   }
 
-  // Remove pointer and deallocate
+  // Release pointer
   
   c4mpool_release(&mp, ptrs[0]);
 

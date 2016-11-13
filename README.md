@@ -32,7 +32,7 @@ c4life is designed to support and encourage stack allocation wherever possible. 
 c4life provides a general, extensible allocator interface and a set of stackable implementations that focus on specific aspects of dynamic memory allocation.
 
 #### pool
-The pool allocator allows treating sets of separate allocations as single blocks of memory by keeping track of individual pointers. The data needed for book keeping is prefixed to each allocation and supports O(1) addition and removal without additional allocations.
+The pool allocator allows treating sets of separate allocations as single blocks of memory, while retaining the ability to release individual pointers. The data needed for book keeping is prefixed to each allocation and supports O(1) addition and removal without additional allocations.
 
 ```C
 
@@ -54,7 +54,7 @@ void mpool_tests() {
     ptrs[i] = c4mpool_acquire(&mp, sizeof(int));
   }
 
-  // Remove pointer and deallocate
+  // Release pointer
 
   c4mpool_release(&mp, ptrs[0]);
 
