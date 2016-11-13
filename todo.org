@@ -1,7 +1,4 @@
 * simplify seq example to use dyna of ints and inc
-
-c4mfreel
-
 * add C4DEFER_SCOPE(name) {} & C4DEFER_TO(scope)
 ** add defer.h
 ** check cleanup docs for fn cleanup
@@ -9,14 +6,6 @@ c4mfreel
 ** use dyna as cleanup marker
 ** push defers and pop on exit
 ** free dyna before exit
-
-* add mem/remalloc
-** init with mpool * & it_size
-** assert it_size in acquire
-** ls freelist
-** move back and forth between freelist / mpool
-* add c4malloc example
-** put remalloc on top of mpool on top of mslab
 * document rolling your own allocator
 * ---
 * add c4pair with variable key/val size

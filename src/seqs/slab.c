@@ -35,13 +35,13 @@ void c4slab_move(struct c4slab *self, size_t dest, size_t src, size_t len) {
 }
 
 static void *seq_next(struct c4seq *_seq) {
-  struct c4slab_seq *seq = C4PTROF(c4slab_seq, super, _seq);
+  struct c4slab_seq *seq = C4PTROF(c4slab_seq, seq, _seq);
   return (_seq->idx < seq->slab->len) ? c4slab_idx(seq->slab, _seq->idx) : NULL;
 }
 
 struct c4seq *c4slab_seq(struct c4slab *self, struct c4slab_seq *seq) {
-  c4seq_init(&seq->super);
-  seq->super.next = seq_next;
+  c4seq_init(&seq->seq);
+  seq->seq.next = seq_next;
   seq->slab = self;
-  return &seq->super;
+  return &seq->seq;
 }

@@ -10,7 +10,7 @@ struct c4slab {
 };
 
 struct c4slab_seq {
-  struct c4seq super;
+  struct c4seq seq;
   struct c4slab *slab;
 };
 

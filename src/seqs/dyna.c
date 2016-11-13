@@ -49,16 +49,16 @@ void *c4dyna_push(struct c4dyna *self) {
 }
 
 static void *seq_next(struct c4seq *_seq) {
-  struct c4dyna_seq *seq = C4PTROF(c4dyna_seq, super, _seq);
+  struct c4dyna_seq *seq = C4PTROF(c4dyna_seq, seq, _seq);
   return (_seq->idx < seq->dyna->len)
     ? c4slab_idx(&seq->dyna->its, _seq->idx)
     : NULL;
 }
 
 struct c4seq *c4dyna_seq(struct c4dyna *self, struct c4dyna_seq *seq) {
-  c4seq_init(&seq->super);
-  seq->super.next = seq_next;
+  c4seq_init(&seq->seq);
+  seq->seq.next = seq_next;
   seq->dyna = self;
-  return &seq->super;
+  return &seq->seq;
 }
 

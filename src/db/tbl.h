@@ -12,7 +12,7 @@ struct c4tbl {
 };
 
 struct c4tbl_seq {
-  struct c4seq super;
+  struct c4seq seq;
   struct c4bmap_seq recs_seq;
   struct c4rec rec;
 };

@@ -13,7 +13,7 @@ struct c4dyna {
 };
 
 struct c4dyna_seq {
-  struct c4seq super;
+  struct c4seq seq;
   struct c4dyna *dyna;
 };
 

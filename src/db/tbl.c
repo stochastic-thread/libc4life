@@ -28,12 +28,12 @@ void c4tbl_free(struct c4tbl *self) {
 }
 
 static void seq_free(struct c4seq *_seq) {
-  struct c4tbl_seq *seq = C4PTROF(c4tbl_seq, super, _seq);
+  struct c4tbl_seq *seq = C4PTROF(c4tbl_seq, seq, _seq);
   c4rec_free(&seq->rec);
 }
 
 static void *seq_next(struct c4seq *_seq) {
-  struct c4tbl_seq *seq = C4PTROF(c4tbl_seq, super, _seq);
+  struct c4tbl_seq *seq = C4PTROF(c4tbl_seq, seq, _seq);
   struct c4seq *recs_seq = &seq->recs_seq.seq;
   struct c4bmap_it *it;
 
@@ -47,12 +47,12 @@ static void *seq_next(struct c4seq *_seq) {
 }
 
 struct c4seq *c4tbl_seq(struct c4tbl *self, struct c4tbl_seq *seq) {
-  c4seq_init(&seq->super);
-  seq->super.free = seq_free;
-  seq->super.next = seq_next;
+  c4seq_init(&seq->seq);
+  seq->seq.free = seq_free;
+  seq->seq.next = seq_next;
   c4rec_init(&seq->rec, NULL);
   c4bmap_seq(&self->recs, &seq->recs_seq);
-  return &seq->super;
+  return &seq->seq;
 }
 
 struct c4rec *c4tbl_upsert(struct c4tbl *self, struct c4rec *rec) {
