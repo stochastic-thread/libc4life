@@ -107,7 +107,7 @@ void mslab_tests() {
 ```
 
 #### freelist
-The freelist allocator is useful for recycling released pool memory, it reuses the embedded book keeping to track released pointers.
+The freelist allocator is useful for recycling released pool memory, it reuses the embedded book keeping data to track released pointers.
 
 ```C
 
