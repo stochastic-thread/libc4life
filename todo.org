@@ -1,6 +1,8 @@
-* test benchmark with alt. malloc imp
+* change to random deletes in perf test
+* add register vars
 * check gnu extensions for inlining
 ** add custom inline macro?
+* test benchmark with alt. malloc imp
 * simplify seq example to use dyna of ints and inc
 * document rolling your own allocator
 * ---
