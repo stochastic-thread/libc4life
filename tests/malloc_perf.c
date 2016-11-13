@@ -6,21 +6,26 @@
 #include "mem/mslab.h"
 #include "timer.h"
 
-#define MAX 10000000
+#define MIN 10
+#define MAX 1000000
 
 static void run(struct c4malloc *m, size_t cnt, size_t size) {
   void **ptrs = malloc(cnt * sizeof(void *));
     
   for (int i = 0; i < cnt; i++) {
-    c4malloc_release(m, c4malloc_acquire(m, size));
+    void *ptr = c4malloc_acquire(m, size);
+
+    if (i > cnt / 10) {
+      c4malloc_release(m, c4malloc_require(m, ptr, size));
+    }
   }
 
   free(ptrs);
 }
 
 static void run_malloc(struct c4malloc *m, size_t max_size) {
-  for (size_t cnt = 10; cnt < MAX; cnt *= 10) {
-    for (size_t size = 10; size < max_size; size *= 10) {
+  for (size_t cnt = MIN; cnt < MAX; cnt *= 10) {
+    for (size_t size = MIN; size < max_size; size *= 10) {
       run(m, cnt, size);
     }
   }
@@ -29,7 +34,7 @@ static void run_malloc(struct c4malloc *m, size_t max_size) {
 void malloc_perf_tests() {
   struct c4timer t;
   
-  for (size_t it_size = 10; it_size < MAX; it_size *= 10) {
+  for (size_t it_size = MIN; it_size < MAX; it_size *= 10) {
     {
       c4timer_reset(&t);
       run_malloc(&c4malloc, it_size);
@@ -52,6 +57,17 @@ void malloc_perf_tests() {
       run_malloc(&pool.malloc, it_size);
       c4mpool_free(&pool);
       printf("pool %zu:\t%ld\t%ld\n",
+	     it_size, c4timer_cpu(&t), c4timer_real(&t));
+    }
+
+    {
+      c4timer_reset(&t);
+      C4MSLAB(slab, it_size, &c4malloc);
+      C4MPOOL(pool, &slab.malloc);
+      run_malloc(&pool.malloc, it_size);
+      c4mpool_free(&pool);
+      c4mslab_free(&slab);
+      printf("pools %zu:\t%ld\t%ld\n",
 	     it_size, c4timer_cpu(&t), c4timer_real(&t));
     }
 
