@@ -15,7 +15,7 @@ static void run(struct c4malloc *m, size_t cnt, size_t size) {
   for (int i = 0; i < cnt; i++) {
     void *ptr = c4malloc_acquire(m, size);
 
-    if (rand() / (double)RAND_MAX < 0.9) {
+    if (rand() / (double)RAND_MAX < 0.5) {
       c4malloc_release(m, c4malloc_require(m, ptr, size));
     }
   }
