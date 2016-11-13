@@ -2,10 +2,13 @@
 #### esoteric C essentials
 
 ### intro
-c4life is a library of ideas and tools that have accumulated over 30 years of writing software for fun. I've found that given a solid foundation, which is what this library is aiming to provide; coding in C is a welcome therapy after seemingly wasting years exploring various ways of pretending the hidden complexity in my stack was someone else's problem.
+c4life is a library of ideas and tools that have accumulated over 30 years of writing software for fun. I've found that given a solid foundation, which is what this library is aiming to provide; coding in C is a welcome therapy after seemingly wasting years exploring various ways of pretending the hidden complexity in my stack was someone else's problem. This library is aiming for simplicity and leverage; and it makes a real effort to get there by playing on C's strengths, rather than just inventing yet another buggy Lisp.
+
+### motivation
+I've learned a lot from tinkering with my magnum opus in software over the years. As I gained more experience and learned new tricks for managing the sprawling complexity, my ambitions quickly grew to offset any advantage gained. I spent decades searching for the perfect language, discovering the perfect architecture, the perfect database; to conclude that it depends, and that's about as far as that train goes. What it's really all about is attributes such as simplicity, leverage, flexibility, composability, orthogonality etc. And the only language that allows me to pick as many as I can chew from that list is C. 
 
 ### status
-Any feature documented here can be assumed to be reasonably stable. I'll add more pleasant surprises as soon as I consider them polished enough for a wider audience. I'm always aiming for maximum leverage and symbiosis; simple problems should be trivial to solve, complex as simple as possible.
+Any feature documented here can be assumed to be reasonably stable. I'll add more pleasant surprises as soon as I consider them polished enough for a wider audience. 
 
 ### setup
 In any modern Debian-based distro, this should get you started:
@@ -29,7 +32,7 @@ c4life needs to keep track of internal state for some of it's features. Calling 
 c4life is designed to support and encourage stack allocation wherever possible. Most initializers and finalizers make no assumptions about how the memory pointed to was allocated, and take no responsibility for freeing memory explicitly allocated by user code.
 
 #### allocators
-c4life provides a stackable, extensible allocator protocol and a set of implementations that focus on specific aspects of dynamic memory allocation.
+c4life provides a composable, extensible allocator protocol and a set of implementations that focus on specific aspects of dynamic memory allocation.
 
 #### pool
 The pool allocator allows treating sets of separate allocations as single blocks of memory, while retaining the ability to release individual pointers. The data needed for book keeping is prefixed to each allocation and supports O(1) addition and removal without additional allocations.

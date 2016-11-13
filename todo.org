@@ -11,7 +11,6 @@
 * change c4bmap to use cbset
 * adapt cbmap to pair with variable key/val size
 * add C4SLAB_DO
-* add C4DYNA_DO
 * add C4BMAP_DO
 ** loop entries
 ** use in tbl & rec
