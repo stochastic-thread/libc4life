@@ -17,7 +17,7 @@
   _C4SYMS(x, y)					\
 
 #define C4GSYM(prefix)				\
-  C4SYMS(__c4, C4SYMS(prefix, __LINE__))	\
+  C4SYMS(_c4, C4SYMS(prefix, __LINE__))	\
   
 #define C4PTROF(type, field, ptr)					\
   ({									\
