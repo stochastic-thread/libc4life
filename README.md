@@ -29,7 +29,7 @@ c4life needs to keep track of internal state for some of it's features. Calling 
 c4life is designed to support and encourage stack allocation wherever possible. Most initializers and finalizers make no assumptions about how the memory pointed to was allocated, and take no responsibility for freeing memory explicitly allocated by user code.
 
 #### allocators
-c4life provides a general, extensible allocator interface and a set of stackable implementations that focus on specific aspects of dynamic memory allocation.
+c4life provides a stackable, extensible allocator protocol and a set of implementations that focus on specific aspects of dynamic memory allocation.
 
 #### pool
 The pool allocator allows treating sets of separate allocations as single blocks of memory, while retaining the ability to release individual pointers. The data needed for book keeping is prefixed to each allocation and supports O(1) addition and removal without additional allocations.
