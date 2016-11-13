@@ -3,6 +3,20 @@
 * check gnu extensions for inlining
 ** add custom inline macro?
 * test benchmark with alt. malloc imp
+* convert benchmark to use tags
+** add c4fmt(prefix, fmt, ...)
+*** build string with sprintf
+*** get size
+*** realloc prefix and concat if set
+** generate new tags for acqure/require/release
+** store all strings in map with timer
+** add tags for loop vars, size:1000, cnt:10 etc
+** pass tags var as first param 
+** print tags tab separated
+* add c4timer_run()
+** keep two longs in struct instead of timespecs
+*** inc in run
+*** replaces accessors
 * simplify seq example to use dyna of ints and inc
 * document rolling your own allocator
 * ---

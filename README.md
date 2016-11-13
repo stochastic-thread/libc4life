@@ -161,7 +161,7 @@ void lambda_tests() {
 ```
 
 ### deferred actions
-c4life supports two flavors of defer, both based on cleanup __attributes__; one for current scope and a more elaborate version for deferring to user defined scopes.
+c4life supports two flavors of defer, both based on cleanup attributes; one for current scope and a more elaborate version for deferring to user defined scopes.
 
 ```C
 
