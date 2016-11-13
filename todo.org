@@ -1,11 +1,4 @@
 * simplify seq example to use dyna of ints and inc
-* add C4DEFER_SCOPE(name) {} & C4DEFER_TO(scope)
-** add defer.h
-** check cleanup docs for fn cleanup
-** limit scope of name with for()
-** use dyna as cleanup marker
-** push defers and pop on exit
-** free dyna before exit
 * document rolling your own allocator
 * ---
 * add c4pair with variable key/val size
