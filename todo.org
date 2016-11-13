@@ -1,4 +1,6 @@
 * test benchmark with alt. malloc imp
+* check gnu extensions for inlining
+** add custom inline macro?
 * simplify seq example to use dyna of ints and inc
 * document rolling your own allocator
 * ---
