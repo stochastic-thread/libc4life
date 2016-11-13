@@ -9,6 +9,7 @@
 #include "db/cols/str_col.h"
 #include "db/rec.h"
 #include "db/tbl.h"
+#include "defer.h"
 #include "err.h"
 #include "mem/mfreel.h"
 #include "mem/mpool.h"
@@ -59,6 +60,20 @@ static void defer_tests() {
     assert(!called);
   }
   
+  assert(called);
+}
+
+static void defer_scope_tests() {
+  int called = false;
+  
+  C4DEFER_SCOPE(outer) {
+    C4DEFER_SCOPE(inner) {
+      C4DEFER_TO(outer, { called = true; });
+    }
+    
+    assert(!called);
+  }
+
   assert(called);
 }
 
@@ -349,6 +364,7 @@ int main() {
     col_tests();
     coro_tests();
     defer_tests();
+    defer_scope_tests();
     dyna_tests();
     err_tests();
     lambda_tests();

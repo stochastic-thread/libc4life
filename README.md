@@ -37,6 +37,7 @@ The pool allocator allows treating sets of separate allocations as single blocks
 ```C
 
 #include <c4life/c4.h>
+#include <c4life/defer.h>
 #include <c4life/mem/mpool.h>
 
 void mpool_tests() {
@@ -71,6 +72,7 @@ The slab allocator allocates memory as slabs of user defined size and keeps trac
 ```C
 
 #include <c4life/c4.h>
+#include <c4life/defer.h>
 #include <c4life/mem/mslab.h>
 
 void mslab_tests() {
@@ -110,6 +112,7 @@ The freelist allocator is useful for recycling released pool memory, it reuses t
 ```C
 
 #include <c4life/c4.h>
+#include <c4life/defer.h>
 #include <c4life/mem/mfreel.h>
 
 void mfreel_tests() {
@@ -155,11 +158,11 @@ void lambda_tests() {
 ```
 
 ### deferred actions
-c4life supports deferring actions until scope exit using the ```C4DEFER()``` macro.
+It turns out that deferring actions to scope exit, as recently popularized by Go; is perfectly doable in C. c4life supports two flavors of defer, both based on cleanup __attributes__; one for current scope and a more elaborate version for deferring to user defined scopes.
 
 ```C
 
-#include <c4life/macros.h>
+#include <c4life/defer.h>
 
 void defer_tests() {
   bool called = false;
@@ -169,6 +172,20 @@ void defer_tests() {
     assert(!called);
   }
   
+  assert(called);
+}
+
+void defer_scope_tests() {
+  int called = false;
+  
+  C4DEFER_SCOPE(outer) {
+    C4DEFER_SCOPE(inner) {
+      C4DEFER_TO(outer, { called = true; });
+    }
+    
+    assert(!called);
+  }
+
   assert(called);
 }
 

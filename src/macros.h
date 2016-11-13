@@ -1,13 +1,6 @@
 #ifndef C4MACROS_H
 #define C4MACROS_H
 
-#define _C4DEFER(code, _def)				\
-  void _def() code;					\
-  bool _def_trigger __attribute__((cleanup(_def)))	\
-       
-#define C4DEFER(code)				\
-  _C4DEFER(code, C4GSYM(def))			\
-  
 #define _C4LAMBDA(code, ret, _fn, ...)		\
   ({						\
     ret _fn(__VA_ARGS__) code;			\

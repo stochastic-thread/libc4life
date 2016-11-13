@@ -7,6 +7,15 @@
   struct c4dyna var;				\
   c4dyna_init(&var, it_size);			\
 
+#define _C4DYNA_DO(dyna, it, _idx)				\
+  size_t _idx = 0;						\
+  for (void *it;						\
+       _idx < (dyna)->len && (it = c4dyna_idx(dyna, _idx));	\
+       _idx++)							\
+
+#define C4DYNA_DO(dyna, it)			\
+  _C4DYNA_DO(dyna, it, C4GSYM(idx))		\
+
 struct c4dyna {
   size_t len;
   struct c4slab its;
