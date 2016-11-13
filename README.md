@@ -70,7 +70,7 @@ void mpool_tests() {
 ```
 
 #### slab
-The slab allocator allocates memory as slabs of user defined size and keeps track of available space within them. Since it doesn't keep any information about individual allocations; the only way to release allocated memory is to free the allocator. It's useful for reducing the number of allocations in code that doesn't need to free individual pointers; or to feed pool allocators. Note that the maximum size for a single allocation is limited to the slab size.
+The slab allocator allocates memory as slabs of user defined size and keeps track of available space within them. Since it doesn't keep any information about individual allocations; the only way to release allocated memory is to free the allocator. It's useful for reducing the number of allocations in code that doesn't need to free individual pointers; or to feed pool allocators. Note that the maximum size for a single allocation is limited to slab size.
 
 ```C
 
@@ -148,7 +148,7 @@ void mfreel_tests() {
 ```
 
 #### performance
-The short story is that slabs are faster than malloc/free up to a certain slab size; using a pool on it's own is slightly slower most of the time; and adding a freelist to recycle pool memory typically improves performance when the majority of the allocated memory is freed and reused.
+The short story is that slabs are significantly faster than malloc/free; using a pool is slightly slower; and adding a freelist to recycle pool memory improves performance when the majority of the allocated memory is freed and reused.
 
 ### lambdas
 The ```C4LAMBDA()``` macro defines anonymous nested functions.
