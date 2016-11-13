@@ -2,7 +2,6 @@
 #include <stddef.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include "c4.h"
 #include "macros.h"
 #include "mslab.h"
 
@@ -13,7 +12,7 @@ static void *acquire(struct c4malloc *self, size_t size) {
 struct c4mslab *c4mslab_init(struct c4mslab *self, size_t it_size,
 			     struct c4malloc *src) {
   self->it_size = it_size;
-  self->src = src ? src : &c4malloc;
+  self->src = src;
   c4malloc_init(&self->malloc);
   self->malloc.acquire = acquire;
   c4ls_init(&self->full_its);

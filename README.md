@@ -31,20 +31,18 @@ c4life is designed to support and encourage stack allocation wherever possible. 
 #### allocators
 c4life provides a general, extensible allocator interface and a set of stackable implementations that focus on specific aspects of dynamic memory allocation.
 
-#### pools
-Memory pools allow treating sets of allocations as single blocks of memory by keeping track of individual pointers. The data needed for book keeping is prefixed to each allocation and supports O(1) addition and removal without additional allocations.
+#### pool allocator
+The pool allocator allows treating sets of separate allocations as single blocks of memory by keeping track of individual pointers. The data needed for book keeping is prefixed to each allocation and supports O(1) addition and removal without additional allocations.
 
 ```C
 
+#include <c4life/c4.h>
 #include <c4life/mem/mpool.h>
 
 void mpool_tests() {
   // Define and initialize with default source
 
-  C4MPOOL(mp, NULL);
-  
-  // Deallocate on scope exit
-
+  C4MPOOL(mp, &c4malloc);
   C4DEFER({ c4mpool_free(&mp); });
 
   const int LEN = 10;
@@ -67,8 +65,8 @@ void mpool_tests() {
 
 ```
 
-#### slabs
-Memory slabs emulate an unlimited block of memory by allocating slabs of user defined size and keeping track of available space within them. Since the allocator doesn't keep any information about individual allocations; the only way to release allocated memory is to free the allocator. They are useful for reducing the number of allocations in code that doesn't need to free individual pointers; or to feed memory pools in code that needs pointer tracking as well.
+#### slab allocator
+The slab allocator allocates memory as slabs of user defined size and keeps track of available space within them. Since it doesn't keep any information about individual allocations; the only way to release allocated memory is to free the allocator. It's useful for reducing the number of allocations in code that doesn't need to free individual pointers; or to feed memory pools.
 
 ```C
 
@@ -80,9 +78,6 @@ void mslab_tests() {
   // Define and initialize with specified slab size and default source
 
   C4MSLAB(ms, sizeof(int) * LEN, NULL);
-  
-  // Deallocate on scope exit
-
   C4DEFER({ c4mslab_free(&ms); });
   
   void *prev_ptr = NULL;
@@ -104,6 +99,40 @@ void mslab_tests() {
   
   c4mslab_acquire(&ms, 1);
   assert(c4mslab_it(&ms)->offs == 1);
+}
+
+```
+
+#### freelist allocator
+The freelist allocator is useful for recycling released pool memory, it reuses the embedded book keeping to track released pointers.
+
+```C
+
+void mfreel_tests() {
+  // Define and initialize with default source
+  
+  C4MPOOL(mp, &c4malloc);
+  C4MFREEL(mf, &mp);
+  C4DEFER({ c4mfreel_free(&mf); c4mpool_free(&mp); });
+
+  const int LEN = 10;
+  void *ptrs[LEN];
+
+  for (int i = 0; i < LEN; i++) {
+    // Allocate from mpool since we know freelist is empty
+    
+    ptrs[i] = c4mpool_acquire(&mp, sizeof(int));
+  }
+
+  // Release all memory to freelist
+  
+  for (int i = 0; i < LEN; i++) { c4mfreel_release(&mf, ptrs[i]); }
+
+  for (int i = 0; i < LEN; i++) {
+    // Make sure that memory is recycled by freelist
+    
+    assert(c4mfreel_acquire(&mf, sizeof(int)) == ptrs[i]);
+  }
 }
 
 ```

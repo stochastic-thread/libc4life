@@ -1,5 +1,4 @@
 #include <stdlib.h>
-#include "c4.h"
 #include "mpool.h"
 
 static void *acquire(struct c4malloc *_self, size_t size) {
@@ -15,7 +14,7 @@ static void *require(struct c4malloc *_self, void *ptr, size_t size) {
 }
 
 struct c4mpool *c4mpool_init(struct c4mpool *self, struct c4malloc *src) {
-  self->src = src ? src : &c4malloc;
+  self->src = src;
   c4ls_init(&self->its);
   c4malloc_init(&self->malloc);
   self->malloc.acquire = acquire;
@@ -35,6 +34,7 @@ void *c4mpool_add(struct c4mpool *self, struct c4mpool_it *it) {
 
 void *c4mpool_acquire(struct c4mpool *self, size_t size) {
   struct c4mpool_it *it = malloc(sizeof(struct c4mpool_it) + size);
+  it->size = size;
   return c4mpool_add(self, it);
 }
 
@@ -42,6 +42,7 @@ void *c4mpool_require(struct c4mpool *self, void *ptr, size_t size) {
   struct c4mpool_it *it = C4PTROF(c4mpool_it, ptr, ptr);
   c4ls_delete(&it->its_node);
   it = realloc(it, sizeof(struct c4mpool_it) + size);
+  it->size = size;
   c4ls_prepend(&self->its, &it->its_node);
   return it->ptr;
 }

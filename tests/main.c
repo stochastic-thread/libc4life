@@ -10,6 +10,7 @@
 #include "db/rec.h"
 #include "db/tbl.h"
 #include "err.h"
+#include "mem/mfreel.h"
 #include "mem/mpool.h"
 #include "mem/mslab.h"
 #include "seqs/bmap.h"
@@ -186,13 +187,37 @@ static void map_tests() {
   map_set_tests();
 }
 
+static void mfreel_tests() {
+  // Define and initialize with default source
+  
+  C4MPOOL(mp, &c4malloc);
+  C4MFREEL(mf, &mp);
+  C4DEFER({ c4mfreel_free(&mf); c4mpool_free(&mp); });
+
+  const int LEN = 10;
+  void *ptrs[LEN];
+
+  for (int i = 0; i < LEN; i++) {
+    // Allocate from mpool since we know freelist is empty
+    
+    ptrs[i] = c4mpool_acquire(&mp, sizeof(int));
+  }
+
+  // Release all memory to freelist
+  
+  for (int i = 0; i < LEN; i++) { c4mfreel_release(&mf, ptrs[i]); }
+
+  for (int i = 0; i < LEN; i++) {
+    // Make sure that memory is recycled by freelist
+    
+    assert(c4mfreel_acquire(&mf, sizeof(int)) == ptrs[i]);
+  }
+}
+
 static void mpool_tests() {
   // Define and initialize with default source
 
-  C4MPOOL(mp, NULL);
-  
-  // Deallocate on scope exit
-
+  C4MPOOL(mp, &c4malloc);
   C4DEFER({ c4mpool_free(&mp); });
 
   const int LEN = 10;
@@ -218,10 +243,7 @@ static void mslab_tests() {
 
   // Define and initialize with specified slab size and default source
 
-  C4MSLAB(ms, sizeof(int) * LEN, NULL);
-  
-  // Deallocate on scope exit
-
+  C4MSLAB(ms, sizeof(int) * LEN, &c4malloc);
   C4DEFER({ c4mslab_free(&ms); });
   
   void *prev_ptr = NULL;
@@ -332,6 +354,7 @@ int main() {
     lambda_tests();
     ls_tests();
     map_tests();
+    mfreel_tests();
     mpool_tests();
     mslab_tests();
     rec_tests();

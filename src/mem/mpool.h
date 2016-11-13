@@ -11,6 +11,7 @@
 
 struct c4mpool_it {
   struct c4ls its_node;
+  size_t size;
   char ptr[];
 };
 
