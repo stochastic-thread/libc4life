@@ -158,7 +158,7 @@ void lambda_tests() {
 ```
 
 ### deferred actions
-It turns out that deferring actions to scope exit, as recently popularized by Go; is perfectly doable in C. c4life supports two flavors of defer, both based on cleanup __attributes__; one for current scope and a more elaborate version for deferring to user defined scopes.
+c4life supports two flavors of defer, both based on cleanup __attributes__; one for current scope and a more elaborate version for deferring to user defined scopes.
 
 ```C
 
