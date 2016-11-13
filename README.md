@@ -148,7 +148,7 @@ void mfreel_tests() {
 ```
 
 #### performance
-The short story is that slabs are significantly faster than malloc/free; using a pool is slightly slower; and adding a freelist to recycle pool memory improves performance when the majority of the allocated memory is freed and reused.
+The short story is that slabs are significantly faster than malloc/free; using a pool is slightly slower; and adding a freelist improves performance when the majority of the allocated memory is freed and reused.
 
 ### lambdas
 The ```C4LAMBDA()``` macro defines anonymous nested functions.
