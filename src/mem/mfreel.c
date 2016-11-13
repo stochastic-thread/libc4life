@@ -41,7 +41,7 @@ void *c4mfreel_acquire(struct c4mfreel *self, size_t size) {
     }
   }
 
-  return c4malloc_acquire(self->src->src, size);
+  return c4mpool_acquire(self->src, size);
 }
 
 void c4mfreel_release(struct c4mfreel *self, void *ptr) {

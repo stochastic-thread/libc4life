@@ -31,7 +31,7 @@ void c4mslab_free(struct c4mslab *self) {
 }
 
 void *c4mslab_acquire(struct c4mslab *self, size_t size) {
-  assert(size < self->it_size);
+  assert(size <= self->it_size);
   
   C4LS_DO(&self->live_its, _it) {
     struct c4mslab_it *it = C4PTROF(c4mslab_it, its_node, _it);

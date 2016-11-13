@@ -1,3 +1,4 @@
+* test benchmark with alt. malloc imp
 * simplify seq example to use dyna of ints and inc
 * document rolling your own allocator
 * ---

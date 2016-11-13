@@ -357,6 +357,8 @@ static void tbl_tests() {
   tbl_seq_tests();
 }
 
+void malloc_perf_tests();
+
 int main() {
   c4init();
 
@@ -369,6 +371,7 @@ int main() {
     err_tests();
     lambda_tests();
     ls_tests();
+    malloc_perf_tests();
     map_tests();
     mfreel_tests();
     mpool_tests();
