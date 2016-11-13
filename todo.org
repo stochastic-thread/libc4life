@@ -4,16 +4,23 @@
 ** keep two uint64_t's in struct instead of timespecs
 *** inc in run
 *** replaces accessors
-* simplify seq example to use dyna of ints and inc
-* document rolling your own allocator
-* ---
 * add c4bset with it_size
 ** base on dyna/bmap
 ** return ptr from insert/add
 ** add C4BSET_ADD / INSERT with type params to streamline usage
 *** copy deref
 * change c4bmap to use cbset
-* adapt cbmap to pair with variable key/val size
+* ---
+* document rolling your own allocator
+* rename err_start()/_next() to try_X()
+* add automagic freeing of cols & tbls like err/val types
+* add vicsy_peer_save()
+* implement c4map_merge()
+** add c4map_splice()
+* add tbl_reset()
+** merge rec
+* add vicsy_peer_load()
+* ---
 * add C4SLAB_DO
 * add C4BMAP_DO
 ** loop entries
@@ -22,7 +29,6 @@
 ** encapsulate next pre-fetch from LS_DO
 * add c4array_seq
 ** init with void *, len & it_size
-* rename err_start()/_next() to try_X()
 * add c4seq_skip(size_t n)
 ** add skip(n) method
 ** do nothing but increase idx if NULL
@@ -30,14 +36,6 @@
 ** forward to src seq_map
 ** init to call c4seq_next() n times
 ---
-* add automagic freeing of cols & tbls like err/val types
-* add vicsy_peer_save()
-* add c4pair
-* implement c4map_merge()
-** add c4map_splice()
-* add tbl_reset()
-** merge rec
-* add vicsy_peer_load()
 * add struct c4seq *_c4seq_gather(...)
 ** add c4seq_gather macro to NULL terminate
 * add struct c4seq *c4seq_spread(self, cnt)
