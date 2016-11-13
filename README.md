@@ -70,7 +70,7 @@ void mpool_tests() {
 ```
 
 #### slab
-The slab allocator allocates memory as slabs of user defined size and keeps track of available space within them. Since it doesn't keep any information about individual allocations; the only way to release allocated memory is to free the allocator. It's useful for reducing the number of allocations in code that doesn't need to free individual pointers; or to feed pool allocators.
+The slab allocator allocates memory as slabs of user defined size and keeps track of available space within them. Since it doesn't keep any information about individual allocations; the only way to release allocated memory is to free the allocator. It's useful for reducing the number of allocations in code that doesn't need to free individual pointers; or to feed pool allocators. Note that the maximum size for a single allocation is limited to the slab size.
 
 ```C
 
