@@ -16,12 +16,15 @@
 #define C4CATCH(var, type)			\
   _C4CATCH(var, type, C4GSYM(next))		\
 
-#define C4THROW(type, msg)					\
+#define _C4THROW(type, msg)					\
   ({								\
     struct c4err *e = malloc(sizeof(struct c4err));		\
     c4err_init(e, c4ctx()->try, type, msg, __FILE__, __LINE__);	\
   })								\
 
+#define C4THROW(type, msg)			\
+  _C4THROW(type, (msg))				\
+  
 #define _C4TRY(msg, _try)						\
   for (struct c4try *_try = c4try_init(malloc(sizeof(struct c4try)),	\
 				       msg, __FILE__, __LINE__);	\
@@ -29,7 +32,7 @@
        c4try_close(_try), _try = NULL)					\
     
 #define C4TRY(msg)				\
-  _C4TRY(msg, C4GSYM(try))			\
+  _C4TRY((msg), C4GSYM(try))			\
 
 struct c4try {
   char *msg;
