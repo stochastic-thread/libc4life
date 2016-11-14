@@ -11,7 +11,7 @@
 struct c4mpool;
 
 struct c4mfreel {
-  struct c4ls its;
+  struct c4ls dead_its, live_its;
   struct c4malloc malloc;
   struct c4mpool *src;
 };

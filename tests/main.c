@@ -222,7 +222,7 @@ static void mfreel_tests() {
   
   for (int i = 0; i < LEN; i++) { c4mfreel_release(&mf, ptrs[i]); }
 
-  for (int i = 0; i < LEN; i++) {
+  for (int i = LEN-1; i >= 0; i--) {
     // Make sure that memory is recycled by freelist
     
     assert(c4mfreel_acquire(&mf, sizeof(int)) == ptrs[i]);
@@ -247,10 +247,6 @@ static void mpool_tests() {
   // Release pointer
   
   c4mpool_release(&mp, ptrs[0]);
-
-  // Reallocate pointer
-  
-  ptrs[1] = c4mpool_require(&mp, ptrs[1], sizeof(long));
 }
 
 static void mslab_tests() {

@@ -31,10 +31,6 @@ static void release(struct c4malloc *self, void *ptr) {
   free(ptr);
 }
 
-static void *require(struct c4malloc *self, void *ptr, size_t size) {
-  return realloc(ptr, size);
-}
-
 void c4init() {
   srand(time(NULL));
   c4err_t_init(&c4err, NULL, "c4err");
@@ -42,7 +38,6 @@ void c4init() {
   c4malloc_init(&c4malloc);
   c4malloc.acquire = acquire;
   c4malloc.release = release;
-  c4malloc.require = require;
   
   c4init_val_ts();
 }

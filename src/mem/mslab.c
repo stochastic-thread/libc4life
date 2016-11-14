@@ -20,14 +20,15 @@ struct c4mslab *c4mslab_init(struct c4mslab *self, size_t it_size,
   return self;
 }
 
+static void free_its(struct c4mslab *self, struct c4ls *root) {
+  C4LS_DO(root, _it) {
+    c4malloc_release(self->src, C4PTROF(c4mslab_it, its_node, _it));
+  }
+}
+
 void c4mslab_free(struct c4mslab *self) {
-  C4LS_DO(&self->full_its, _it) {
-    c4malloc_release(self->src, C4PTROF(c4mslab_it, its_node, _it));
-  }
-  
-  C4LS_DO(&self->live_its, _it) {
-    c4malloc_release(self->src, C4PTROF(c4mslab_it, its_node, _it));
-  }
+  free_its(self, &self->full_its);
+  free_its(self, &self->live_its);
 }
 
 void *c4mslab_acquire(struct c4mslab *self, size_t size) {

@@ -21,24 +21,35 @@ struct c4mfreel *c4mfreel_init(struct c4mfreel *self, struct c4mpool *src) {
   c4malloc_init(&self->malloc);
   self->malloc.acquire = acquire;
   self->malloc.release = release;
-  c4ls_init(&self->its);
+  c4ls_init(&self->dead_its);
+  c4ls_init(&self->live_its);
   return self;
 }
 
-void c4mfreel_free(struct c4mfreel *self) {
-  C4LS_DO(&self->its, _it) {
+static void free_its(struct c4mfreel *self, struct c4ls *root) {
+  C4LS_DO(root, _it) {
     struct c4mpool_it *it = C4PTROF(c4mpool_it, its_node, _it);
     c4malloc_release(self->src->src, it);
   }
 }
 
+void c4mfreel_free(struct c4mfreel *self) {
+  free_its(self, &self->dead_its);
+  free_its(self, &self->live_its);
+}
+
 void *c4mfreel_acquire(struct c4mfreel *self, size_t size) {
-  C4LS_DO(&self->its, _it) {
+  C4LS_DO(&self->live_its, _it) {
     struct c4mpool_it *it = C4PTROF(c4mpool_it, its_node, _it);
-    if (it->size >= size) {
+    if (size <= it->size) {
       c4ls_delete(_it);
       return c4mpool_add(self->src, it);
     }
+
+    if (it->skipped) {
+      c4ls_delete(_it);
+      c4ls_prepend(&self->dead_its, _it);
+    } else { it->skipped = true; }
   }
 
   return c4mpool_acquire(self->src, size);
@@ -46,5 +57,6 @@ void *c4mfreel_acquire(struct c4mfreel *self, size_t size) {
 
 void c4mfreel_release(struct c4mfreel *self, void *ptr) {
     struct c4mpool_it *it = c4mpool_remove(self->src, ptr);
-    c4ls_prepend(&self->its, &it->its_node);
+    it->skipped = false;
+    c4ls_append(&self->live_its, &it->its_node);
 }

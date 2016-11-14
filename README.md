@@ -61,10 +61,6 @@ void mpool_tests() {
   // Release pointer
 
   c4mpool_release(&mp, ptrs[0]);
-
-  // Reallocate pointer
-  
-  ptrs[1] = c4mpool_require(&mp, ptrs[1], sizeof(long));
 }
 
 ```
@@ -148,7 +144,7 @@ void mfreel_tests() {
 ```
 
 #### performance
-The short story is that slabs are significantly faster than malloc/free; using a pool is slightly slower; and adding a freelist improves performance when the majority of the allocated memory is freed and reused.
+The short story is that slabs are faster than the basic allocator; using a pool slows things down a bit; and adding a freelist to recycle memory typically doubles the performance of any allocator stack.
 
 ### lambdas
 The ```C4LAMBDA()``` macro defines anonymous nested functions.

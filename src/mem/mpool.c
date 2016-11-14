@@ -9,17 +9,12 @@ static void release(struct c4malloc *_self, void *ptr) {
   c4mpool_release(C4PTROF(c4mpool, malloc, _self), ptr); 
 }
 
-static void *require(struct c4malloc *_self, void *ptr, size_t size) {
-  return c4mpool_require(C4PTROF(c4mpool, malloc, _self), ptr, size);
-}
-
 struct c4mpool *c4mpool_init(struct c4mpool *self, struct c4malloc *src) {
   self->src = src;
   c4ls_init(&self->its);
   c4malloc_init(&self->malloc);
   self->malloc.acquire = acquire;
   self->malloc.release = release;
-  self->malloc.require = require;
   return self;
 }
 
@@ -39,14 +34,6 @@ void *c4mpool_acquire(struct c4mpool *self, size_t size) {
     c4malloc_acquire(self->src, sizeof(struct c4mpool_it) + size);
   it->size = size;
   return c4mpool_add(self, it);
-}
-
-void *c4mpool_require(struct c4mpool *self, void *ptr, size_t size) {
-  struct c4mpool_it *it = c4mpool_remove(self, ptr);
-  it = c4malloc_require(self->src, it, sizeof(struct c4mpool_it) + size);
-  it->size = size;
-  c4ls_prepend(&self->its, &it->its_node);
-  return it->ptr;
 }
 
 void c4mpool_release(struct c4mpool *self, void *ptr) {

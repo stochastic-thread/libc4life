@@ -23,9 +23,13 @@ void c4slab_free(struct c4slab *self) {
 
 void c4slab_grow(struct c4slab *self, size_t len) {
   if (self->len) {
-    while (self->len < len) { self->len *= 2; }
-    self->its = c4malloc_require(c4ctx()->malloc,
-				 self->its, self->len * self->it_size);
+    size_t new_len = self->len;
+    while (new_len < len) { new_len *= 2; }
+    void *new_its = c4malloc_acquire(c4ctx()->malloc, new_len * self->it_size);
+    memcpy(new_its, self->its, self->len * self->it_size);
+    c4malloc_release(c4ctx()->malloc, self->its);
+    self->its = new_its;
+    self->len = new_len;
   } else {
     self->len = len;
     self->its = c4malloc_acquire(c4ctx()->malloc, self->len * self->it_size);
