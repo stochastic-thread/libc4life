@@ -34,14 +34,16 @@ void *c4mslab_acquire(struct c4mslab *self, size_t size) {
   C4LS_DO(&self->live_its, _it) {
     struct c4mslab_it *it = C4PTROF(c4mslab_it, its_node, _it);
 
-    if (it->offs == it->size) {
-	c4ls_delete(&it->its_node);
-	c4ls_prepend(&self->full_its, &it->its_node);
-    } else if (size <= it->size - it->offs) {      
+    if (size <= it->size - it->offs) {      
       void *ptr = it->data + it->offs;
       it->offs += size;   
       return ptr;
-    } 
+    } else if (it->skipped || it->offs == it->size) {
+	c4ls_delete(&it->its_node);
+	c4ls_prepend(&self->full_its, &it->its_node);
+    }
+
+    it->skipped = true;
   }
 
   bool full = size > self->it_size;
@@ -49,6 +51,7 @@ void *c4mslab_acquire(struct c4mslab *self, size_t size) {
   
   struct c4mslab_it *it =
     c4malloc_acquire(self->src, sizeof(struct c4mslab_it) + it_size);
+  it->skipped = false;
   it->size = it_size;
   it->offs = size;
   c4ls_prepend(full ? &self->full_its : &self->live_its, &it->its_node);

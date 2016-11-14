@@ -6,13 +6,14 @@
 #include "mem/mpool.h"
 #include "mem/mslab.h"
 #include "timer.h"
+#include "utils.h"
 
 #define MIN 10
-#define MAX 10000
+#define MAX 100000
 
 static void run(struct c4malloc *m, size_t cnt, size_t size) {
   for (int i = 0; i < cnt; i++) {
-    void *ptr = c4malloc_acquire(m, size);
+    void *ptr = c4malloc_acquire(m, (int)(c4rnd()*size));
     c4malloc_release(m, c4malloc_require(m, ptr, size));
   }
 }

@@ -1,6 +1,7 @@
 #ifndef C4MSLAB_H
 #define C4MSLAB_H
 
+#include <stdbool.h>
 #include "malloc.h"
 #include "seqs/ls.h"
 
@@ -9,6 +10,7 @@
   c4mslab_init(&var, it_size, src);			\
 
 struct c4mslab_it {
+  bool skipped;
   size_t offs, size;
   struct c4ls its_node;
   char data[];

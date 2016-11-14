@@ -1,5 +1,16 @@
+* add C4ARG macro
+** ({arg;})
+** use for all macro args that aren't symbols
+** add C4MIN / C4MAX
+
 * add c4bset with it_size
 ** copy map imp & change signatures like header
+** change map to use bset instead of dyna
+
+* add c4pair
+** store size_t left_size & char data[]
+** provide fns for getting left/right
+** provide macro C4PAIR_SIZE
 
 * add c4tags
 ** use c4dyna to store str
