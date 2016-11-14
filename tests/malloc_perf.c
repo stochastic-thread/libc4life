@@ -10,7 +10,7 @@
 #include "utils.h"
 
 #define MIN 10
-#define MAX 100000
+#define MAX 1000000
 
 #define _BENCHMARK(name, slab_size, code, _t)		\
   struct c4timer _t;					\
