@@ -21,10 +21,10 @@
 #include "val.h"
 #include "utils.h"
 
-static int int_cmp(void *_x, void *_y) {
-  int x = *(int *)_x, y = *(int *)_y;
-  if  (x < y) return -1;
-  return x > y;
+static int int_cmp(void *_x, void *_y, void *data) {
+  int *x = _x, *y = _y;
+  if  (*x < *y) return -1;
+  return *x > *y;
 }
 
 static void bmap_add_tests() {
@@ -36,7 +36,8 @@ static void bmap_add_tests() {
   c4bmap_add(&m, ks+2, vs+2);
   c4bmap_add(&m, ks, vs);
 
-  for (int i = 0; i < 3; i++) { assert(c4bmap_get(&m, ks+i) == vs+i); }
+  for (int i = 0; i < 3; i++) {assert(c4bmap_get(&m, ks+i) == vs+i); }
+  
   c4bmap_free(&m);
 }
 

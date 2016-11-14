@@ -1,25 +1,14 @@
-* change map to use bset instead of dyna
-
 * change map to use pairs for key/val
 ** init offs on insert
-** change api like set
+** convert api like set
 
 * document rolling your own allocator
 * rename err_start()/_next() to try_X()
 * add automagic freeing of cols & tbls like err/val types
 * add vicsy_peer_save()
 
-
-* add c4tags
-** use c4dyna to store str
-** add c4dyna_splice to insert new
-** c4tags_add
-** c4tags_remove
-** use binary search to find pos
-*** copy deref
 * ---
-* implement c4map_merge()
-** add c4map_splice()
+* implement c4set_merge()
 * add tbl_reset()
 ** merge rec
 * add vicsy_peer_load()

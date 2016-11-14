@@ -3,7 +3,7 @@
 #include <string.h>
 #include "col.h"
 
-int c4cols_cmp(void *_x, void *_y) {
+int c4cols_cmp(void *_x, void *_y, void *data) {
   struct c4col *x = _x, *y = _y;
   return strcmp(x->name, y->name);
 }

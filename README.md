@@ -219,7 +219,7 @@ void coro_tests() {
 ```
 
 ### sequences
-c4life implements several types that provide a sequence of values; embedded lists, dynamic arrays, ordered maps, tables and more. Each of them provide a function in the form of ```struct c4seq *[type]_seq(self, seq)``` to initialize a new sequential view of self. Any memory allocated by the sequence is automatically deallocated when it reaches it's end, or manually by calling ```c4seq_free(seq)```. All operations in the following example are supported by any type that implements the sequence protocol.
+c4life implements several types that provide a sequence of values; embedded lists, dynamic arrays, ordered sets and maps, tables and more. Each of them provide a function in the form of ```struct c4seq *[type]_seq(self, seq)``` to initialize a new sequential view of self. Any memory allocated by the sequence is automatically deallocated when it reaches it's end, or manually by calling ```c4seq_free(seq)```. All operations in the following example are supported by any type that implements the sequence protocol.
 
 ```C
 

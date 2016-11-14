@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.5)
 
 project (c4life)
 set(CMAKE_CXX_COMPILER "clang")
-add_definitions(-O2 -std=gnu99 -Wall -Werror)
+add_definitions(-g -std=gnu99 -Wall -Werror)
 
 include_directories(src)
 
