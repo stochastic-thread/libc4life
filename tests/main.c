@@ -231,9 +231,7 @@ static void mfreel_tests() {
   void *ptrs[LEN];
 
   for (int i = 0; i < LEN; i++) {
-    // Allocate from mpool since we know freelist is empty
-    
-    ptrs[i] = c4mpool_acquire(&mp, sizeof(int));
+    ptrs[i] = c4mfreel_acquire(&mf, sizeof(int));
   }
 
   // Release all memory to freelist

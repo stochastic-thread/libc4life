@@ -34,11 +34,11 @@ static void run(struct c4malloc *m) {
 void malloc_perf_tests() {
   printf("%-20s %15s %15s\n", "name", "cpu", "real");
 
-  // --- basic
+  // --- basic ---
 
   BENCHMARK("basic", &c4malloc);
 
-  // --- slab
+  // --- slab ---
 
   {
     C4MSLAB(slab, SLAB_SIZE, &c4malloc);
@@ -48,7 +48,7 @@ void malloc_perf_tests() {
     c4mslab_free(&slab);
   }
 
-  // --- pool
+  // --- pool ---
 
   {
     C4MPOOL(pool, &c4malloc);
@@ -58,7 +58,7 @@ void malloc_perf_tests() {
     c4mpool_free(&pool);
   }
     
-  // --- pool/slab
+  // --- pool/slab ---
 
   {
     C4MSLAB(slab, SLAB_SIZE, &c4malloc);
@@ -70,7 +70,7 @@ void malloc_perf_tests() {
     c4mslab_free(&slab);
   }
   
-  // --- freel
+  // --- freel ---
   
   {
     C4MPOOL(pool, &c4malloc);
@@ -82,7 +82,7 @@ void malloc_perf_tests() {
     c4mpool_free(&pool);
   }
 
-  // --- freel/slab
+  // --- freel/slab ---
 
   {
     C4MSLAB(slab, SLAB_SIZE, &c4malloc);

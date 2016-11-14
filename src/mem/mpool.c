@@ -28,7 +28,7 @@ void c4mpool_free(struct c4mpool *self) {
 
 void *c4mpool_add(struct c4mpool *self, struct c4mpool_it *it) {
   c4ls_prepend(&self->its, &it->its_node);
-  return it->ptr;
+  return it->data;
 }
 
 void *c4mpool_acquire(struct c4mpool *self, size_t size) {
@@ -43,7 +43,7 @@ void c4mpool_release(struct c4mpool *self, void *ptr) {
 }
 
 struct c4mpool_it *c4mpool_remove(struct c4mpool *self, void *ptr) {
-  struct c4mpool_it *it = C4PTROF(c4mpool_it, ptr, ptr);
+  struct c4mpool_it *it = C4PTROF(c4mpool_it, data, ptr);
   c4ls_delete(&it->its_node);
   return it;
 }

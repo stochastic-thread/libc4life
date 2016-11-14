@@ -11,10 +11,9 @@
   c4mpool_init(&var, src);			\
 
 struct c4mpool_it {
-  bool skipped;
   struct c4ls its_node;
   size_t size;
-  char ptr[];
+  char data[];
 };
 
 struct c4mpool {
