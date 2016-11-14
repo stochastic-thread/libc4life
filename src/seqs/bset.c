@@ -8,6 +8,7 @@
 struct c4bset *c4bset_init(struct c4bset *self, size_t key_size, c4cmp_t cmp) {
   self->cmp = cmp;
   self->cmp_data = NULL;
+  self->get_key = NULL;
   c4dyna_init(&self->its, key_size);
   return self;
 }
