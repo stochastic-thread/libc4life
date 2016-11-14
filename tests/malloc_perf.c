@@ -1,3 +1,4 @@
+#include <assert.h>
 #include <inttypes.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -10,6 +11,18 @@
 
 #define MIN 10
 #define MAX 100000
+
+#define _BENCHMARK(name, slab_size, code, _t)		\
+  struct c4timer _t;					\
+  c4timer_reset(&_t);					\
+  C4TIMER_RUN(&_t) code;				\
+  fprintf(out, "%s\t%zu\t%" PRIu64 "\t%" PRIu64 "\n",	\
+	  name, slab_size, _t.cpu, _t.real);		\
+  printf("%s\t%zu\t%" PRIu64 "\t%" PRIu64 "\n",		\
+	 name, slab_size, _t.cpu, _t.real)		\
+
+#define BENCHMARK(name, slab_size, code)	\
+  _BENCHMARK(name, slab_size, code, C4GSYM(t))	\
 
 static void run(struct c4malloc *m, size_t cnt, size_t size) {
   for (int i = 0; i < cnt; i++) {
@@ -27,85 +40,52 @@ static void run_malloc(struct c4malloc *m, size_t max_size) {
 }
 
 void malloc_perf_tests() {
-  struct c4timer t;
+  FILE *out = fopen("malloc_perf.txt", "w");
+  assert(out);
   
-  for (size_t it_size = MIN; it_size < MAX; it_size *= 10) {
-    {
-      c4timer_reset(&t);
-
-      C4TIMER_RUN(&t) { run_malloc(&c4malloc, it_size); }
-
-      printf("malloc %zu:\t%" PRIu64 "\t%" PRIu64 "\n", it_size, t.cpu, t.real);
-    }
+  for (size_t slab_size = MIN; slab_size < MAX; slab_size *= 10) {
+    BENCHMARK("basic", slab_size, {
+	run_malloc(&c4malloc, slab_size);
+      });
     
-    {
-      c4timer_reset(&t);
-
-      C4TIMER_RUN(&t) {
-	C4MSLAB(slab, it_size, &c4malloc);
-	run_malloc(&slab.malloc, it_size);
+    BENCHMARK("slab", slab_size, {
+	C4MSLAB(slab, slab_size, &c4malloc);
+	run_malloc(&slab.malloc, slab_size);
 	c4mslab_free(&slab);
-      }
-      
-      printf("slab %zu:\t%" PRIu64" \t%" PRIu64 "\n", it_size, t.cpu, t.real);
-    }
-    
-    {
-      c4timer_reset(&t);
+      });
 
-      C4TIMER_RUN(&t) {
-	C4MPOOL(pool, &c4malloc);
-	run_malloc(&pool.malloc, it_size);
+    BENCHMARK("pool", slab_size, {
+    	C4MPOOL(pool, &c4malloc);
+	run_malloc(&pool.malloc, slab_size);
 	c4mpool_free(&pool);
-      }
-      
-      printf("pool %zu:\t%" PRIu64 "\t%" PRIu64 "\n", it_size, t.cpu, t.real);
-    }
+      });
 
-    {
-      c4timer_reset(&t);
-
-      C4TIMER_RUN(&t) {
-	C4MSLAB(slab, it_size, &c4malloc);
+    BENCHMARK("pool/slab", slab_size, {
+	C4MSLAB(slab, slab_size, &c4malloc);
 	C4MPOOL(pool, &slab.malloc);
-	run_malloc(&pool.malloc, it_size);
+	run_malloc(&pool.malloc, slab_size);
 	c4mpool_free(&pool);
 	c4mslab_free(&slab);
-      }
-      
-      printf("pools %zu:\t%" PRIu64 "\t%" PRIu64 "\n", it_size, t.cpu, t.real);
-    }
+      });
 
-    {
-      c4timer_reset(&t);
-
-      C4TIMER_RUN(&t) {
+    BENCHMARK("freel", slab_size, {
 	C4MPOOL(pool, &c4malloc);
 	C4MFREEL(freel, &pool);
-	run_malloc(&freel.malloc, it_size);
+	run_malloc(&freel.malloc, slab_size);
 	c4mfreel_free(&freel);
 	c4mpool_free(&pool);
-      }
-      
-      printf("freel %zu:\t%" PRIu64 "\t%" PRIu64 "\n", it_size, t.cpu, t.real);
-    }
+      });
 
-    {
-      c4timer_reset(&t);
-
-      C4TIMER_RUN(&t) {
-	C4MSLAB(slab, it_size, &c4malloc);
+    BENCHMARK("freel/slab", slab_size, {
+	C4MSLAB(slab, slab_size, &c4malloc);
 	C4MPOOL(pool, &slab.malloc);
 	C4MFREEL(freel, &pool);
-	run_malloc(&freel.malloc, it_size);
+	run_malloc(&freel.malloc, slab_size);
 	c4mfreel_free(&freel);
 	c4mpool_free(&pool);
 	c4mslab_free(&slab);
-      }
-      
-      printf("freels %zu:\t%" PRIu64 "\t%" PRIu64 "\n", it_size, t.cpu, t.real);
-    }
-
-    printf("---\n");
+      });
   }
+
+  fclose(out);
 }

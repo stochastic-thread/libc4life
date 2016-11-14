@@ -36,6 +36,7 @@ static void free_its(struct c4mfreel *self, struct c4ls *root) {
 void c4mfreel_free(struct c4mfreel *self) {
   free_its(self, &self->dead_its);
   free_its(self, &self->live_its);
+  c4malloc_free(&self->malloc);
 }
 
 void *c4mfreel_acquire(struct c4mfreel *self, size_t size) {

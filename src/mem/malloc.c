@@ -8,6 +8,9 @@ struct c4malloc *c4malloc_init(struct c4malloc *self) {
   return self;
 }
 
+void c4malloc_free(struct c4malloc *self) {
+}
+
 void *c4malloc_acquire(struct c4malloc *self, size_t size) {
   assert(self->acquire);
   return self->acquire(self, size);

@@ -22,6 +22,8 @@ void c4mpool_free(struct c4mpool *self) {
   C4LS_DO(&self->its, _it) {
     c4malloc_release(self->src, C4PTROF(c4mpool_it, its_node, _it));
   }
+
+  c4malloc_free(&self->malloc);
 }
 
 void *c4mpool_add(struct c4mpool *self, struct c4mpool_it *it) {

@@ -1,8 +1,12 @@
+* the malloc challenge
+** add reference implementations to blog post
+*** add discussion of choices made
+
 * change map to use pairs for key/val
 ** init offs on insert
 ** convert api like set
+** add key_size / value_size params
 
-* document rolling your own allocator
 * rename err_start()/_next() to try_X()
 * add automagic freeing of cols & tbls like err/val types
 * add vicsy_peer_save()

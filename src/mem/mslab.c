@@ -29,6 +29,7 @@ static void free_its(struct c4mslab *self, struct c4ls *root) {
 void c4mslab_free(struct c4mslab *self) {
   free_its(self, &self->dead_its);
   free_its(self, &self->live_its);
+  c4malloc_free(&self->malloc);
 }
 
 void *c4mslab_acquire(struct c4mslab *self, size_t size) {
