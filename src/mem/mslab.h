@@ -9,7 +9,7 @@
   c4mslab_init(&var, it_size, src);			\
 
 struct c4mslab_it {
-  size_t offs;
+  size_t offs, size;
   struct c4ls its_node;
   char data[];
 };

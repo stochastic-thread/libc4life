@@ -8,20 +8,13 @@
 #include "timer.h"
 
 #define MIN 10
-#define MAX 1000000
+#define MAX 10000
 
 static void run(struct c4malloc *m, size_t cnt, size_t size) {
-  void **ptrs = malloc(cnt * sizeof(void *));
-    
   for (int i = 0; i < cnt; i++) {
     void *ptr = c4malloc_acquire(m, size);
-
-    if (rand() / (double)RAND_MAX < 0.5) {
-      c4malloc_release(m, c4malloc_require(m, ptr, size));
-    }
+    c4malloc_release(m, c4malloc_require(m, ptr, size));
   }
-
-  free(ptrs);
 }
 
 static void run_malloc(struct c4malloc *m, size_t max_size) {
