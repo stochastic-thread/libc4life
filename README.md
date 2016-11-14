@@ -225,6 +225,12 @@ c4life implements several types that provide a sequence of values; embedded list
 
 #include <c4life/seqs/bmap.h>
 
+int int_cmp(void *_x, void *_y, void *data) {
+  int *x = _x, *y = _y;
+  if  (*x < *y) return -1;
+  return *x > *y;
+}
+
 void seq_tests() {
   C4BMAP(bmap, int_cmp);
 
