@@ -15,7 +15,7 @@ struct c4mslab *c4mslab_init(struct c4mslab *self, size_t it_size,
   self->src = src;
   c4malloc_init(&self->malloc);
   self->malloc.acquire = acquire;
-  c4ls_init(&self->full_its);
+  c4ls_init(&self->dead_its);
   c4ls_init(&self->live_its);
   return self;
 }
@@ -27,7 +27,7 @@ static void free_its(struct c4mslab *self, struct c4ls *root) {
 }
 
 void c4mslab_free(struct c4mslab *self) {
-  free_its(self, &self->full_its);
+  free_its(self, &self->dead_its);
   free_its(self, &self->live_its);
 }
 
@@ -41,7 +41,7 @@ void *c4mslab_acquire(struct c4mslab *self, size_t size) {
       return ptr;
     } else if (it->skipped || it->offs == it->size) {
 	c4ls_delete(&it->its_node);
-	c4ls_prepend(&self->full_its, &it->its_node);
+	c4ls_prepend(&self->dead_its, &it->its_node);
     }
 
     it->skipped = true;
@@ -55,7 +55,7 @@ void *c4mslab_acquire(struct c4mslab *self, size_t size) {
   it->skipped = false;
   it->size = it_size;
   it->offs = size;
-  c4ls_prepend(full ? &self->full_its : &self->live_its, &it->its_node);
+  c4ls_prepend(full ? &self->dead_its : &self->live_its, &it->its_node);
   return it->data;
 }
 

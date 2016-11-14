@@ -18,7 +18,7 @@ struct c4mslab_it {
 
 struct c4mslab {
   size_t it_size;
-  struct c4ls full_its, live_its;
+  struct c4ls dead_its, live_its;
   struct c4malloc malloc, *src;
 };
 
