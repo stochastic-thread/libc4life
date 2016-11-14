@@ -144,7 +144,7 @@ void mfreel_tests() {
 ```
 
 #### performance
-The short story is that slabs are faster than the basic allocator; using a pool slows things down a bit; and adding a freelist to recycle memory typically doubles the performance of any allocator stack.
+The short story is that slabs are faster than the basic allocator; using a pool slows things down a bit; and adding a freelist to recycle pointers is typically at least as fast as slabs.
 
 ### lambdas
 The ```C4LAMBDA()``` macro defines anonymous nested functions.
