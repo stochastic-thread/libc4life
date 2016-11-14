@@ -22,9 +22,71 @@
 #include "utils.h"
 
 static int int_cmp(void *_x, void *_y) {
-  int *x = _x, *y = _y;
-  if  (*x < *y) return -1;
-  return *x > *y;
+  int x = *(int *)_x, y = *(int *)_y;
+  if  (x < y) return -1;
+  return x > y;
+}
+
+static void bmap_add_tests() {
+  C4BMAP(m, int_cmp);
+  int ks[3] = {1, 2, 3};
+  char vs[3] = {'a', 'b', 'c'};
+  
+  c4bmap_add(&m, ks+1, vs+1);
+  c4bmap_add(&m, ks+2, vs+2);
+  c4bmap_add(&m, ks, vs);
+
+  for (int i = 0; i < 3; i++) { assert(c4bmap_get(&m, ks+i) == vs+i); }
+  c4bmap_free(&m);
+}
+
+static void bmap_seq_tests() {
+  C4BMAP(m, int_cmp);
+  int ks[3] = {1, 2, 3};
+  char vs[3] = {'a', 'b', 'c'};
+  for (int i = 0; i < 3; i++) { c4bmap_add(&m, ks, vs); }
+
+  int i = 0;
+
+  C4SEQ(c4bmap, &m, seq);
+  for (struct c4bmap_it *it; (it = c4seq_next(seq));) {
+    assert(it->key == ks+i);
+    i++;
+  }
+
+  c4bmap_free(&m);
+}
+
+static void bmap_set_tests() {
+  C4BMAP(m, int_cmp);
+  int ks[3] = {1, 2, 3};
+  char vs[3] = {'a', 'b', 'c'};
+
+  for (int i = 0; i < 3; i++) { c4bmap_add(&m, ks+i, vs+i); }
+  for (int i = 0; i < 3; i++) { c4bmap_set(&m, ks+i, vs+3-i); }
+  for (int i = 0; i < 3; i++) { assert(c4bmap_get(&m, ks+i) == vs+3-i); }
+  c4bmap_free(&m);
+}
+
+static void bmap_tests() {
+  bmap_add_tests();
+  bmap_seq_tests();
+  bmap_set_tests();
+}
+
+static void bset_tests() {
+  static int MAX = 100;
+  C4BSET(set, sizeof(int), int_cmp);
+  for (int i = 0; i < MAX; i++) { *(int *)c4bset_add(&set, &i) = i; }
+
+  assert(cbset_len(&set) == MAX);
+  
+  for (int i = 0; i < MAX; i++) {
+    assert(*(int *)c4bset_get(&set, &i) == i);
+    assert(*(int *)c4bset_idx(&set, i) == i);
+  }
+
+  c4bset_free(&set);
 }
 
 static void col_tests() {
@@ -155,53 +217,6 @@ static void ls_splice_tests() {
 
 static void ls_tests() {
   ls_splice_tests();
-}
-
-static void map_add_tests() {
-  C4BMAP(m, int_cmp);
-  int ks[3] = {1, 2, 3};
-  char vs[3] = {'a', 'b', 'c'};
-  
-  c4bmap_add(&m, ks+1, vs+1);
-  c4bmap_add(&m, ks+2, vs+2);
-  c4bmap_add(&m, ks, vs);
-
-  for (int i = 0; i < 3; i++) { assert(c4bmap_get(&m, ks+i) == vs+i); }
-  c4bmap_free(&m);
-}
-
-static void map_seq_tests() {
-  C4BMAP(m, int_cmp);
-  int ks[3] = {1, 2, 3};
-  char vs[3] = {'a', 'b', 'c'};
-  for (int i = 0; i < 3; i++) { c4bmap_add(&m, ks, vs); }
-
-  int i = 0;
-
-  C4SEQ(c4bmap, &m, seq);
-  for (struct c4bmap_it *it; (it = c4seq_next(seq));) {
-    assert(it->key == ks+i);
-    i++;
-  }
-
-  c4bmap_free(&m);
-}
-
-static void map_set_tests() {
-  C4BMAP(m, int_cmp);
-  int ks[3] = {1, 2, 3};
-  char vs[3] = {'a', 'b', 'c'};
-
-  for (int i = 0; i < 3; i++) { c4bmap_add(&m, ks+i, vs+i); }
-  for (int i = 0; i < 3; i++) { c4bmap_set(&m, ks+i, vs+3-i); }
-  for (int i = 0; i < 3; i++) { assert(c4bmap_get(&m, ks+i) == vs+3-i); }
-  c4bmap_free(&m);
-}
-
-static void map_tests() {
-  map_add_tests();
-  map_seq_tests();
-  map_set_tests();
 }
 
 static void mfreel_tests() {
@@ -368,6 +383,8 @@ int main() {
   c4init();
 
   C4TRY("run all tests") {
+    bmap_tests();
+    bset_tests();
     col_tests();
     coro_tests();
     defer_tests();
@@ -377,7 +394,6 @@ int main() {
     lambda_tests();
     ls_tests();
     malloc_perf_tests();
-    map_tests();
     mfreel_tests();
     mpool_tests();
     mslab_tests();
