@@ -1,11 +1,12 @@
-* add c4pair
-** store size_t left_size & char data[]
-** provide fns for getting left/right
-** provide macro C4PAIR_SIZE
-
 * add c4bset with it_size
 ** copy map imp & change signatures like header
 ** change map to use bset instead of dyna
+
+* document rolling your own allocator
+* rename err_start()/_next() to try_X()
+* add automagic freeing of cols & tbls like err/val types
+* add vicsy_peer_save()
+
 
 * add c4tags
 ** use c4dyna to store str
@@ -15,10 +16,6 @@
 ** use binary search to find pos
 *** copy deref
 * ---
-* document rolling your own allocator
-* rename err_start()/_next() to try_X()
-* add automagic freeing of cols & tbls like err/val types
-* add vicsy_peer_save()
 * implement c4map_merge()
 ** add c4map_splice()
 * add tbl_reset()

@@ -17,7 +17,9 @@
 #include "seqs/bmap.h"
 #include "seqs/dyna.h"
 #include "seqs/ls.h"
+#include "seqs/pair.h"
 #include "val.h"
+#include "utils.h"
 
 static int int_cmp(void *_x, void *_y) {
   int *x = _x, *y = _y;
@@ -278,6 +280,13 @@ static void mslab_tests() {
   assert(c4mslab_it(&ms)->offs == 1);
 }
 
+static void pair_tests() {
+  struct c4pair *p = c4pair(sizeof(int), sizeof(bool));
+  *(int *)c4pair_left(p) = 42;
+  *(bool *)c4pair_right(p) = false;
+  c4release(p);
+}
+
 static void rec_tests() {
   struct c4str_col foo;
   c4str_col_init(&foo, "foo");
@@ -372,6 +381,7 @@ int main() {
     mfreel_tests();
     mpool_tests();
     mslab_tests();
+    pair_tests();
     rec_tests();
     seq_tests();
     tbl_tests();

@@ -9,6 +9,7 @@
 #include "macros.h"
 #include "mem/malloc.h"
 #include "slab.h"
+#include "utils.h"
 
 struct c4slab *c4slab_init(struct c4slab *self, size_t it_size) {
   self->it_size = it_size;
@@ -18,21 +19,21 @@ struct c4slab *c4slab_init(struct c4slab *self, size_t it_size) {
 }
 
 void c4slab_free(struct c4slab *self) {
-  if (self->its) { c4malloc_release(c4ctx()->malloc, self->its); }
+  if (self->its) { c4release(self->its); }
 }
 
 void c4slab_grow(struct c4slab *self, size_t len) {
   if (self->len) {
     size_t new_len = self->len;
     while (new_len < len) { new_len *= 2; }
-    void *new_its = c4malloc_acquire(c4ctx()->malloc, new_len * self->it_size);
+    void *new_its = c4acquire(new_len * self->it_size);
     memcpy(new_its, self->its, self->len * self->it_size);
-    c4malloc_release(c4ctx()->malloc, self->its);
+    c4release(self->its);
     self->its = new_its;
     self->len = new_len;
   } else {
     self->len = len;
-    self->its = c4malloc_acquire(c4ctx()->malloc, self->len * self->it_size);
+    self->its = c4acquire(self->len * self->it_size);
   }
 }
 
