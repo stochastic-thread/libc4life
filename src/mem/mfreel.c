@@ -42,25 +42,17 @@ void c4mfreel_free(struct c4mfreel *self) {
 void *c4mfreel_acquire(struct c4mfreel *self, size_t size) {
   C4LS_DO(&self->live_its, _it) {
     struct c4mpool_it *it = C4PTROF(c4mpool_it, its_node, _it);
-    bool *skipped = (bool *)it->data;
     
     if (size <= it->size) {
       c4ls_delete(_it);
-      return c4mpool_add(self->src, it) + sizeof(bool);
+      return c4mpool_add(self->src, it);
     }
-
-    if (*skipped) {
-      c4ls_delete(_it);
-      c4ls_prepend(&self->dead_its, _it);
-    } else { *skipped = true; }
   }
 
-  return c4mpool_acquire(self->src, size + sizeof(bool)) + sizeof(bool);
+  return c4mpool_acquire(self->src, size);
 }
 
 void c4mfreel_release(struct c4mfreel *self, void *ptr) {
-  struct c4mpool_it *it = c4mpool_remove(self->src, ptr - sizeof(bool));
-  bool *skipped = (bool *)it->data;
-  *skipped = false;
+  struct c4mpool_it *it = c4mpool_remove(self->src, ptr);
   c4ls_append(&self->live_its, &it->its_node);
 }
