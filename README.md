@@ -66,7 +66,7 @@ void mpool_tests() {
 ```
 
 #### slab
-The slab allocator allocates memory as slabs of user defined size and keeps track of available space within them. Since it doesn't keep any information about individual allocations; the only way to release allocated memory is to free the allocator. It's useful for reducing the number of allocations in code that doesn't need to reuse memory; or to feed pool allocators.
+The slab allocator allocates memory as slabs of user defined size and keeps track of available space within them. Since it doesn't keep any information about individual allocations; the only way to release allocated memory is to free the allocator. It's useful for reducing the number of actual allocations that a downstream allocator causes.
 
 ```C
 
@@ -106,7 +106,7 @@ void mslab_tests() {
 ```
 
 #### freelist
-The freelist allocator is useful for recycling released pool memory, it reuses the embedded book keeping data to track released pointers.
+The freelist allocator is used to recycle released pool memory, it reuses the embedded book keeping data to track released pointers.
 
 ```C
 
