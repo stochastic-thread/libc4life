@@ -1,7 +1,3 @@
-* the malloc challenge
-** add reference implementations to blog post
-*** add discussion of choices made
-
 * change map to use pairs for key/val
 ** init offs on insert
 ** convert api like set
